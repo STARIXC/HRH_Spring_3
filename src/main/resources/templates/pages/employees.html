@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en" layout:decorate="~{layouts/layout.html}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta content="IE=edge" http-equiv="X-UA-Compatible">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>HRMIS Employees | UTJ</title>
+</head>
+<body>
+<span layout:fragment="content">
+    <div class="row">
+        <div class="col-12">
+            <div class="panel">
+                <div class="panel-header">
+                    <h5>All Employee</h5>
+                    <div class="btn-box d-flex flex-wrap gap-2">
+                        <div id="tableSearch"></div>
+                        <button class="btn btn-sm btn-icon btn-outline-primary"><i
+                                class="fa-light fa-arrows-rotate"></i></button>
+                        <div class="digi-dropdown dropdown">
+                            <button aria-expanded="false" class="btn btn-sm btn-icon btn-outline-primary"
+                                    data-bs-auto-close="outside" data-bs-toggle="dropdown"><i
+                                    class="fa-regular fa-ellipsis-vertical"></i></button>
+                            <ul class="digi-dropdown-menu dropdown-menu">
+                                <li class="dropdown-title">Show Table Title</li>
+                                <li>
+                                    <div class="form-check">
+                                        <input checked class="form-check-input" id="showEmployeeId" type="checkbox">
+                                        <label class="form-check-label" for="showEmployeeId">
+                                            Employee ID
+                                        </label>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="form-check">
+                                        <input checked class="form-check-input" id="showPhoto" type="checkbox">
+                                        <label class="form-check-label" for="showPhoto">
+                                            Photo
+                                        </label>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="form-check">
+                                        <input checked class="form-check-input" id="showName" type="checkbox">
+                                        <label class="form-check-label" for="showName">
+                                            Name
+                                        </label>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="form-check">
+                                        <input checked class="form-check-input" id="showSection" type="checkbox">
+                                        <label class="form-check-label" for="showSection">
+                                            Section
+                                        </label>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="form-check">
+                                        <input checked class="form-check-input" id="showPhone" type="checkbox">
+                                        <label class="form-check-label" for="showPhone">
+                                            Phone
+                                        </label>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="form-check">
+                                        <input checked class="form-check-input" id="showPresentAddress" type="checkbox">
+                                        <label class="form-check-label" for="showPresentAddress">
+                                            Present Address
+                                        </label>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="form-check">
+                                        <input checked class="form-check-input" id="showStatus" type="checkbox">
+                                        <label class="form-check-label" for="showStatus">
+                                            Status
+                                        </label>
+                                    </div>
+                                </li>
+                                <li class="dropdown-title pb-1">Showing</li>
+                                <li>
+                                    <div class="input-group">
+                                        <input class="form-control form-control-sm w-50" type="number" value="10">
+                                        <button class="btn btn-sm btn-primary w-50">Apply</button>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                        <a class="btn btn-sm btn-primary" th:href="@{/admin/employee/add-new}"><i
+                                class="fa-light fa-plus"></i> Add
+                            New</a>
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <div class="table-filter-option">
+                        <div class="row g-3">
+                            <div class="col-xl-10 col-9 col-xs-12">
+                                <div class="row g-3">
+                                    <div class="col">
+                                        <form class="row g-2">
+                                            <div class="col">
+                                                <select class="form-control form-control-sm">
+                                                    <option value="0">Bulk action</option>
+                                                    <option value="1">Move to trash</option>
+                                                </select>
+                                            </div>
+                                            <div class="col">
+                                                <button class="btn btn-sm btn-primary w-100">Apply</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <div class="col">
+                                        <select class="form-control form-control-sm">
+                                            <option value="0">Active</option>
+                                            <option value="1">Pending</option>
+                                            <option value="2">Inactive</option>
+                                            <option value="3">Hold</option>
+                                        </select>
+                                    </div>
+                                    <div class="col">
+                                        <button class="btn btn-sm btn-primary"><i class="fa-light fa-filter"></i> Filter
+                                        </button>
+                                    </div>
+                                    <div class="col">
+                                        <div class="digi-dropdown dropdown">
+                                            <button aria-expanded="false" class="btn btn-sm btn-icon btn-primary"
+                                                    data-bs-auto-close="outside" data-bs-toggle="dropdown"><i
+                                                    class="fa-regular fa-plus"></i></button>
+                                            <ul class="digi-dropdown-menu dropdown-menu">
+                                                <li class="dropdown-title">Filter Options</li>
+                                                <li>
+                                                    <div class="form-check">
+                                                        <input checked class="form-check-input"
+                                                               id="filterActiveStatus" type="checkbox">
+                                                        <label class="form-check-label" for="filterActiveStatus">
+                                                            Active Status
+                                                        </label>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-2 col-3 col-xs-12 d-flex justify-content-end">
+                                <div id="employeeTableLength"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <table class="table table-dashed table-hover digi-dataTable all-employee-table table-striped"
+                           id="allEmployeeTable">
+                        <thead>
+                        <tr>
+                            <th class="no-sort">
+                                <div class="form-check">
+                                    <input class="form-check-input" id="markAllEmployee" type="checkbox">
+                                </div>
+                            </th>
+                            <th>Action</th>
+                            <th>Employee ID</th>
+                            <th>Photo</th>
+                            <th>Name</th>
+                            <th>Section</th>
+                            <th>Phone</th>
+                            <th>Address</th>
+                            <th>Status</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="employee : ${employees}">
+                            <td>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox">
+                                </div>
+                            </td>
+                            <td>
+                                <div class="digi-dropdown dropdown d-inline-block">
+                                    <button aria-expanded="false" class="btn btn-sm btn-outline-primary"
+                                            data-bs-toggle="dropdown">Action <i class="fa-regular fa-angle-down"></i>
+                                    </button>
+                                    <ul class="digi-dropdown-menu dropdown-menu dropdown-slim dropdown-menu-sm">
+                                        <li><a class="dropdown-item" href="#"><span class="dropdown-icon"><i
+                                                class="fa-light fa-eye"></i></span> View</a></li>
+                                        <li><a class="dropdown-item" href="#"><span class="dropdown-icon"><i
+                                                class="fa-light fa-pen-to-square"></i></span> Edit</a></li>
+                                        <li><a class="dropdown-item" href="#"><span class="dropdown-icon"><i
+                                                class="fa-light fa-id-card"></i></span> ID Card</a></li>
+                                        <li><a class="dropdown-item" href="#"><span class="dropdown-icon"><i
+                                                class="fa-light fa-pen-nib"></i></span> Resign</a></li>
+                                        <li><a class="dropdown-item" href="#"><span class="dropdown-icon"><i
+                                                class="fa-light fa-arrow-right-from-bracket"></i></span> Left</a></li>
+                                        <li><a class="dropdown-item" href="#"><span class="dropdown-icon"><i
+                                                class="fa-light fa-trash-can"></i></span> Delete</a></li>
+                                    </ul>
+                                </div>
+                            </td>
+                            <td th:text="${'ID-'+employee.empNo}">ID-100221033</td>
+                            <td>
+                                <div class="avatar">
+                                    <img alt="User" th:src="@{../../assets/images/avatar-2.png}">
+                                </div>
+                            </td>
+                            <td>
+                               <span class="font-medium">
+                            <a href="../employee_view"><strong
+                                    th:text="${employee.surname + ' ' + employee.firstName + (employee.otherName != null ? ' ' + employee.otherName : '')}"> </strong></a>
+                            </span>
+                             <br>
+                                <!--<span class="text-muted-" th:text="${'Role: ' + (employee.user.role.role_name != null ? employee.user.role.role_name : 'Employee')}"> </span>-->
+                                <br>
+                                <span class="text-muted-" th:text="${'Role: '}"> Employee</span>
+                                <br><span class="text-muted-">SuperVisor  </span>
+                            </td>
+                            <td>
+                                <span class="font-medium" th:text="${'standard_carder'}">standard_carder</span>
+                                <br><span class="text-muted-" th:text="${'Designation'}">Designation  </span>
+                                <br><span class="text-muted-" th:text="${'Facility'}">Facility : </span>
+                            </td>
+                            <td>
+                                <span class="font-medium-" th:text="${employee.phone}"></span>
+                                <br><span class="text-dark" th:text="${'Email :'+employee.email}"></span>
+                            </td>
+                            <td>
+                                <span class="address-txt"
+                                      th:text="${'Present Address : '+(employee.presentAddress != null ? ' '+employee.presentAddress:'Kenya')}">75 York Road OUTGATE LA22 6HL</span>
+                                <span class="address-txt"
+                                      th:text="${'Home Address : '+(employee.presentAddress != null ? ' '+employee.presentAddress:'Kenya')}">75 York Road OUTGATE LA22 6HL</span>
+                            </td>
+                            <td><span class="active-mark"><i class="fa-regular fa-check"></i></span> Active</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <div class="table-bottom-control"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</span>
+
+</body>
+
+</html>

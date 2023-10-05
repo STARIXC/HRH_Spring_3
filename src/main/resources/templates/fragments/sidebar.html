@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div class="main-sidebar" th:fragment="sidebar">
+    <div class="main-menu">
+
+        <ul class="sidebar-menu scrollable">
+            <li class="sidebar-item">
+                <a class="sidebar-link" th:href="@{/dashboard}" role="button">Dashboard</a>
+            </li>
+            <th:block th:with="menuList=${menus}">
+                <th:block th:each="menuItem : ${menuList}">
+                    <!-- Render your menu items here using menuItem -->
+                    <li class="sidebar-item">
+                        <a class="sidebar-link-group-title has-sub" role="button">Administration</a>
+                        <th:block th:if="${menuItem.sub_menu}">
+                        <ul class="sidebar-link-group">
+
+                            <th:block th:each="subMenu : ${menu.sub_menu}">
+                                <li class="sidebar-dropdown-item">
+
+                                    <a class="sidebar-link has-sub" data-dropdown="crmDropdown" role="button"><span
+                                            class="nav-icon"><i class="fa-light fa-user-headset"></i></span> <span
+                                            class="sidebar-txt">Manage Roles</span></a>
+                                    <th:block th:if="${menuItem.sub_menu}">
+                                    <ul class="sidebar-dropdown-menu" id="crmDropdown">
+                                        <th:block th:each="subMenu : ${menu.sub_menu}">
+                                        <li class="sidebar-dropdown-item"><a class="sidebar-link" href="audience.html">Add Role</a>
+                                        </li>
+                                        </th:block>
+
+
+                                    </ul>
+                                    </th:block>
+                                </li>
+                            </th:block>
+
+
+
+                            <li class="sidebar-dropdown-item">
+                                <a class="sidebar-link" href="calendar.html"><span class="nav-icon"><i
+                                        class="fa-light fa-calendar"></i></span> <span
+                                        class="sidebar-txt">Change Password</span></a>
+                            </li>
+
+                        </ul>
+                        </th:block>
+                    </li>
+                </th:block>
+            </th:block>
+
+
+        </ul>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en" data-menu="vertical" data-nav-size="nav-default"
+ xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HRMIS Dashboard | UTJ</title>
+
+    <link rel="shortcut icon" href="favicon.png">
+    <link rel="stylesheet" th:href="@{/assets/vendor/css/all.min.css}">
+    <link rel="stylesheet" th:href="@{/assets/vendor/css/OverlayScrollbars.min.css}">
+    <link rel="stylesheet" th:href="@{/assets/vendor/css/jquery.dataTables.min.css}">
+    <link rel="stylesheet" th:href="@{/assets/vendor/css/daterangepicker.css}">
+    <link rel="stylesheet" th:href="@{/assets/vendor/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/style.css}">
+    <link rel="stylesheet" id="primaryColor" th:href="@{/assets/css/blue-color.css}">
+    <link rel="stylesheet" id="rtlStyle" href="#">
+</head>
+<!--th:href="@{/../css/styles.css}"-->
+<body class="body-padding body-p-top light-theme">
+<!-- preloader start -->
+<div class="preloader d-none">
+    <div class="loader">
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+</div>
+<!-- preloader end -->
+
+<!-- header start -->
+<span th:replace="~{fragments/header :: header}"></span>
+<!-- header end -->
+
+<!-- profile right sidebar start -->
+<span th:replace="~{fragments/profile-rsb :: profile-rsb}"></span>
+<!-- profile right sidebar end -->
+
+
+<!-- main sidebar start -->
+<span th:replace="~{fragments/sidebar :: sidebar}"></span>
+<!-- main sidebar end -->
+
+<!-- main content start -->
+<div class="main-content" >
+    <span layout:fragment="content">
+
+    <p>Page content goes here</p>
+
+    </span>
+    <!--you can replace this using page-->
+    <!-- footer start -->
+    <span th:replace="~{fragments/footer :: footer}"></span>
+    <!-- footer end -->
+</div>
+<!-- main content end -->
+<script th:src="@{/assets/vendor/js/jquery-3.6.0.min.js}"></script>
+<script th:src="@{/assets/vendor/js/jquery.overlayScrollbars.min.js}"></script>
+<script th:src="@{/assets/vendor/js/apexcharts.js}"></script>
+<script th:src="@{/assets/vendor/js/jquery.dataTables.min.js}"></script>
+<script th:src="@{/assets/vendor/js/moment.min.js}"></script>
+<script th:src="@{/assets/vendor/js/daterangepicker.js}"></script>
+<script th:src="@{/assets/vendor/js/bootstrap.bundle.min.js}"></script>
+<script th:src="@{/assets/js/dashboard.js}"></script>
+<script th:src="@{/assets/js/main.js}"></script>
+</body>
+
+</html>
