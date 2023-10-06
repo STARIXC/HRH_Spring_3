@@ -10,48 +10,192 @@
 
         <ul class="sidebar-menu scrollable">
             <li class="sidebar-item">
-                <a class="sidebar-link" th:href="@{/dashboard}" role="button">Dashboard</a>
+                <a class="sidebar-link" role="button" th:href="@{/dashboard}">Dashboard</a>
             </li>
-            <th:block th:with="menuList=${menus}">
-                <th:block th:each="menuItem : ${menuList}">
-                    <!-- Render your menu items here using menuItem -->
-                    <li class="sidebar-item">
-                        <a class="sidebar-link-group-title has-sub" role="button">Administration</a>
-                        <th:block th:if="${menuItem.sub_menu}">
-                        <ul class="sidebar-link-group">
-
-                            <th:block th:each="subMenu : ${menu.sub_menu}">
-                                <li class="sidebar-dropdown-item">
-
-                                    <a class="sidebar-link has-sub" data-dropdown="crmDropdown" role="button"><span
-                                            class="nav-icon"><i class="fa-light fa-user-headset"></i></span> <span
-                                            class="sidebar-txt">Manage Roles</span></a>
-                                    <th:block th:if="${menuItem.sub_menu}">
-                                    <ul class="sidebar-dropdown-menu" id="crmDropdown">
-                                        <th:block th:each="subMenu : ${menu.sub_menu}">
-                                        <li class="sidebar-dropdown-item"><a class="sidebar-link" href="audience.html">Add Role</a>
-                                        </li>
-                                        </th:block>
-
-
-                                    </ul>
-                                    </th:block>
-                                </li>
-                            </th:block>
-
-
-
-                            <li class="sidebar-dropdown-item">
-                                <a class="sidebar-link" href="calendar.html"><span class="nav-icon"><i
-                                        class="fa-light fa-calendar"></i></span> <span
-                                        class="sidebar-txt">Change Password</span></a>
+            <li class="sidebar-item">
+                <a class="sidebar-link-group-title has-sub" role="button">Administration</a>
+                <ul class="sidebar-link-group">
+                    <li class="sidebar-dropdown-item">
+                        <a class="sidebar-link has-sub" data-dropdown="roleMGT" role="button"><span class="nav-icon"><i
+                                class="fa-light fa-sliders-up"></i></span> <span class="sidebar-txt">Manage Role</span></a>
+                        <ul class="sidebar-dropdown-menu" id="roleMGT">
+                            <li class="sidebar-dropdown-item"><a class="sidebar-link"
+                                                                 th:href="@{/system/roles/list}"><span class="nav-icon"><i
+                                    class="fa-light fa-circle-o"></i></span> <span
+                                    class="sidebar-txt">Add Role</span></a></li>
+                            <li class="sidebar-dropdown-item"><a class="sidebar-link"
+                                                                 th:href="@{/system/roles/role_permissions}"><span class="nav-icon"><i
+                                    class="fa-light fa-circle-o"></i></span> <span class="sidebar-txt">Add Role Permission</span></a>
                             </li>
 
                         </ul>
-                        </th:block>
+
                     </li>
-                </th:block>
-            </th:block>
+                    <li class="sidebar-dropdown-item"><a class="sidebar-link" th:href="@{/system/change-password}">
+                        <span class="nav-icon"><i class="fa-light fa-sliders-up"></i></span> <span class="sidebar-txt">Changing Password</span></a>
+                    </li>
+                </ul>
+            </li>
+
+            <li class="sidebar-item">
+                <a class="sidebar-link-group-title has-sub" role="button">Employee Management</a>
+                <ul class="sidebar-link-group">
+                    <li class="sidebar-dropdown-item"><a class="sidebar-link"
+                                                         th:href="@{/system/manage_standardised_carder}"> <span class="nav-icon"><i
+                            class="fa-light fa-sliders-up"></i></span> Standard Carder</a></li>
+                    <li class="sidebar-dropdown-item"><a class="sidebar-link" th:href="@{/system/designation}"> <span
+                            class="nav-icon"><i class="fa-light fa-sliders-up"></i></span> Position</a></li>
+                    <li class="sidebar-dropdown-item"><a class="sidebar-link" th:href="@{/system/employee/all}"><span
+                            class="nav-icon"><i class="fa-light fa-sliders-up"></i></span> Employee Manage</a></li>
+                    <li class="sidebar-dropdown-item"><a class="sidebar-link"
+                                                         th:href="@{/system/employee/warning}"><span class="nav-icon"><i
+                            class="fa-light fa-sliders-up"></i></span> Warning</a></li>
+                    <li class="sidebar-dropdown-item"><a class="sidebar-link" th:href="@{/system/employee/designation}"><span
+                            class="nav-icon"><i class="fa-light fa-sliders-up"></i></span> Transfer</a></li>
+                    <li class="sidebar-dropdown-item"><a class="sidebar-link"
+                                                         th:href="@{/system/employee/promotion}"><span class="nav-icon"><i
+                            class="fa-light fa-sliders-up"></i></span> Promotion</a></li>
+                    <li class="sidebar-dropdown-item"><a class="sidebar-link" th:href="@{/system/employee/termination}"><span
+                            class="nav-icon"><i class="fa-light fa-sliders-up"></i></span> Termination</a></li>
+
+                </ul>
+            </li>
+            <li class="sidebar-item">
+                <a class="sidebar-link-group-title has-sub" role="button">Leave Management</a>
+                <ul class="sidebar-link-group">
+                    <li class="sidebar-dropdown-item">
+                        <a class="sidebar-link has-sub" data-dropdown="leaveSetup" role="button"><span class="nav-icon"><i
+                                class="fa-light fa-layer-group"></i></span> <span class="sidebar-txt">Setup</span></a>
+                        <ul class="sidebar-dropdown-menu" id="leaveSetup">
+                            <li class="sidebar-dropdown-item"><a class="sidebar-link" href="#">Manage Holidays</a></li>
+
+                            <li class="sidebar-dropdown-item"><a class="sidebar-link" href="#">Public Holidays</a></li>
+                            <li class="sidebar-dropdown-item"><a class="sidebar-link" href="#">Leave Type</a></li>
+                            <li class="sidebar-dropdown-item"><a class="sidebar-link" href="#">Earn Leave config</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="sidebar-dropdown-item">
+                        <a class="sidebar-link has-sub" data-dropdown="leaveApplication" role="button"><span
+                                class="nav-icon"><i class="fa-light fa-sliders-up"></i></span> <span
+                                class="sidebar-txt">Leave Application</span></a>
+                        <ul class="sidebar-dropdown-menu" id="leaveApplication">
+                            <li class="sidebar-dropdown-item"><a class="sidebar-link" href="#">Apply for Leave</a></li>
+                            <li class="sidebar-dropdown-item"><a class="sidebar-link" href="#">Requested
+                                Applications</a></li>
+                        </ul>
+                    </li>
+                    <li class="sidebar-dropdown-item">
+                        <a class="sidebar-link has-sub" data-dropdown="leaveReport" role="button"><span
+                                class="nav-icon"><i class="fa-light fa-sliders-up"></i></span> <span
+                                class="sidebar-txt">Leave Application</span></a>
+                        <ul class="sidebar-dropdown-menu" id="leaveReport">
+                            <li class="sidebar-dropdown-item"><a class="sidebar-link" href="#">Leave Report</a></li>
+                            <li class="sidebar-dropdown-item"><a class="sidebar-link" href="#">Summary Report</a></li>
+                            <li class="sidebar-dropdown-item"><a class="sidebar-link" href="#">My Leave Report</a></li>
+                        </ul>
+                    </li>
+
+                </ul>
+            </li>
+            <li class="sidebar-item">
+                <a class="sidebar-link-group-title has-sub" role="button">Attendance</a>
+                <ul class="sidebar-link-group">
+                    <li class="sidebar-dropdown-item">
+                        <a class="sidebar-link has-sub" data-dropdown="attendanceSetup" role="button"><span class="nav-icon"><i
+                                class="fa-light fa-layer-group"></i></span> <span class="sidebar-txt">Setup</span></a>
+                        <ul class="sidebar-dropdown-menu" id="attendanceSetup">
+                            <li class="sidebar-dropdown-item"><a class="sidebar-link" href="#">Manage Work Shift</a></li>
+                            <li class="sidebar-dropdown-item"><a class="sidebar-link" href="#">Dashboard Attendance</a></li>
+
+                        </ul>
+                    </li>
+                    <li class="sidebar-dropdown-item">
+                        <a class="sidebar-link has-sub" data-dropdown="attendanceReport" role="button"><span
+                                class="nav-icon"><i class="fa-light fa-sliders-up"></i></span> <span
+                                class="sidebar-txt">Leave Application</span></a>
+                        <ul class="sidebar-dropdown-menu" id="attendanceReport">
+                            <li class="sidebar-dropdown-item"><a class="sidebar-link" href="#">Daily Attendance</a></li>
+                            <li class="sidebar-dropdown-item"><a class="sidebar-link" href="#">Monthly Attendance</a></li>
+                            <li class="sidebar-dropdown-item"><a class="sidebar-link" href="#">Summary Report</a></li>
+                        </ul>
+                    </li>
+                    <li class="sidebar-dropdown-item">
+                        <a th:href="@{/manual_attendance}" class="sidebar-link has-sub" role="button"><span
+                                class="nav-icon"><i class="fa-light fa-sliders-up"></i></span> <span
+                                class="sidebar-txt">Manual Attendance</span></a>
+
+                    </li>
+
+                </ul>
+            </li>
+            <li class="sidebar-item">
+                <a class="sidebar-link-group-title has-sub" role="button">Settings</a>
+                <ul class="sidebar-link-group">
+                    <li class="sidebar-dropdown-item">
+                        <a class="sidebar-link" role="button" th:href="@{/system/settings}"><span class="nav-icon"><i
+                                class="fa-light fa-gear"></i></span> <span class="sidebar-txt">Settings</span></a>
+
+                    </li>
+                    <li class="sidebar-dropdown-item">
+                        <a class="sidebar-link has-sub" data-dropdown="frontSettings" role="button"><span
+                                class="nav-icon"><i class="fa-light fa-sliders-up"></i></span> <span
+                                class="sidebar-txt">Front Settings</span></a>
+                        <ul class="sidebar-dropdown-menu" id="frontSettings">
+                            <li class="sidebar-dropdown-item"><a class="sidebar-link" href="#">General Setting</a></li>
+                            <li class="sidebar-dropdown-item"><a class="sidebar-link" href="#">Front Services</a></li>
+
+                        </ul>
+                    </li>
+                    <li class="sidebar-dropdown-item">
+                        <a th:href="@{/manual_attendance}" class="sidebar-link has-sub" role="button"><span
+                                class="nav-icon"><i class="fa-light fa-sliders-up"></i></span> <span
+                                class="sidebar-txt">Manual Attendance</span></a>
+
+                    </li>
+
+                </ul>
+            </li>
+
+          <!--            <th:block th:with="menuList=${menus}">-->
+            <!--                <th:block th:each="menuItem : ${menuList}">-->
+            <!--                    &lt;!&ndash; Render your menu items here using menuItem &ndash;&gt;-->
+            <!--                    <li class="sidebar-item">-->
+            <!--                        <a class="sidebar-link-group-title has-sub" role="button">Administration</a>-->
+            <!--                        <th:block th:if="${menuItem.sub_menu}">-->
+            <!--                        <ul class="sidebar-link-group">-->
+
+            <!--                            <th:block th:each="subMenu : ${menu.sub_menu}">-->
+            <!--                                <li class="sidebar-dropdown-item">-->
+
+            <!--                                    <a class="sidebar-link has-sub" data-dropdown="crmDropdown" role="button"><span-->
+            <!--                                            class="nav-icon"><i class="fa-light fa-user-headset"></i></span> <span-->
+            <!--                                            class="sidebar-txt">Manage Roles</span></a>-->
+            <!--                                    <th:block th:if="${menuItem.sub_menu}">-->
+            <!--                                    <ul class="sidebar-dropdown-menu" id="crmDropdown">-->
+            <!--                                        <th:block th:each="subMenu : ${menu.sub_menu}">-->
+            <!--                                        <li class="sidebar-dropdown-item"><a class="sidebar-link" href="audience.html">Add Role</a>-->
+            <!--                                        </li>-->
+            <!--                                        </th:block>-->
+
+
+            <!--                                    </ul>-->
+            <!--                                    </th:block>-->
+            <!--                                </li>-->
+            <!--                            </th:block>-->
+
+
+            <!--                            <li class="sidebar-dropdown-item">-->
+            <!--                                <a class="sidebar-link" href="calendar.html"><span class="nav-icon"><i-->
+            <!--                                        class="fa-light fa-calendar"></i></span> <span-->
+            <!--                                        class="sidebar-txt">Change Password</span></a>-->
+            <!--                            </li>-->
+
+            <!--                        </ul>-->
+            <!--                        </th:block>-->
+            <!--                    </li>-->
+            <!--                </th:block>-->
+            <!--            </th:block>-->
 
 
         </ul>

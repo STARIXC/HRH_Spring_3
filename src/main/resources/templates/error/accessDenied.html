@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en" layout:decorate="~{layouts/layout.html}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"  xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Error 403 | Digiboard</title>
+
+</head>
+
+<body>
+<!-- preloader start -->
+<div class="preloader d-none">
+    <div class="loader">
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+</div>
+<!-- preloader end -->
+
+<!-- main content start -->
+<span layout:fragment="content">
+    <div class="panel error-panel">
+        <div class="panel-body h-100 d-flex flex-column align-items-center justify-content-center">
+            <div class="part-img">
+                <img th:src="@{../assets/images/error-403.png}" alt="403">
+            </div>
+            <div class="part-txt text-center">
+                <h2 class="error-subtitle">Access Forbidden</h2>
+                <a th:href="@{/system/}" class="btn btn-primary py-2 px-5 rounded-pill">Go to Home Page</a>
+            </div>
+        </div>
+    </div>
+</span>
+<!-- main content end -->
+
+</body>
+
+</html>

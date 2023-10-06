@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en" layout:decorate="~{layouts/layout.html}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta content="IE=edge" http-equiv="X-UA-Compatible">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>HRMIS [[${pageTitle}]] | UTJ</title>
+</head>
+<body>
+<span layout:fragment="content">
+    <div class="row">
+   <div class="col-12">
+       <div class="panel">
+            <div class="panel-header">
+                    <h5>All Employee</h5>
+                    <div class="btn-box d-flex flex-wrap gap-2">
+
+                          <a class="btn btn-sm btn-primary" th:href="@{/system/standard_carder/new}"><i
+                                  class="fa fa-plus-circle"></i> <span>Add New </span></a>
+                    </div>
+                </div>
+           <div class="panel-body">
+
+
+                <div class="alert alert-success alert-dismissible fade show" role="alert" th:if="${message != null}">
+                    [[${message}]]
+                    <button aria-label="Close" class="close" data-dismiss="alert" type="button">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                  <table class="table table-bordered table-dashed table-hover digi-dataTable dataTable-resize table-striped"
+                         id="allStandardCarder">
+                      <thead>
+                      <tr>
+                          <th>S/L</th>
+                          <th>Category Name</th>
+                          <th>Action</th>
+                      </tr>
+                      </thead>
+                      <tbody>
+                      <tr th:each="standardCarder , itrStat : ${standardCarderList}">
+                          <td th:text="${itrStat.index + 1}"></td>
+                          <td th:text="${standardCarder.standardized_cadre_name} ">Name</td>
+                          <td>
+                              <div class="btn-box">
+                                  <button>
+                                      <a class="btn btn-success " th:href="@{'/standard_carder/edit/'+${standardCarder.id}}">
+                                        <i class="fa fa-edit"></i> <span>Edit</span>
+                                    </a>
+                                  </button>
+                                  <button>
+                                      <a class="btn btn-danger link_delete " th:carderType="${standardCarder.id}"  th:href="@{'/standard_carder/delete/'+${standardCarder.id}}">
+                                          <i class="fa fa-trash "></i>
+                                          <span>Delete</span>
+                                      </a>
+                                  </button>
+                              </div>
+                          </td>
+                      </tr>
+                      </tbody>
+
+                  </table>
+           </div>
+       </div>
+   </div>
+    </div>
+</span>
+
+</body>
+
+</html>

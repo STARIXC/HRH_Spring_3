@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en" layout:decorate="~{layouts/layout.html}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta content="IE=edge" http-equiv="X-UA-Compatible">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>HRMIS [[${pageTitle}]] | UTJ</title>
+</head>
+<body>
+<span layout:fragment="content">
+       <div class="dashboard-breadcrumb mb-25">
+            <h2>Roles</h2>
+        </div>
+        <div class="row g-4">
+            <div class="col-xxl-4 col-md-5">
+                <div class="panel">
+                    <div class="panel-header">
+                        <h5>Add New Role</h5>
+                    </div>
+                    <div class="panel-body">
+                        <div class="alert alert-success alert-dismissible fade show" role="alert" th:if="${message != null}">
+                    [[${message}]]
+                    <button aria-label="Close" class="close" data-dismiss="alert" type="button">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                        <div class="row g-3">
+                             <form  action="#"
+                                    th:action="@{/system/roles/save}"
+                                    th:object="${role}"
+                                    method="post">
+                            <input type="hidden" th:field="*{id}" id="id">
+                            <div class="col-12">
+                                <label class="form-label">Role Name</label>
+                                <input type="text" class="form-control form-control-sm" id="roleName" name="roleName" th:field="*{role_name}">
+
+                            </div>
+
+                            <div class="col-12 d-flex justify-content-end mt-3">
+                                <div class="btn-box">
+                                    <button class="btn btn-sm btn-primary">Save Role</button>
+                                </div>
+                            </div>
+                             </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xxl-8 col-md-7">
+                <div class="panel">
+                    <div class="panel-header">
+                        <h5>All Roles</h5>
+
+                    </div>
+                    <div class="panel-body">
+                       <table class="table table-dashed table-hover digi-dataTable all-product-table table-striped" id="allRoleTable">
+                            <thead>
+                                <tr>
+
+                                    <th>SL</th>
+                                    <th>Name</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                               <tr th:each="role , itrStat : ${roles}">
+
+                          <td th:text="${itrStat.index + 1}"></td>
+                          <td th:text="${role.role_name} ">Name</td>
+                              <td>
+                                        <div class="btn-box">
+                                            <button th:onclick="'editItem(' + ${role.id} + ')'" class="btn btn-sm btn-icon btn-primary">Edit</button>
+
+                                            <a class="btn btn-sm btn-icon btn-primary" th:role="${role.id}" th:href="@{'/system/roles/list/'+${role.id}}"><i class="fa-light fa-edit"></i></a>
+                                            <a class="btn btn-sm btn-icon btn-danger" th:role="${role.id}"  th:href="@{'/system/roles/delete/'+${role.id}}"><i class="fa-light fa-trash-can"></i></a>
+                                        </div>
+                                    </td>
+
+                      </tr>
+
+
+                            </tbody>
+                        </table>
+                        <div class="table-bottom-control"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+</span>
+<!-- Include the script fragment -->
+<div th:replace="fragments/script-fragment :: custom-script"></div>
+</body>
+
+</html>

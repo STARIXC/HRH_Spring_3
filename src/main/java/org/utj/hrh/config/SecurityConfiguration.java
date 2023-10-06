@@ -37,15 +37,13 @@ public class SecurityConfiguration  {
     private UserDetailsService userDetailsService;
     public static final String[] ENDPOINTS_WHITELIST = {
             "/assets/**",
-                                "/login",
-            "/system",
-
+            "/login"
     };
 
     public static final String LOGIN_URL = "/login";
     public static final String LOGOUT_URL = "/logout";
     public static final String LOGIN_FAIL_URL = LOGIN_URL + "?error";
-    public static final String DEFAULT_SUCCESS_URL = "/system";
+    public static final String DEFAULT_SUCCESS_URL = "/system/dashboard";
     public static final String USERNAME = "username";
     public static final String PASSWORD = "password";
 
@@ -63,13 +61,11 @@ public class SecurityConfiguration  {
                 .csrf(csrf->csrf.disable())
                 .authorizeHttpRequests((authorize) -> authorize
                         .requestMatchers(ENDPOINTS_WHITELIST).permitAll()
-                        .requestMatchers("/menu").authenticated()
-                        .requestMatchers("/admin/**").hasRole("Super Admin")
-                        .requestMatchers("/system/**").hasRole("EMPLOYEE")
-                        .requestMatchers("/hrh/**").hasRole("HRH")
-                        .requestMatchers("/payroll/**").hasRole("PAYROLL")
-                        .requestMatchers("/supervisor/**").hasRole("SUPERVISOR")
-                        .requestMatchers("/technical_monitor/**").hasRole("TECHNICAL_MONITOR")
+//                        .requestMatchers("/system/**").hasRole("Super_Admin")
+//                        .requestMatchers("/hrh/**").hasRole("HR_Admin")
+//                        .requestMatchers("/payroll/**").hasRole("Payroll")
+//                        .requestMatchers("/supervisor/**").hasRole("Facility_Supervisor")
+//                        .requestMatchers("/technical_monitor/**").hasRole("TECHNICAL_MONITOR")
                         .anyRequest().authenticated()
                 )
                 .formLogin((formLogin) -> formLogin
@@ -85,7 +81,8 @@ public class SecurityConfiguration  {
                         .invalidateHttpSession(true)
                         .deleteCookies("JSESSIONID")
                         .logoutSuccessUrl(LOGIN_URL + "?logout")
-                );
+                )
+        .exceptionHandling((exception)-> exception.accessDeniedPage("/error-403"));
 
         return http.build();
     }

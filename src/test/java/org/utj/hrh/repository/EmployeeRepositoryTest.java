@@ -17,4 +17,28 @@ class EmployeeRepositoryTest {
         List<Employee> employees= employeeRepository.findAll();
       return employees;
     }
+
+    @Test
+    void findByStatus() {
+    }
+
+    @Test
+    void countByDateStartedBetween() {
+    }
+
+    @Test
+    void findEmployeeById() {
+    }
+
+    @Test
+    void getEmployeeByEmp_no() {
+    }
+
+    @Test
+    void countById() {
+    }
+
+    @Test
+    void updateEnabledStatus() {
+    }
 }

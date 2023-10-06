@@ -1,55 +1,44 @@
 
 package org.utj.hrh.model;
 
+import jakarta.persistence.*;
+
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  *
  * @author UTJ
  */
+@Entity
+@Table(name = StandardCarder.TABLE_NAME)
 public class StandardCarder {
-    int id, carder_category_id,  emp_type;
-    String standardized_cadre_name,carder_category_name,emp_type_name;
+    public static final String TABLE_NAME = "standardized_cadre";
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+    @Column(length = 40, nullable = false)
+    private String standardized_cadre_name;
+    @Column(length = 3, nullable = false)
+    private Integer carder_category_id;
 
-    public String getCarder_category_name() {
-        return carder_category_name;
-    }
+    @Column(length = 3, nullable = false)
+    private Integer carder_type_id;
 
-    public void setCarder_category_name(String carder_category_name) {
-        this.carder_category_name = carder_category_name;
-    }
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "standardized_cadre_id", referencedColumnName = "id")
+    List< Designation > designations = new ArrayList< >();
 
-    public String getEmp_type_name() {
-        return emp_type_name;
-    }
-
-    public void setEmp_type_name(String emp_type_name) {
-        this.emp_type_name = emp_type_name;
-    }
 
     public StandardCarder() {
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
-    }
-
-    public int getCarder_category_id() {
-        return carder_category_id;
-    }
-
-    public void setCarder_category_id(int carder_category_id) {
-        this.carder_category_id = carder_category_id;
-    }
-
-    public int getEmp_type() {
-        return emp_type;
-    }
-
-    public void setEmp_type(int emp_type) {
-        this.emp_type = emp_type;
     }
 
     public String getStandardized_cadre_name() {
@@ -60,11 +49,38 @@ public class StandardCarder {
         this.standardized_cadre_name = standardized_cadre_name;
     }
 
-    @Override
-    public String toString() {
-        return "StandardCarder{" + "id=" + id + ", carder_category_id=" + carder_category_id + ", emp_type=" + emp_type + ", standardized_cadre_name=" + standardized_cadre_name + ", carder_category_name=" + carder_category_name + ", emp_type_name=" + emp_type_name + '}';
+    public Integer getCarder_category_id() {
+        return carder_category_id;
     }
 
+    public void setCarder_category_id(Integer carder_category_id) {
+        this.carder_category_id = carder_category_id;
+    }
+
+    public Integer getCarder_type_id() {
+        return carder_type_id;
+    }
+
+    public void setCarder_type_id(Integer carder_type_id) {
+        this.carder_type_id = carder_type_id;
+    }
+
+    public List<Designation> getDesignations() {
+        return designations;
+    }
+
+    public void setDesignations(List<Designation> designations) {
+        this.designations = designations;
+    }
+
+    @Override
+    public String toString() {
+        return "StandardCarder{" +
+                "standardized_cadre_name='" + standardized_cadre_name + '\'' +
+                ", carder_category_id=" + carder_category_id +
+                ", carder_type_id=" + carder_type_id +
+                '}';
+    }
 
     
     
