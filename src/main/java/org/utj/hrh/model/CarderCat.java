@@ -35,9 +35,8 @@ public class CarderCat {
     private LocalDateTime lastUpdated;
 
 
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "carder_category_id", referencedColumnName = "id")
-    List< StandardCarder > standardCarderList = new ArrayList< >();
+    @OneToMany(mappedBy = "carderCat")
+    private List< StandardCarder > standardCarderList ;
 
 
 }

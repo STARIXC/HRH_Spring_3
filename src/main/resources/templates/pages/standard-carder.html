@@ -30,7 +30,7 @@
                     </button>
                 </div>
 
-                  <table class="table table-bordered table-dashed table-hover digi-dataTable dataTable-resize table-striped"
+                  <table class="table table-bordered table-dashed table-hover table-striped"
                          id="allStandardCarder">
                       <thead>
                       <tr>
@@ -45,17 +45,16 @@
                           <td th:text="${standardCarder.standardized_cadre_name} ">Name</td>
                           <td>
                               <div class="btn-box">
-                                  <button>
-                                      <a class="btn btn-success " th:href="@{'/standard_carder/edit/'+${standardCarder.id}}">
-                                        <i class="fa fa-edit"></i> <span>Edit</span>
+
+                                      <a class="btn btn-success btn-sm" th:href="@{'/system/standard_carder/edit/'+${standardCarder.id}}">
+                                        <i class="fa fa-edit"></i>
                                     </a>
-                                  </button>
-                                  <button>
-                                      <a class="btn btn-danger link_delete " th:carderType="${standardCarder.id}"  th:href="@{'/standard_carder/delete/'+${standardCarder.id}}">
+
+                                      <a class="btn btn-danger link_delete btn-sm" th:carderType="${standardCarder.id}"  th:href="@{'/system/standard_carder/delete/'+${standardCarder.id}}">
                                           <i class="fa fa-trash "></i>
-                                          <span>Delete</span>
+
                                       </a>
-                                  </button>
+
                               </div>
                           </td>
                       </tr>

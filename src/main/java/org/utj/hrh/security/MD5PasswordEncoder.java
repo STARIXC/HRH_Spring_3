@@ -1,6 +1,7 @@
 package org.utj.hrh.security;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Component;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;

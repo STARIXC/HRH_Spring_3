@@ -31,10 +31,11 @@ public class Supervisor {
     private String email;
     @Column(name = "status")
     private int status;
-    @Column(name = "login_id")
-    private String login_id;
+
+//    @Column(name = "login_id")
+//    private String login_id;
 
     @OneToOne
-    @JoinColumn(name = "login_id", referencedColumnName = "userid", insertable = false, updatable = false)
+    @JoinColumn(name = "login_id", referencedColumnName = "userid", unique = true, insertable = false, updatable = false)
     private User user;
 }

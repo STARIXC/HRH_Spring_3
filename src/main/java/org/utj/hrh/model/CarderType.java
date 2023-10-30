@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -20,7 +22,7 @@ public class CarderType {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private int id;
+    private Integer id;
     @Column(name = "cadre_type_name")
     private String cadre_type_name;
     @Column(name = "hrs_per_week")
@@ -32,5 +34,7 @@ public class CarderType {
     @Column(name = "updatedAt")
     private LocalDateTime lastUpdated;
 
+    @OneToMany(mappedBy = "carderType")
+    private List< StandardCarder > standardCarderList;
 
 }

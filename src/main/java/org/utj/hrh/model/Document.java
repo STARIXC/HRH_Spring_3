@@ -19,13 +19,11 @@ public class Document {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private int id;
-    @Column(name = "employee_id")
-    private String employeeId;
+    private Integer id;
+
     @Column(name = "docIdentifier")
     private String docID;
-    @Column(name = "document_id")
-    private int documentId;
+
     @Column(name = "document_value")
     private String documentValue;
     @Column(name = "created_by")
@@ -35,14 +33,13 @@ public class Document {
     @Column(name = "updated_at")
     private LocalDateTime updated_at;
 
+    @ManyToOne
+    @JoinColumn(name = "document_type_id")
+    @ToString.Exclude
+    private DocumentType documentType;
 
-//    @ManyToOne
-//    @JoinColumn(name = "employee_id")
-//    private Employee employee;
-//
-//    @ManyToOne
-//    @JoinColumn(name = "document_id")
-//    private Document document;
-
-
+    @ManyToOne
+    @JoinColumn(name = "employee_id",referencedColumnName = "emp_no")
+    @ToString.Exclude
+    private Employee employee;
 }

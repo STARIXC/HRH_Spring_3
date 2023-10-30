@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en" layout:decorate="~{layouts/layout.html}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta content="IE=edge" http-equiv="X-UA-Compatible">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>HRMIS [[${pageTitle}]] | UTJ</title>
+</head>
+<body>
+<span layout:fragment="content">
+       <div class="dashboard-breadcrumb mb-25">
+            <h2>DocumentType</h2>
+
+           <div class="btn-box d-flex flex-wrap gap-2">
+               <a class="btn btn-sm btn-primary" th:href="@{/system/documents/new}"><i class="fa fa-plus-circle"></i> <span>Add New </span></a>                  </div>
+        </div>
+    <div class="row">
+           <div class="col-4">
+                <div class="panel">
+                    <div class="panel-header panel">
+                        <h5>DocumentType Form</h5>
+                    </div>
+                    <div class="panel-body">
+                                <form  action="#"
+                                       th:action="@{/system/documents/save}"
+                                       th:object="${documentType}"
+                                       method="post">
+                                    <input type="hidden" th:field="*{id}" id="id">
+                                    <div class="form-group row">
+                                        <label for="name" class="col-sm-4 col-form-label  input_label">Name</label>
+                                        <div class="col-sm-12">
+                                            <input class="form-control" placeholder="Enter Document Name" name="name" type="text" id="name"  th:field="*{name}">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label for="description" class="col-sm-4 col-form-label  input_label">Description</label>
+                                        <div class="col-sm-12">
+                                            <textarea value="" maxlength="200" id="description" class="form-control input-width-xlarge"  th:field="*{description}"name="description" rows="5" cols="10"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label for="is_required" class="col-sm-4 col-form-label  input_label">Required Field</label>
+                                        <div class="col-sm-12">
+                                          <select class="form-control"  name='is_required'
+                                                  id='is_required'  th:field="*{isRequired}">
+
+                                              <option value="">- Select -</option>
+
+                                              <option value="1">Required</option>
+
+                                              <option value="0">Not Required</option>
+                                                            </select>
+                                                            <span id="is_required_"></span>
+                                        </div>
+                                    </div>
+
+
+                            <button type="submit" class="btn btn-primary btn-style mt-4">Submit</button>
+                        </form>
+                   </div>
+                </div>
+            </div>
+
+        <div class="col-8">
+                <div class="panel">
+                    <div class="panel-header">
+                        <h5>Document Types</h5>
+                    </div>
+                    <div class="panel-body">
+
+                        <table class="table table-dashed table-hover utj-dataTable all-designation-table table-striped"
+                               id="AllDocumentTypeTable">
+                            <thead>
+                                <tr>
+                                    <th>SNo#</th>
+                                    <th>Document</th>
+                                   <th>Description</th>
+                                   <th>Required Field</th>
+                                   <th >Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:each="documentType , itrStat : ${documentTypeList}">
+
+                                    <td th:text="${itrStat.index + 1}"></td>
+                                      <td th:text="${documentType.name} ">Name</td>
+                                      <td th:text="${documentType.description} ">Description</td>
+                                      <td>
+                                        <span th:class="${documentType.isRequired == '1'} ? 'badge bg-success' : 'badge bg-danger'"
+                                              th:text="${documentType.isRequired == '1'} ? 'Required' : 'Not Required'">Delivered</span>
+
+                                      </td>
+                                       <td>
+                                        <div class="utj-dropdown dropdown d-inline-block">
+                                            <button aria-expanded="false" class="btn btn-sm btn-outline-primary"
+                                                    data-bs-toggle="dropdown">Action <i
+                                                    class="fa-regular fa-angle-down"></i></button>
+                                            <ul class="utj-dropdown-menu dropdown-menu dropdown-slim dropdown-menu-sm">
+                                                <li>
+<!--                                                     th:href="@{'/system/designation/edit/' + ${position.id}}"-->
+                                                  <a class="dropdown-item"
+
+                                                     th:data-docType-id="${documentType.id}" onclick="editDocumentType(this)">
+                                                <span class="dropdown-icon">
+                                                    <i class="fa-light fa-pen-to-square"></i>
+                                                </span> Edit
+                                            </a>
+                                                </li>
+                                                <li><a class="dropdown-item deleteBtn" th:data-id="${documentType.id}"
+                                                        th:position="${documentType.id}"><span
+                                                        class="dropdown-icon"><i
+                                                        class="fa-light fa-trash-can"></i></span> Delete</a></li>
+                                            </ul>
+                                        </div>
+                                    </td>
+
+
+
+                                </tr>
+    </tbody>
+                        </table>
+                        <div class="table-bottom-control"></div>
+                    </div>
+                </div>
+            </div>
+    </div>
+</span>
+
+<th:block layout:fragment="script">
+    <script th:src="@{/assets/vendor/js/sweetalert2.all.min.js}"></script>
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        $(document).ready(function () {
+            // Add event listener for form submission
+            $("form").submit(function (event) {
+                event.preventDefault(); // Prevent the form from submitting normally
+
+                // Get form data
+                var formData = $(this).serialize();
+
+                // Perform an AJAX request to save or update the document
+                $.ajax({
+                    type: "POST",
+                    url: /*[[@{/system/documents/save}]]*/, // Use Thymeleaf URL expression
+                    data: formData,
+                    success: function (response) {
+                        // Display a SweetAlert success message
+                        Swal.fire({
+                            title: 'Success',
+                            text: 'Document saved successfully!',
+                            icon: 'success',
+                            confirmButtonText: 'OK'
+                        }).then(function () {
+                            // Refresh the page after the user clicks OK in the alert
+                            location.reload();
+                        });
+                    },
+                    error: function (error) {
+                        // Handle error response here, e.g., display an error message
+                        // alert("Error saving document: " + error.responseText);
+                        Swal.fire({
+                            title: "Oops...",
+                            text: "Error saving document: " + error.responseText,
+                            icon: "error",
+                            confirmButtonClass: "btn btn-sm btn-primary",
+                            buttonsStyling: !1,
+                            showCloseButton: !0,
+                            closeButtonHtml: "<i class='fa-light fa-xmark'></i>",
+                            customClass: {
+                                closeButton: 'btn btn-sm btn-icon btn-danger',
+                            },
+                        })
+                    }
+                });
+            });
+        });
+        /*]]>*/
+        $(document).on('click', '.deleteBtn', function (e) {
+            e.preventDefault();
+            var typeId = $(this).data('id');
+            console.log("Type id: " + typeId);
+            SwalDelete(typeId);
+
+        });
+
+
+        $(function () {
+            //------------------------------------------------------------------------------------------------------------------
+            // All DocumentType Table In CRM Module
+            //------------------------------------------------------------------------------------------------------------------
+            if ($('#AllDocumentTypeTable').length) {
+                var dataTable = $('#AllDocumentTypeTable').DataTable({
+                    scrollX: true,
+                    "columnDefs": [{
+                        "targets": 'no-sort',
+                        "orderable": false
+                    }],
+                });
+                $('#AllDocumentTypeTable_filter input').addClass('form-control').attr("placeholder", "Search...").addClass('form-control-sm');
+                $('#AllDocumentTypeTable_length').prependTo('#AllDocumentTypeTableLength').find('select').addClass('form-control form-control-sm px-3');
+                $('#AllDocumentTypeTable_filter').prependTo('#tableSearch');
+                $('#AllDocumentTypeTable_info, #AllDocumentTypeTable_paginate').prependTo('.table-bottom-control');
+
+
+                $('#AllDocumentTypeTable').on('draw.dt', function () {
+                    $('#AllDocumentTypeTable tr').on('click', function () {
+                        $(this).toggleClass('selected');
+                        $(this).siblings().removeClass('selected');
+                    });
+
+                });
+            }
+        });
+        /*<![CDATA[*/
+        function editDocumentType(button) {
+            // Retrieve the document type ID from the data attribute
+            var docTypeId = button.getAttribute("data-docType-id");
+
+            // Use AJAX to fetch the document type data by sending a request to the server
+            // You'll need to replace the URL with the actual endpoint that fetches the data
+
+                var fetDocUrl = /*[[@{/system/documents/get/{id}}]]*/;
+                var apiUrl = fetDocUrl.replace("{id}", docTypeId); // Replace {id} with the actual value
+            fetch(apiUrl)
+                .then(function (response) {
+                    return response.json();
+                })
+                .then(function (data) {
+                    // Populate the form fields with the data received from the server
+                    document.getElementById("id").value = data.id;
+                    document.getElementById("name").value = data.name;
+                    document.getElementById("description").value = data.description;
+                    document.getElementById("is_required").value = data.isRequired;
+                })
+                .catch(function (error) {
+                    console.error("Error fetching document type data: " + error);
+                });
+        }
+        /*]]>*/
+        /*<![CDATA[*/
+        function SwalDelete(typeId) {
+            swal.fire({
+                title: 'Are you sure?',
+                text: "It will be deleted permanently",
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!',
+                showLoaderOnConfirm: true,
+                preConfirm: function () {
+                    return new Promise(function (resolve) {
+                        var docTypeId = typeId;
+                        var delDocUrl = /*[[@{/system/documents/delete/{id}}]]*/;
+                        var apiUrl = delDocUrl.replace("{id}", docTypeId);
+
+                        // Perform an AJAX DELETE request to delete the document
+                        $.ajax({
+                            url: apiUrl,
+                            type: 'DELETE',
+                            dataType: 'json',
+                        })
+                            .done(function (response) {
+                                swal.fire({
+                                    title: 'Success',
+                                    text: 'Document Deleted successfully!',
+                                    icon: 'success',
+                                    confirmButtonText: 'OK'
+                                }).then(function () {
+                                    // Refresh the page after the user clicks OK in the alert
+                                    location.reload();
+                                });
+                            })
+                            .fail(function () {
+                                swal.fire('Oops...', 'Something went wrong with the delete operation!', 'error');
+                            });
+                    });
+                },
+                allowOutsideClick: false
+            });
+        }
+        /*]]>*/
+
+    </script>
+</th:block>
+</body>
+
+</html>

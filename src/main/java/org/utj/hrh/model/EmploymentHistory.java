@@ -20,14 +20,14 @@ public class EmploymentHistory {
     @Column(name = "emprecordid", length = 250)
     private String emprecordid;
 
-    @Column(name = "empno", length = 255)
-    private String empNo;
 
-    @Column(name = "mfl", length = 11)
-    private Integer mfl;
+    @ManyToOne
+    @JoinColumn(name = "mfl",referencedColumnName = "centre_sante_id")
+    private Facility facility;
 
-    @Column(name = "position_id")
-    private Integer positionId;
+    @ManyToOne
+    @JoinColumn(name = "position_id",referencedColumnName = "id")
+    private EmployeePosition employeePosition;
 
     @Column(name = "date_started")
     private String dateStarted; // Storing as string for now, could consider LocalDate in the future
@@ -63,6 +63,8 @@ public class EmploymentHistory {
     private LocalDateTime updatedAt;
 
 
-
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "empno",referencedColumnName = "emp_no")
+    private Employee employee;
 
 }

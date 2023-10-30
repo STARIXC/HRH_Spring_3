@@ -30,11 +30,11 @@ public class TechnicalMonitor {
     private int mdtRegion;
     @Column(name = "active")
     private int active;
-    @Column(name = "login_id")
-    private String loginId;
+//    @Column(name = "login_id")
+//    private String loginId;
 
     @OneToOne
-    @JoinColumn(name = "login_id", referencedColumnName = "userid", insertable = false, updatable = false)
+    @JoinColumn(name = "login_id", referencedColumnName = "userid",unique = true, insertable = false, updatable = false)
     private User user;
 
 }

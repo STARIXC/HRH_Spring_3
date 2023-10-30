@@ -54,7 +54,7 @@
 
                     </div>
                     <div class="panel-body">
-                       <table class="table table-dashed table-hover digi-dataTable all-product-table table-striped" id="allRoleTable">
+                       <table class="table table-dashed table-hover utj-dataTable all-product-table table-striped" id="allRoleTable">
                             <thead>
                                 <tr>
 
@@ -72,7 +72,8 @@
                                         <div class="btn-box">
                                             <button th:onclick="'editItem(' + ${role.id} + ')'" class="btn btn-sm btn-icon btn-primary">Edit</button>
 
-                                            <a class="btn btn-sm btn-icon btn-primary" th:role="${role.id}" th:href="@{'/system/roles/list/'+${role.id}}"><i class="fa-light fa-edit"></i></a>
+                                            <a class="btn btn-sm btn-icon btn-primary" th:role="${role.id}" th:href="@{'/system/roles/list/'+${role.id}}"><i class="fa-light fa-edit"
+                                                                                                                                                             style="color: #ffffff;"></i></a>
                                             <a class="btn btn-sm btn-icon btn-danger" th:role="${role.id}"  th:href="@{'/system/roles/delete/'+${role.id}}"><i class="fa-light fa-trash-can"></i></a>
                                         </div>
                                     </td>
@@ -90,7 +91,8 @@
 
 </span>
 <!-- Include the script fragment -->
-<div th:replace="fragments/script-fragment :: custom-script"></div>
+<span th:replace="~{fragments/script-fragment :: custom-script}"></span>
+
 </body>
 
 </html>

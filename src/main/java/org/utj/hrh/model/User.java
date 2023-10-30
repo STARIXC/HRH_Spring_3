@@ -27,9 +27,6 @@ public class User {
     @Column(name = "password")
     private String password;
 
-    @Column(name = "role_id")
-    private int roleId;
-
     @Column(name = "status")
     private int status;
     @Column(name = "created_at")
@@ -37,14 +34,11 @@ public class User {
     @Column(name = "updated_at")
     private LocalDateTime updated_at;
 
+    @Column(name = "last_login_date")
+    private LocalDateTime last_login_date;
+
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "role_id", referencedColumnName = "role_id", insertable = false, updatable = false)
     private Role role;
 
-
-    public User(String username, String password, int roleId, int status) {
-    }
-
-    public User(String username, String password, List<GrantedAuthority> authorities) {
-    }
 }

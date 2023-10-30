@@ -18,11 +18,11 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class EmployeeDocumentType {
+public class DocumentType {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private int id;
+    private Integer id;
     @Column(name = "name")
     private String name;
     @Column(name = "description_")

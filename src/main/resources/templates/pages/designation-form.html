@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en" layout:decorate="~{layouts/layout.html}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta content="IE=edge" http-equiv="X-UA-Compatible">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>HRMIS [[${pageTitle}]] | UTJ</title>
+</head>
+<body>
+<span layout:fragment="content">
+     <div class="dashboard-breadcrumb mb-25">
+            <h2>Add New Designation</h2>
+            <div class="btn-box">
+                <a th:href="@{/system/designation/manage}" class="btn btn-sm btn-primary">All Designations</a>
+            </div>
+        </div>
+    <div class="row">
+           <div class="row">
+            <div class="col-12">
+                <div class="panel">
+                    <div class="panel-header panel">
+                        <h5>Designation</h5>
+                    </div>
+                    <div class="panel-body">
+                                <form  action="#"
+                                       th:action="@{/system/designation/save}"
+                                       th:object="${designation}"
+                                       method="post">
+                            <input type="hidden" th:field="*{id}" id="id">
+                            <div class="form-group row">
+                                <label for="inputCarderType" class="col-sm-2 col-form-label  input__label">Carder Category</label>
+                                <div class="col-sm-10">
+                                <select id="inputCarderType" class="form-control input-style" th:field="*{carder_category_id}" required>
+                                    <option value =""  selected>Choose...</option>
+                                    <option th:each="category : ${categories}" th:value="${{category.id}}" th:text="${category.cadre_category_name}" th:selected="${category.id} == ${designation.carder_category_id}">
+                                    </option>
+                                </select>
+                                </div>
+
+                            </div>
+                            <div class="form-group row">
+                                <label for="inputCarderCategory" class="col-sm-2 col-form-label  input__label">Carder Category</label>
+                                <div class="col-sm-10">
+                                    <select id="inputCarderCategory" class="form-control input-style" th:field="*{standardized_cadre_id}" required>
+                                        <option value ="" selected>Choose...</option>
+                                        <option th:each="standard_carder : ${standardCarders}" th:value="${{standard_carder.id}}" th:text="${standard_carder.standardized_cadre_name}" th:selected="${standard_carder.id} == ${designation.standardized_cadre_id}">
+                                        </option>
+                                    </select>
+
+                                </div>
+
+                            </div>
+                            <div class="form-group row">
+                                <label for="position_title" class="col-sm-2 col-form-label input__label">Position Name</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control input-style" id="position_title"
+                                           placeholder="Name" th:field="*{position_title}" required minlength="8"
+                                           maxlength="128"/>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="basic_pay" class="col-sm-2 col-form-label input__label">Basic Pay</label>
+                                <div class="col-sm-10">
+                                    <input type="number" class="form-control input-style" id="basic_pay"
+                                           placeholder="Basic Pay" th:field="*{basic_pay}" required minlength="8"
+                                           maxlength="12"/>
+                                </div>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary btn-style mt-4">Submit</button>
+                        </form>
+                   </div>
+                </div>
+            </div>
+           </div>
+ </div>
+</span>
+
+</body>
+
+</html>

@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html data-menu="vertical" data-nav-size="nav-default" lang="en" layout:decorate="~{layouts/layout.html}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta content="IE=edge" http-equiv="X-UA-Compatible">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>Add Employee | HRMIS-UTJ</title>
+
+</head>
+<body>
+
+<span layout:fragment="content">
+
+        <div class="dashboard-breadcrumb mb-25">
+            <h2>Edit Employee</h2>
+            <div class="btn-box">
+                <a class="btn btn-sm btn-primary" th:href="@{/system/employee/all}">All Employee</a>
+            </div>
+        </div>
+    <form action="#"
+          method="post"
+          th:action="@{/system/employee/save}"
+          th:object="${employee}">
+        <div class="row">
+            <div class="col-12">
+                <div class="panel">
+                    <div class="panel-header">
+                        <h5>Basic Information</h5>
+                    </div>
+                    <div class="panel-body">
+                        <div class="row g-3">
+
+                            <div class="col-xxl-3 col-lg-4 col-sm-6">
+                                <label class="form-label">Surname</label>
+                                 <input class="form-control form-control-sm" id="txtSurname" maxlength="50"
+                                        name="txtSurname" type="text"
+                                        value=""
+                                        th:field="*{surname}"/> <span
+                                    class="required" id="rfvSurname"
+                                    style="display: none">Please enter Last Name.</span>
+
+                            </div>
+                            <div class="col-xxl-3 col-lg-4 col-sm-6">
+                                <label class="form-label">First Name</label>
+                                <input class="form-control form-control-sm" type="text" th:field="*{firstName}">
+                            </div>
+                            <div class="col-xxl-3 col-lg-4 col-sm-6">
+                                <label class="form-label">Middle Name</label>
+                                   <input class="form-control form-control-sm" id="txtFirstName" maxlength="50"
+                                          name="txtFirstName" type="text"
+                                          value=""
+                                          th:field="*{otherName}"/>
+                            </div>
+                            <div class="col-xxl-3 col-lg-4 col-sm-6">
+                                <label class="form-label">Email</label>
+                               <input autocomplete="off" class="form-control input-width-xlarge" id="txtEmail"
+                                      name="txtEmail"
+                                      type="email" value=""
+                                      th:field="*{email}"/>
+                                                                <span id="email_v_message"></span>
+                            </div>
+                            <div class="col-xxl-3 col-lg-4 col-sm-6">
+                                <label class="form-label">National ID /Passwpord #</label>
+                                <input class="form-control form-control-sm" type="number" th:field="*{nationalId}">
+                            </div>
+                            <div class="col-xxl-3 col-lg-4 col-sm-6">
+                                <label class="form-label">EmployeeNo / PFNo#</label>
+                                  <input autocomplete="off" class="form-control form-control-sm" id="txtEmployeeNumber"
+                                         maxlength="50" name="txtEmployeeNumber"
+                                         type="text" value=""
+                                         th:field="*{empNo}"/>
+                            </div>
+                            <div class="col-xxl-3 col-lg-4 col-sm-6">
+                                <label class="form-label">Employee Type</label>
+                                  <select autocomplete="off"
+                                          class="form-control"
+                                          id='ddlEmployeeType' name='ddlEmployeeType' >
+                                     <option selected value="">Choose...</option>
+                                    <option th:each="type : ${carder_types}" th:text="${type.cadre_type_name}"
+                                            th:value="${{type.id}}" th:selected="${type.id==employee.position.standard_carder.carderType.id}">
+                                    </option>
+                                  </select>
+
+                            </div>
+                                  <div class="col-xxl-3 col-lg-4 col-sm-6">
+                                <label class="form-label">Carder Category</label>
+                                <select class="form-control form-control-sm" data-placeholder="Choose Carder Category"  name='ddlCadreCategory' id='ddlCadreCategory' >
+                                    <option value="">Choose Carder Category</option>
+                                    <option th:each="standardCarder : ${standardCarders}" th:text="${standardCarder.standardized_cadre_name}"
+                                            th:value="${standardCarder.id}" th:selected="${standardCarder.id==employee.position.standard_carder.id}">
+                                </select>
+                            </div>
+                            <div class="col-xxl-3 col-lg-4 col-sm-6">
+                                <label class="form-label">Position /Designation</label>
+                                <select class="form-control form-control-sm" data-placeholder="Choose Position/Designation" name='ddlPos'
+                                        id='ddlPos' th:field="*{position.id}" >
+                                    <option value="">Choose Designation</option>
+
+                                    <option th:each="designation : ${designations}" th:text="${designation.position_title}" th:value="${designation.id}" th:selected="${designation.id==employee.position.id}">
+                                </select>
+                            </div>
+                            <div class="col-xxl-3 col-lg-4 col-sm-6">
+                                         <label class="form-label">Employee Status<span class="required">*</span>
+                                                            </label>
+
+                                     <select aria-hidden="true" autocomplete="off" class="form-control form-control-sm"
+                                             id="eStatus" name="eStatus" required="required"
+                                             tabindex="-1" >
+                                                                    <option value="">- Select -</option>
+                                                                     <option th:each="status : ${employeeStatuses}" th:text="${status.name}"
+                                                                             th:value="${status.id}" th:selected="${status.id==employee.status.id}">
+                                                                </select>
+                                                                <span id="workStatus"></span>
+
+                                                            </div>
+
+                            <div class="col-xxl-3 col-lg-4 col-sm-6">
+                                <label class="form-label">Joining Date</label>
+                                <input class="form-control form-control-sm date-picker" placeholder="dd mmm, yy"
+                                       readonly type="text" th:field="*{dateStarted}">
+                            </div>
+                            <div class="col-xxl-3 col-lg-4 col-sm-6">
+                                <label class="form-label">Leave / Expire Date</label>
+                                <input class="form-control form-control-sm date-picker" placeholder="dd mmm, yy"
+                                       readonly type="text" th:field="*{dateEnded}">
+                            </div>
+
+                        </div>
+
+                        </div>
+                    </div>
+            </div>
+
+            <div class="col-12">
+                <div class="panel">
+                    <div class="panel-header">
+                        <h5>Personal / Contact Information</h5>
+                    </div>
+                    <div class="panel-body">
+                        <div class="row g-3">
+                            <div class="col-xxl-3 col-lg-4 col-sm-6">
+                                <label class="form-label">Alternative Email Address</label>
+                               <input autocomplete="off" class="form-control input-width-xlarge" id="txtAltEmail"
+                                      name="txtAltEmail"
+                                      type="email" value="" th:field="*{altEmail}" />
+
+                            </div>
+
+                               <div class="col-xxl-3 col-lg-4 col-sm-6">
+                                <label class="form-label">Phone Number</label>
+                               <input autocomplete="off" class="form-control input-width-xlarge" id="phone"
+                                      name="txtPhone"
+                                      type="text" value="" th:field="*{phone}"/>
+                            </div>
+
+                               <div class="col-xxl-3 col-lg-4 col-sm-6">
+                                <label class="form-label"> Alternative Phone Number</label>
+                               <input autocomplete="off" class="form-control input-width-xlarge" id="altPhone"
+                                      name="txtAltPhone"
+                                      type="text" value="" placeholder="Alternative Phone Number" th:field="*{altPhone}"/>
+
+                            </div>
+
+                            <div class="col-xxl-3 col-lg-4 col-sm-6">
+                                <label class="form-label"> Nationality</label>
+                               <input autocomplete="off" class="form-control input-width-xlarge" id="nationality"
+                                      name="txtNationality"
+                                      type="text" value="" placeholder="Nationality" th:field="*{nationality}"/>
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--     Statutoty Data     -->
+            <div class="col-12">
+                <div class="panel">
+                    <div class="panel-header">
+                        <h5>Statutory Details</h5>
+                    </div>
+                    <div class="panel-body">
+
+
+                        <div class="row g-3">
+
+                            <div class="col-xxl-3 col-lg-4 col-sm-6">
+                                <label class="form-label"> KRA PIN</label>
+                                <input class="form-control form-control-sm" name="txtPinCode" type="text" value=""
+                                       maxlength="10" id="txtPinCode" th:field="*{kraPin}" >
+                            </div>
+                            <div class="col-xxl-3 col-lg-4 col-sm-6">
+                                <label class="form-label">NSSF Number</label>
+                                     <input name="txtNSSF" type="text" value=""
+                                            maxlength="15" id="txtNSSF"
+                                            class=" form-control form-control-sm txtNumber" th:field="*{nssfNo}"/>
+
+                            </div>
+                            <div class="col-xxl-3 col-lg-4 col-sm-6">
+                                <label class="form-label">NHIF #</label>
+                                <input name="txtNHIF" type="text" value=""
+                                       maxlength="15" id="txtNHIF"
+                                       class=" form-control form-control-sm txtNumber" th:field="*{nhifNo}" />
+                            </div>
+                            <div class="col-xxl-3 col-lg-4 col-sm-6">
+                                <label class="form-label"> Certificate of Good Conduct No</label>
+                               <input name="txtGoodConduct" type="text"
+                                      maxlength="15" id="txtGoodConduct"
+                                      class=" form-control form-control-sm txtGoodConduct" th:field="*{certGoodConductNo}" />
+                            </div>
+                            <div class="col-xxl-3 col-lg-4 col-sm-6">
+                                <label class="form-label">HELB Benefitiary</label>
+                                <label class="radio-inline">
+                                          <input
+                                              id="rbtnHelb" type="radio" name="rbtnHelb"
+                                              th:value="1" checked="checked" th:field="*{helbBenefitiary}"/><label
+                                              for="rbtnHelb">Yes</label>
+                                </label>
+                                <label class="radio-inline">
+                                    <input id="rbtnHelb_no" type="radio" name="rbtnHelb" th:value="0" th:field="*{helbBenefitiary}" />
+                                    <label for="rbtnHelb_no">No</label>
+                                </label>
+                            </div>
+                            <div class="col-xxl-3 col-lg-4 col-sm-6">
+                                <label class="form-label"> HELB Clearance Certificate Number
+                                    <span class="required">*</span>
+                                                                </label>
+                                <input class="form-control form-control-sm" name="txtHelbClearance" type="text" value=""
+                                       maxlength="200" id="txtHelbClearance" th:field="*{helbClearanceNo}">
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!--     BAnking Details Start     -->
+            <div class="col-12">
+                <div class="panel">
+                    <div class="panel-header">
+                        <h5>Banking Account Details</h5>
+                    </div>
+                    <div class="panel-body">
+                        <div class="row g-3">
+
+                            <div class="col-xxl-3 col-lg-4 col-sm-6">
+                                <label class="form-label">Bank Name</label>
+                                <input class="form-control form-control-sm" type="text" th:field="*{bankName}"/>
+                            </div>
+                            <div class="col-xxl-3 col-lg-4 col-sm-6">
+                                <label class="form-label">Bank Branch Name</label>
+                                <input class="form-control form-control-sm" type="text" th:field="*{branch}"/>
+                            </div>
+                            <div class="col-xxl-3 col-lg-4 col-sm-6">
+                                <label class="form-label">Bank Account Name</label>
+                                <input class="form-control form-control-sm" type="text" th:field="*{accountName}"/>
+                            </div>
+                            <div class="col-xxl-3 col-lg-4 col-sm-6">
+                                <label class="form-label">Bank Account Number</label>
+                                <input class="form-control form-control-sm" type="number" th:field="*{accountNumber}"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+ <div class="col-12">
+                <div class="panel">
+                    <div class="panel-header">
+                        <h5>Login Information</h5>
+                    </div>
+                    <div class="panel-body">
+                        <div class="row g-3">
+                            <div class="col-12">
+                                <div class="form-check">
+                                    <input class="form-check-input" id="flexCheckDefault" type="checkbox" value="">
+                                    <label class="form-check-label" for="flexCheckDefault">
+                                        Login access
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 d-flex justify-content-end">
+                <button class="btn btn-sm btn btn-success">Save Employee</button>
+            </div>
+        </div>
+    </form>
+
+</span>
+<th:block layout:fragment="script">
+<!--    <script th:src="@{/assets/vendor/js/jquery.uploader.min.js}"></script>-->
+    <script th:src="@{/assets/vendor/js/jquery-ui.min.js}"></script>
+    <script th:src="@{/assets/vendor/js/select2.min.js}"></script>
+    <script th:src="@{/assets/js/select2-init.js}"></script>
+
+    <script th:inline="javascript">
+
+        /*<![CDATA[*/
+        $(document).ready(function () {
+        // Add event listener for selecting paneler category
+        $("#ddlCounty").change(function () {
+            // Fetch standardized panelers based on selected paneler category
+            let countyId = $(this).val();
+
+            // Define a JavaScript variable to hold the URL
+            let fetchSubCountyUrl = /*[[@{/system/subcounty/list/{id}}]]*/;
+
+            let url = fetchSubCountyUrl.replace("{id}", countyId); // Replace {id} with the actual value
+
+            $.ajax({
+                type: "GET",
+                url: url, // Use Thymeleaf URL expression
+                success: function (response) {
+                    // Update the standardized paneler select options
+                    let selectElement = $("#ddlSubCounty");
+                    selectElement.empty(); // Clear existing options
+                    selectElement.append('<option value="" selected>Choose...</option>'); // Add default option
+                    console.log(eval(response));
+                    // Add options for standardized panelers
+                    for (let i = 0; i < response.length; i++) {
+                        selectElement.append('<option value="' + response[i].district_id + '">' + response[i].district_nom + '</option>');
+                    }
+                },
+                error: function (error) {
+                    // Handle error response here
+                    alert("Error fetching standardized panelers: " + error.responseText);
+                }
+            });
+        });
+        });
+        /*]]>*/
+
+        // Add event listener for selecting paneler category
+        $("#ddlSubCounty").change(function () {
+            // Fetch standardized panelers based on selected paneler category
+            let subCountyId = $(this).val();
+
+            // Define a JavaScript variable to hold the URL
+            let fetchSubcountyUrl = /*[[@{/system/facility/list/{id}}]]*/;
+
+            let url = fetchSubcountyUrl.replace("{id}", subCountyId); // Replace {id} with the actual value
+
+            $.ajax({
+                type: "GET",
+                url: url, // Use Thymeleaf URL expression
+                success: function (response) {
+                    // Update the standardized paneler select options
+                    let selectElement = $("#ddlFacility");
+                    selectElement.empty(); // Clear existing options
+                    selectElement.append('<option value="" selected>Choose...</option>'); // Add default option
+                    console.log(eval(response));
+                    // Add options for standardized panelers
+                    for (let i = 0; i < response.length; i++) {
+                        selectElement.append('<option value="' + response[i].centre_sante_id + '">' + response[i].sub_partner_nom + '</option>');
+                    }
+                },
+                error: function (error) {
+                    // Handle error response here
+                    alert("Error fetching standardized panelers: " + error.responseText);
+                }
+            });
+
+        });
+
+        // Add event listener for selecting paneler category
+        $("#ddlEmployeeType").change(function () {
+            // Fetch standardized panelers based on selected paneler category
+            let employeeType = $(this).val();
+
+            // Define a JavaScript variable to hold the URL
+            let fetchStandardCarder = /*[[@{/system/standard_carder/list/{id}}]]*/;
+
+            let url = fetchStandardCarder.replace("{id}", employeeType); // Replace {id} with the actual value
+
+            $.ajax({
+                type: "GET",
+                url: url, // Use Thymeleaf URL expression
+                success: function (response) {
+                    // Update the standardized paneler select options
+                    let selectElement = $("#ddlCadreCategory");
+                    selectElement.empty(); // Clear existing options
+                    selectElement.append('<option value="" selected>Choose...</option>'); // Add default option
+                    console.log(eval(response));
+                    // Add options for standardized panelers
+                    for (let i = 0; i < response.length; i++) {
+                        selectElement.append('<option value="' + response[i].id + '">' + response[i].standardized_cadre_name + '</option>');
+                    }
+                },
+                error: function (error) {
+                    // Handle error response here
+                    alert("Error fetching standardized panelers: " + error.responseText);
+                }
+            });
+
+        });
+
+
+        // Add event listener for selecting paneler category
+        $("#ddlCadreCategory").change(function () {
+            // Fetch standardized panelers based on selected paneler category
+            let panelerCategory = $(this).val();
+
+            // Define a JavaScript variable to hold the URL
+            let fetchCarderCategory = /*[[@{/system/designation/list/{id}}]]*/;
+
+            let url = fetchCarderCategory.replace("{id}", panelerCategory); // Replace {id} with the actual value
+
+            $.ajax({
+                type: "GET",
+                url: url, // Use Thymeleaf URL expression
+                success: function (response) {
+                    // Update the standardized paneler select options
+                    let selectElement = $("#ddlPos");
+                    selectElement.empty(); // Clear existing options
+                    selectElement.append('<option value="" selected>Choose...</option>'); // Add default option
+                    console.log(eval(response));
+                    // Add options for standardized panelers
+                    for (let i = 0; i < response.length; i++) {
+                        selectElement.append('<option value="' + response[i].id + '">' + response[i].position_title + '</option>');
+                    }
+                },
+                error: function (error) {
+                    // Handle error response here
+                    alert("Error fetching standardized panelers: " + error.responseText);
+                }
+            });
+
+        });
+
+
+        $('#addEducationQualification').click(function() {
+            $('.education_qualification_append_div').append(
+                '<div class="education_qualification_row_element">' + $('.row_element1').html() +
+                '</div>');
+        });
+
+        $('#addExperience').click(function() {
+            $('.experience_append_div').append('<div class="experience_row_element">' + $(
+                '.row_element2').html() + '</div>');
+        });
+
+        $(document).on("click", ".deleteEducationQualification", function() {
+            $(this).parents('.education_qualification_row_element').remove();
+            let deletedID = $(this).parents('.education_qualification_row_element').find(
+                '.educationQualification_cid').val();
+            if (deletedID) {
+                let prevDelId = $('#delete_education_qualifications_cid').val();
+                if (prevDelId) {
+                    $('#delete_education_qualifications_cid').val(prevDelId + ',' + deletedID);
+                } else {
+                    $('#delete_education_qualifications_cid').val(deletedID);
+                }
+            }
+        });
+
+        $(document).on("click", ".deleteExperience", function() {
+            $(this).parents('.experience_row_element').remove();
+            let deletedID = $(this).parents('.experience_row_element').find('.employee_experience_id')
+                .val();
+            if (deletedID) {
+                let prevDelId = $('#delete_experiences_cid').val();
+                if (prevDelId) {
+                    $('#delete_experiences_cid').val(prevDelId + ',' + deletedID);
+                } else {
+                    $('#delete_experiences_cid').val(deletedID);
+                }
+            }
+        });
+        /*]]>*/
+
+
+    </script>
+
+</th:block>
+</body>
+</html>

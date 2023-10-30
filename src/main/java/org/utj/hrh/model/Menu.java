@@ -25,8 +25,14 @@ public class Menu {
     @Column(name = "menu_url")
     private String menu_url;
 
-    @Column(name = "module_id")
-    private int module_id;
+    @ManyToOne
+    @JoinColumn(name = "module_id")
+    private MenuModule module;
+
     @Column(name = "status")
     private int status;
+
+    public Menu(Long id) {
+        this.id=id;
+    }
 }

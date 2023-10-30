@@ -5,8 +5,10 @@ import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import java.awt.*;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author UTJ
@@ -25,6 +27,8 @@ public class Employee {
     private String id;
     @Column(name = "emp_no")
     private String empNo;
+
+
     @Column(name = "first_name")
     private String firstName;
     @Column(name = "surname")
@@ -45,12 +49,11 @@ public class Employee {
     private String altEmail;
     @Column(name = "dob")
     private String dob;
-    @Column(name = "home_address")
-    private String homeAddress;
-    @Column(name = "present_address")
-    private String presentAddress;
-    @Column(name = "postal_code")
-    private String postalCode;
+    @OneToOne
+    private Address presentAddress;
+    @OneToOne
+    private Address homeAddress;
+
     @Column(name = "marital_status")
     private String maritalStatus;
     @Column(name = "nationality")
@@ -83,24 +86,40 @@ public class Employee {
     private String dateStarted;
     @Column(name = "date_ended")
     private String dateEnded;
-     @Column(name = "status")
-    private int status;
+
+    @ManyToOne
+    @JoinColumn(name = "status")
+    private EmployeeStatus status;
+
+    @ManyToOne
+    @JoinColumn(name = "position_id")
+    private EmployeePosition position;
+
     @Column(name = "created_at")
     @CreationTimestamp
     private LocalDateTime created_at;
+
     @Column(name = "updated_at")
     @UpdateTimestamp
     private LocalDateTime updated_at;
 
-    @OneToOne
-    @JoinColumn(name = "id", referencedColumnName = "userid", insertable = false, updatable = false)
-    private User user;
+    @OneToMany(mappedBy = "employee")
+    private Set<Document> documents;
 
-    @OneToOne
-    @JoinColumn(name="id", referencedColumnName = "emp_no",insertable = false, updatable = false)
+    @OneToOne(mappedBy = "employeeContact")
+    private EmployeeEmergencyContact employeeEmergencyContact;
+
+    @OneToMany(mappedBy = "expEmployee")
+    private Set<EmployeeExperience> employeeExperiences;
+
+    @OneToMany(mappedBy = "academicPerformance")
+    private Set<EmployeeAcademicQualification> academicQualifications;
+
+    private boolean hasLoginAccess;
+
+    @OneToOne(mappedBy = "employee")
     private EmployeeFacility employeeFacility;
 
-
-
-
+    @OneToMany(mappedBy = "employee",fetch = FetchType.LAZY)
+    private List<EmploymentHistory> employmentHistory;
 }

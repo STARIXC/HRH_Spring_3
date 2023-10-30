@@ -28,13 +28,12 @@ import java.util.List;
 
 @Configuration
 @EnableMethodSecurity(prePostEnabled = true)
-@AllArgsConstructor
+
 public class SecurityConfiguration  {
-    @Autowired
-    private CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler;
 
+    private final CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler;
+    private final UserDetailsService userDetailsService;
 
-    private UserDetailsService userDetailsService;
     public static final String[] ENDPOINTS_WHITELIST = {
             "/assets/**",
             "/login"
@@ -47,12 +46,19 @@ public class SecurityConfiguration  {
     public static final String USERNAME = "username";
     public static final String PASSWORD = "password";
 
-    @Autowired
-    private UserRepository  userRepository;
+
+    private final UserRepository  userRepository;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new MD5PasswordEncoder();
+    }
+
+    @Autowired
+    public SecurityConfiguration(CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler, UserDetailsService userDetailsService, UserRepository userRepository) {
+        this.customAuthenticationSuccessHandler = customAuthenticationSuccessHandler;
+        this.userDetailsService = userDetailsService;
+        this.userRepository = userRepository;
     }
 
     @Bean

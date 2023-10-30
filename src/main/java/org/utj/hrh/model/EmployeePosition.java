@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * @author UTJ
@@ -14,22 +15,23 @@ import java.time.LocalDateTime;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
+//@ToString
 public class EmployeePosition {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private int id;
-    @Column(name = "carder_category_id")
-    private int carder_category_id;
-    @Column(name = "standardized_cadre_id")
-    private int standardized_cadre_id;
+    private Integer id;
+    @ManyToOne
+    @JoinColumn(name = "standardized_cadre_id")
+    private StandardCarder standard_carder;
+
     @Column(name = "position_title")
     private String position_title;
     @Column(name = "basic_pay")
-    private int basic_pay;
+    private Integer basic_pay;
     @Column(name = "created_at")
     private LocalDateTime created_at;
     @Column(name = "updated_at")
     private LocalDateTime updated_at;
+
 }

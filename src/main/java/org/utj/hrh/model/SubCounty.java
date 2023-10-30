@@ -4,48 +4,47 @@
  */
 package org.utj.hrh.model;
 
+import jakarta.persistence.*;
+import lombok.*;
+
+import java.util.List;
+
 /**
  *
  * @author UTJ
  */
+@Entity
+@Table(name = "district")
+@Setter
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
+@ToString
 public class SubCounty {
-    int DistrictID, CountyID,  active;
-    String DistrictNom;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "district_id")
+    private Integer district_id;
 
-    public SubCounty() {
-    }
+    @Column(name = "county_id")
+    private Integer county_id;
+//    , county_id, district_nom, mdt_region_id, active
 
-    public int getDistrictID() {
-        return DistrictID;
-    }
+    @Column(name = "district_nom")
+    private String district_nom;
 
-    public void setDistrictID(int DistrictID) {
-        this.DistrictID = DistrictID;
-    }
+    @Column(name = "mdt_region_id")
+    private Integer mdt_region_id;
 
-    public int getCountyID() {
-        return CountyID;
-    }
-
-    public void setCountyID(int CountyID) {
-        this.CountyID = CountyID;
-    }
-
-    public int getActive() {
-        return active;
-    }
-
-    public void setActive(int active) {
-        this.active = active;
-    }
-
-    public String getDistrictNom() {
-        return DistrictNom;
-    }
-
-    public void setDistrictNom(String DistrictNom) {
-        this.DistrictNom = DistrictNom;
-    }
-    
-    
+    @Column(name = "active")
+    private Integer  active;
+//
+//
+//    @OneToMany(mappedBy = "subCounty")
+//    private List<Facility> facilities;
+//
+//    @ManyToOne
+//    @ToString.Exclude
+//    @JoinColumn(name="county_id")
+//    private County county;
 }

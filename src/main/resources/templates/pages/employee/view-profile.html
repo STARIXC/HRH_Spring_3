@@ -1,0 +1,885 @@
+<!DOCTYPE html>
+<html lang="en" layout:decorate="~{layouts/layout.html}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta content="IE=edge" http-equiv="X-UA-Compatible">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>HRMIS Employees | UTJ</title>
+</head>
+<body>
+<span layout:fragment="content">
+   <div class="dashboard-breadcrumb mb-25">
+            <h2>View Profile</h2>
+   </div>
+
+    <div class="row g-3">
+        <div class="col-12">
+            <div class="panel">
+            <div class="panel-header">
+                 <input class="form-control" id="employee_id" th:value="${employee.empNo}" type="hidden">
+                   <div class="btn-box d-flex flex-wrap gap-2 col-xxl-12 col-lg-12 col-xs-12  justify-content-end">
+                        <div id="tableSearch"></div>
+                        <button class="btn btn-sm btn-icon btn-outline-primary"><i
+                                class="fa-light fa-arrows-rotate"></i></button>
+
+                        <a class="btn btn-sm btn-primary" th:href="@{'/system/employee/'+${employee.empNo}+'/edit'}"><i
+                                class="fa-light fa-plus"></i> Edit
+                            Profile</a>
+                    </div>
+            </div>
+            <div class="panel-body">
+
+                    <div class="row g-3">
+                        <div class="col-xxl-2 col-lg-2 col-sm-12">
+                            <div class="profile-img">
+                                <img alt="Profile" class="emp_image" id="emp_image"
+                                     th:src="@{../../../assets/images/avatar-2.png}" width="200"/>
+                                <!--                                <div class="file btn btn-primary">-->
+                                <!--                                    Change Photo-->
+                                <!--                                    <input type="file" name="file"/>-->
+                                <!--                                </div>-->
+                            </div>
+                        </div>
+                        <div class="col-xxl-10 col-lg-10 col-sm-12 ">
+                                <div class="profile-head">
+                                    <h4 class="name" id="sum_name">
+                                        <span th:text="${employee.firstName + ' ' + (employee.otherName != null and employee.otherName != '' ? employee.otherName + ' ' : '') + employee.surname}"></span>
+                                    </h4>
+
+
+                                <p class="designation" id="designation_" th:text="${employee.position.position_title}">Designation</p>
+                                <p class="email" id="sumEmail" th:text="${employee.email}">
+                                    Email
+                                </p>
+                                <p class="phone" id="_phone" th:text="${employee.phone}">
+                                    Phone Number
+                                </p>
+                                <p class="facility" id="_facility" th:text="${employee.employeeFacility.facility.sub_partner_nom}">
+                                    Duty Station
+                                </p>
+                                <p class="proile-rating">Supervisor : <span>8/10</span></p>
+
+                            </div>
+
+                            </div>
+
+                        <div class="col-xxl-12 col-lg-12 col-sm-12">
+                                    <nav class="btn-box nav nav-tabs nav-fill d-flex flex-wrap gap-1" id="myTab"
+                                         role="tablist">
+                            <a aria-controls="basic" aria-selected="true"
+                               class="nav-item btn btn-sm btn-outline-primary active" data-bs-toggle="tab" href="#basic" id="basic-tab" role="tab">
+                                    <i class="fa fa-user-circle mr-2"></i>
+                                    <span class="font-weight-bold small text-uppercase">General Info</span></a>
+
+                                <a aria-controls="work" aria-selected="false" class=" nav-item btn btn-sm btn-outline-primary "
+                                   data-bs-toggle="tab" href="#work" id="work-tab" role="tab">
+                                    <i class="fa fa-calendar-minus mr-2"></i>
+                                    <span class="font-weight-bold small text-uppercase">Jobs</span></a>
+
+
+                                <a aria-controls="leave" aria-selected="false" class="nav-item btn btn-sm btn-outline-primary "
+                                   data-bs-toggle="tab" href="#leave" id="leave-tab" role="tab">
+                                    <i class="fa fa-star mr-2"></i>
+                                    <span class="font-weight-bold small text-uppercase">Leave</span></a>
+
+                                <a aria-controls="note     " aria-selected="false" class="btn btn-sm btn-outline-primary "
+                                   data-bs-toggle="tab" href="#v-note" id="note-tab" role="tab">
+                                    <i class="fa fa-star mr-2"></i>
+                                    <span class="font-weight-bold small text-uppercase">Notes</span></a>
+
+                                <a aria-controls="performance" aria-selected="false" class="btn btn-sm btn-outline-primary "
+                                   data-bs-toggle="tab" href="#performance" id="performance-tab" role="tab">
+                                    <i class="fa fa-star mr-2"></i>
+                                    <span class="font-weight-bold small text-uppercase">Performance</span></a>
+
+                                <a aria-controls="docs" aria-selected="false" class="btn btn-sm btn-outline-primary "
+                                   data-bs-toggle="tab" href="#docs" id="docs-tab" role="tab">
+                                    <i class="fa fa-star mr-2"></i>
+                                    <span class="font-weight-bold small text-uppercase">Documents</span></a>
+
+                                <a aria-controls="training" aria-selected="false" class="btn btn-sm btn-outline-primary "
+                                   data-bs-toggle="tab" href="#training" id="training-tab" role="tab">
+                                    <i class="fa fa-star mr-2"></i>
+                                    <span class="font-weight-bold small text-uppercase">Training</span></a>
+
+                                <a aria-controls="payslip" aria-selected="false" class="btn btn-sm btn-outline-primary "
+                                   data-bs-toggle="tab" href="#v-payslip" id="payslip-tab" role="tab">
+                                    <i class="fa fa-star mr-2"></i>
+                                    <span class="font-weight-bold small text-uppercase">Payslip</span></a>
+
+                                <a aria-controls="payroll" aria-selected="false" class="btn btn-sm btn-outline-primary "
+                                   data-bs-toggle="tab" href="#v-payrolls" id="payroll-tab" role="tab">
+                                    <i class="fa fa-star mr-2"></i>
+                                    <span class="font-weight-bold small text-uppercase">Payroll</span></a>
+
+                                <a aria-controls="attendance" aria-selected="false" class="btn btn-sm btn-outline-primary "
+                                   data-bs-toggle="tab" href="#v-attendance" id="attendance-tab" role="tab">
+                                    <i class="fa fa-star mr-2"></i>
+                                    <span class="font-weight-bold small text-uppercase">Attendance</span></a>
+
+                        </nav>
+                                </div>
+                    </div>
+
+            </div>
+        </div>
+        </div>
+        <div class="tab-content " id="tabContent">
+            <div aria-labelledby="basic-tab" class="row g-3 tab-pane  show active" id="basic" role="tabpanel">
+                <div class="col-12">
+                    <div class="panel">
+                    <div class="panel-header">
+                        <h5>Basic Info</h5>
+                    </div>
+                    <div class="panel-body">
+                        <div class="row g-3">
+                            <div class="col">
+                                <dt class="font-medium text-sm text-gray">First Name</dt>
+                                <dd class="mt-1 text-sm text-gray-900 fname" id="fname" th:text="${employee.firstName}">ESM002</dd>
+                            </div>
+                            <div class="col">
+                                <dt class="font-medium text-sm text-gray-700">Last Name</dt>
+                                <dd class="mt-1 text-sm text-gray-900 lname" id="lname" th:text="${employee.surname}">ESM002</dd>
+                            </div>
+                            <div class="col">
+                                <dt class="font-medium text-sm text-gray-700">Employee ID</dt>
+                                <dd class="mt-1 text-sm text-gray-900 employeeNo " id="employeeNo"
+                                    th:text="${employee.empNo}">ESM002</dd>
+                            </div>
+                            <div class="col">
+                                <dt class="font-medium text-sm text-gray-700">Email</dt>
+                                <dd class="mt-1 text-sm text-gray-900"><a class="email" id="email"
+                                                                          th:href="${'mailto:'+employee.email}"
+                                                                          th:text="${employee.email}"></a></dd>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                </div>
+                <div class="col-12">
+                    <div class="panel">
+                    <div class="panel-header">
+                        <h5>Work</h5>
+                    </div>
+                    <div class="panel-body">
+                        <div class="row g-3">
+                            <div class="col">
+                                <dt class="font-medium text-sm text-gray-500 ">Employee Type</dt>
+                                <dd class="mt-1 text-sm text-gray-900 etype" id="etype" th:text="${employee.position.standard_carder.carderType.cadre_type_name}">ESM002</dd>
+                            </div>
+                            <div class="col">
+                                <dt class="font-medium text-sm text-gray-500">Title</dt>
+                                <dd class="mt-1 text-sm text-gray-900 title" id="title"
+                                    th:text="${employee.position.position_title}">ESM002</dd>
+                            </div>
+                            <div class="col">
+                                <dt class="font-medium text-sm text-gray-500">Reporting To</dt>
+                                <dd class="mt-1 text-sm text-gray-900 supervisor" id="supervisor">ESM002</dd>
+                            </div>
+                            <div class="col">
+                                <dt class="font-medium text-sm text-gray-500">Date of Hire</dt>
+                                <dd class="mt-1 text-sm text-gray-900 hireDate" id="hireDate"
+                                    th:text="${employee.dateStarted}">ESM002</dd>
+                            </div>
+                            <div class="col">
+                                <dt class="font-medium text-sm text-gray-500">Employee Status</dt>
+                                <dd class="mt-1 text-sm text-gray-900 estatus" id="estatus"
+                                    th:text="${employee.status.name}"></dd>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                </div>
+                   <div class="col-12">
+                    <div class="panel">
+                    <div class="panel-header">
+                        <h5>Personal Details</h5>
+                    </div>
+                    <div class="panel-body">
+                        <div class="row g-3">
+                            <div class="col-3">
+                                <dt class="font-medium text-sm text-gray-500 ">Nationality</dt>
+                                <dd class="mt-1 text-sm text-gray-900 nationality" id="nationality"
+                                    th:text="${employee.nationality}">ESM002</dd>
+                            </div>
+                            <div class="col-3">
+                                <dt class="font-medium text-sm text-gray-500 ">Home Address</dt>
+                                <dd class="mt-1 text-sm text-gray-900 homeAddress" id="home_address">
+                                    <span th:if="${employee.homeAddress != null}"
+                                          th:text="${employee.homeAddress.postal_address}"></span>
+                                    <span th:if="${employee.homeAddress == null}">No postal address available</span>
+                                </dd>
+                            </div>
+                            <div class="col-3">
+                                <dt class="font-medium text-sm text-gray-500">Postal Code</dt>
+                                <dd class="mt-1 text-sm text-gray-900 postalcode" id="postal_code">
+                                    <span th:if="${employee.homeAddress != null}"
+                                          th:text="${employee.homeAddress}"></span>
+                                    <span th:if="${employee.homeAddress == null}">No postal Code available</span>
+                                </dd>
+                            </div>
+                            <div class="col-3">
+                                <dt class="font-medium text-sm text-gray-500">Present Address</dt>
+                                <dd class="mt-1 text-sm text-gray-900 supervisor" id="pressent_address">
+                                    <span th:if="${employee.presentAddress != null}"
+                                          th:text="${employee.presentAddress.postal_address}"></span>
+                                    <span th:if="${employee.presentAddress == null}">No postal address available</span>
+                                </dd>
+                            </div>
+                            <div class="col-3">
+                                <dt class="font-medium text-sm text-gray-500">Alternative Email</dt>
+                                <dd class="mt-1 text-sm text-gray-900 email" id="alt_email"
+                                    th:text="${employee.altEmail}">ESM002</dd>
+                            </div>
+                            <div class="col-3">
+                                <dt class="font-medium text-sm text-gray-500">Mobile</dt>
+                                <dd class="mt-1 text-sm text-gray-900 phone" id="phone" th:text="${employee.phone}">ESM002</dd>
+                            </div>
+                            <div class="col-3">
+                                <dt class="font-medium text-sm text-gray-500">Phone</dt>
+                                <dd class="mt-1 text-sm text-gray-900 alt_phone" id="alt_phone"
+                                    th:text="${employee.altPhone}">ESM002</dd>
+                            </div>
+                            <div class="col-3">
+                                <dt class="font-medium text-sm text-gray-500">Date of Birth</dt>
+                                <dd class="mt-1 text-sm text-gray-900 dob" id="dob"
+                                    th:text="${employee.dob}">ESM002</dd>
+                            </div>
+                            <div class="col-3">
+                                <dt class="font-medium text-sm text-gray-500">Gender</dt>
+                                <dd class="mt-1 text-sm text-gray-900 gender" id="gender" th:text="${employee.gender}">ESM002</dd>
+                            </div>
+                            <div class="col-3">
+                                <dt class="font-medium text-sm text-gray-500">Marital Status</dt>
+                                <dd class="mt-1 text-sm text-gray-900 mstatus" id="marital_status"
+                                    th:text="${employee.maritalStatus}">ESM002</dd>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                </div>
+                   <div class="col-12">
+                    <div class="panel">
+                    <div class="panel-header">
+                        <h5>Work Experience</h5>
+                    </div>
+                    <div class="panel-body">
+                        <div class="g-3">
+                            <table class="table rounded-table hidden md:table min-w-full divide-y divide-gray-200 ">
+                                <thead class="bg-gray-50 dark:bg-neutral-700">
+                                <tr>
+                                    <th class="sm-px-2 px-4 py-3 text-left text-xs font-medium text-gray-500  uppercase tracking-wider cursor-pointer"
+                                        scope="col"><!----> Period <span
+                                            class="hidden xl:inline-block"><i
+                                            class="fas fa-arrows-alt-v"></i></span></th>
+
+                                    <th class=" py-3 text-left text-xs font-medium text-gray-500  uppercase tracking-wider"
+                                        scope="col"><!----> Department
+                                        <!----></th>
+
+                                    <th class=" py-3 text-left text-xs font-medium text-gray-500  uppercase tracking-wider"
+                                        scope="col"><!----> Designation
+                                        <!----></th>
+
+                                    <th class=" py-3 text-left text-xs font-medium text-gray-500  uppercase tracking-wider"
+                                        scope="col"><!----> Branch
+                                        <!----></th>
+
+                                    <th class=" py-3 text-left text-xs font-medium text-gray-500  uppercase tracking-wider"
+                                        scope="col"><!----> Employment Status
+                                        <!----></th>
+
+                                    <th class=" py-3 text-left text-xs font-medium text-gray-500  uppercase tracking-wider"
+                                        scope="col"><!---->
+                                        <!----></th>
+
+                                </tr>
+                                </thead>
+                                <tbody class="bg-white divide-y divide-gray-200 " id="emp_hist">
+                                      <!---->
+                            <tr class="hover:bg-gray-100 dark:hover:bg-dark-body hidden md:table-row" th:each="workHistory , itrStat : ${employee.employmentHistory}">
+                            <td class=" py-2 dark:bg-dark-header hidden md:table-cell" colspan="1" valign="top">
+                             <div class="text-sm text-gray-900 "><span th:text="${workHistory.dateStarted+'-'+workHistory.dateEnded}"></span><div class="text-xs"><span></span></div>
+                               </div>
+                             </td>
+
+                             <td class=" py-2 dark:bg-dark-header hidden md:table-cell" colspan="1" valign="top">
+                                 <div class="text-sm text-gray-900 ">
+                                     <span th:text="${workHistory.employeePosition.standard_carder.carderType.cadre_type_name}"></span>
+                                 </div>
+                              </td>
+
+                             <td class=" py-2 dark:bg-dark-header hidden md:table-cell" colspan="1" valign="top">
+                                <div class="text-sm text-gray-900 "><span th:text="${workHistory.employeePosition.position_title}"></span></div>
+                             </td>
+                             <td class=" py-2 dark:bg-dark-header hidden md:table-cell" colspan="1" valign="top">
+                                <div class="text-sm text-gray-900 "><span th:text="${workHistory.facility.sub_partner_nom}"></span></div>
+                             </td>
+                             <td class=" py-2 dark:bg-dark-header hidden md:table-cell" colspan="1" valign="top">
+                               <div class="text-sm text-gray-900 ">Permanent</div>
+                             </td>
+                              <td class=" py-2 dark:bg-dark-header hidden md:table-cell" colspan="1" valign="top">
+                                <div class="text-sm text-gray-900 ">
+                                  <div class="relative flex justify-end items-center">
+                                    <div class="dropdown">
+                            <a aria-expanded="false" aria-haspopup="true" class="btn dropdown-toggle" data-bs-toggle="dropdown"
+                               href="#" id="dropdownMenuLink" role="button">
+                             <i class="fas fa-ellipsis-v"></i>
+                            </a>
+
+                             <div aria-labelledby="dropdownMenuLink" class="dropdown-menu">
+                               <a class="dropdown-item" href="#">Action</a>
+                              <a class="dropdown-item" href="#">Another action</a>
+                               <a class="dropdown-item" href="#">Something else here</a>
+                              </div>
+                            </div>
+                                    </div>
+                                 </div>
+                              </div>
+                              </div>
+                        </td>
+
+                        </tr>  <!---->
+                        </tbody>
+                        <!---->
+                        </table>
+                        <a class="btn btn-outline-primary add_work_record" data-bs-id="" data-template="employ-education" data-title="Add Education"
+                           href="#"
+                           id="education-add"><i class="fa fa-plus"></i> Add Record</a>
+                        </div>
+                    </div>
+                </div>
+                </div>
+                   <div class="col-12">
+                    <div class="panel">
+                    <div class="panel-header">
+                        <h5>Prof Info</h5>
+                    </div>
+                    <div class="panel-body">
+                        <div class="row g-3">
+                        </div>
+                    </div>
+                </div>
+                </div>
+            </div>
+            <div aria-labelledby="work-tab" class="row g-3 tab-pane " id="work" role="tabpanel">
+                <div class="col-12">
+                <div class="panel">
+                    <div class="panel-header">
+                        <h5>Academic Qualifications</h5>
+                    </div>
+                    <div class="panel-body">
+                        <div class="row g-3 education_qualification_append_div">
+
+
+                        </div>
+                        <div class="row g-3">
+                                <div class="col-md-9"></div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <input id="addEducationQualification" type="button"
+                                               class="btn btn-success  "
+                                               value="Add Academic Qualification">
+                                    </div>
+                                </div>
+                            </div>
+                    </div>
+                </div>
+            </div>
+                <div class="col-12">
+                <div class="panel">
+                    <div class="panel-header">
+                        <h5>Work Experience</h5>
+                    </div>
+                    <div class="panel-body">
+                        <div class="row g-3">
+                            <div class="col-12">
+                                <div class="experience_append_div"></div>
+                            </div>
+                        </div>
+                        <div class="row g-3">
+                            <div class="col-md-9"></div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <input id="addExperience" type="button"
+                                           class=" btn btn-success appendBtnColor"
+                                           value="Add Professional Experience"></div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            </div>
+            <div aria-labelledby="leave-tab" class="row g-3 tab-pane " id="leave" role="tabpanel"></div>
+            <div aria-labelledby="note-tab" class="row g-3 tab-pane" id="note" role="tabpanel">
+                <form
+                        method="post"
+                        th:action="@{/system/employee/saveEmployeeAddress}"
+                        th:object="${employeeAddress}">
+
+                >
+                 <div class="col-12">
+                <div class="panel">
+                    <div class="panel-header">
+                        <h5>Permanent & Present Address</h5>
+                    </div>
+                    <div class="panel-body">
+                        <div class="panel mb-20">
+                            <div class="panel-header">
+                                Permanent /Home Address
+                            </div>
+                            <div class="panel-body">
+                                <div class="row g-3">
+                                     <div class="col-xxl-6 col-lg-8">
+                                        <label class="form-label">Village / House / Road / Street</label>
+                                        <input class="form-control form-control-sm" type="text" >
+                                    </div>
+                                    <div class="col-xxl-3 col-lg-4 col-sm-6">
+                                        <label class="form-label">Postal Address</label>
+                                       <input class="form-control form-control-sm" type="text" />
+                                    </div>
+                                    <div class="col-xxl-3 col-lg-4 col-sm-6">
+                                        <label class="form-label">City / Town</label>
+                                         <input class="form-control form-control-sm" type="text" >
+                                    </div>
+                                    <div class="col-xxl-3 col-lg-4 col-sm-6">
+                                        <label class="form-label">Postal Code</label>
+                                      <input class="form-control form-control-sm" type="text" />
+                                    </div>
+
+                                     <div class="col-xxl-3 col-lg-4 col-sm-6">
+                                        <label class="form-label">Country</label>
+                                       <input class="form-control form-control-sm" type="text" >
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel">
+                            <div class="panel-header d-flex gap-4">
+                                Present Address
+                                <div class="form-check d-inline-flex">
+                                    <input class="form-check-input" id="presentSameAsPermanent" type="checkbox">
+                                    <label class="form-check-label" for="presentSameAsPermanent" >
+                                        Present Address Same As Permanent Address
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="panel-body">
+                                 <div class="row g-3">
+                                     <div class="col-xxl-6 col-lg-8">
+                                        <label class="form-label">Village / House / Road / Street</label>
+                                        <input class="form-control form-control-sm" type="text" >
+                                    </div>
+                                    <div class="col-xxl-3 col-lg-4 col-sm-6">
+                                        <label class="form-label">Postal Address</label>
+                                       <input class="form-control form-control-sm" type="text" />
+                                    </div>
+                                    <div class="col-xxl-3 col-lg-4 col-sm-6">
+                                        <label class="form-label">City / Town</label>
+                                         <input class="form-control form-control-sm" type="text" />
+                                    </div>
+                                    <div class="col-xxl-3 col-lg-4 col-sm-6">
+                                        <label class="form-label">Postal Code</label>
+                                      <input class="form-control form-control-sm" type="text" />
+                                    </div>
+
+                                     <div class="col-xxl-3 col-lg-4 col-sm-6">
+                                        <label class="form-label">Country</label>
+                                       <input class="form-control form-control-sm" type="text" />
+                                    </div>
+
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+                </form>
+            </div>
+            <div aria-labelledby="performance-tab" class="row g-3 tab-pane " id="performance" role="tabpanel"></div>
+            <div aria-labelledby="docs-tab" class="row g-3 tab-pane" id="docs" role="tabpanel">
+                 <div class="col-12">
+                     <div class="panel">
+                         <div class="panel-header">
+                             <h5>Documents</h5>
+                         </div>
+                         <div class="panel-body">
+                             <div class="row g-3">
+                                 <table class="table rounded-table hidden md:table min-w-full divide-y divide-gray-200">
+                                                <thead>
+                                                    <tr>
+                                                        <th>SN#</th>
+                                                        <th>Document Name</th>
+                                                        <th>Document Type</th>
+                                                        <th class="action">&nbsp;</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="docTable">
+                                                <tr th:each="eDoc , itrStat : ${employee.documents}">
+                                                    <td th:text="${itrStat.index + 1}"></td>
+                                                    <td th:text="${eDoc.documentValue}"></td>
+                                                    <td th:text="${eDoc.documentType.name}"></td>
+
+                                                    <td>
+                                                        <a class="btn btn-md btn-info" href="#"><i
+                                                                class="fa fa-download"></i> </a>
+                                                        <a class="edit_doc btn btn-md btn-success ms-1"
+                                                           data-bs-placement="bottom"
+                                                           data-bs-toggle="tooltip" th:attr="href='javascript:void(0)'"
+                                                           title="Edit">
+                                                            <i class="fa fa-pen text-white"></i>
+                                                        </a>
+                                                        <a class="btn btn-md btn-danger ms-1" data-bs-placement="bottom"
+                                                           data-bs-toggle="tooltip"
+                                                           id="delete_leave_type" th:attr="href='javascript:void(0)'"
+                                                           th:data-id="${eDoc.id}" title="Delete">
+                                                            <i class="fa fa-trash text-white"></i></a>
+                                                    </td>
+                                                </tr>
+
+                                                </tbody>
+                                            </table>
+                                 <a class="btn btn-outline-primary btn-sm add_doc_record" data-bs-id="" data-template="employ-doc"
+                                    data-title="Add Document"
+                                    href="#"
+                                    id="add_doc_record"><i class="fa fa-plus"></i> Add Record</a>
+                             </div>
+                         </div>
+                     </div>
+                 </div>
+             <div aria-labelledby="training-tab" class="row g-3 tab-pane" id="training" role="tabpanel"></div>
+            <div aria-labelledby="payslip-tab" class="row g-3 tab-pane fade  rounded bg-white p-5" id="payslip"
+                 role="tabpanel"></div>
+        </div>
+    </div>
+
+
+    <div class="row_element1" style="display: none;">
+    <input name="educationQualification_cid[]" type="hidden">
+    <div class="row g-3">
+        <div class="col-xxl-3 col-lg-4 col-sm-6">
+               <label for="institute" class="form-label">Institute<span class="validateRq">*</span></label>
+                <select name="institute[]" class="form-control institute form-control-sm" id="institute">
+                    <option value="">--- Select ---</option>
+                    <option value="Board">Board</option>
+                    <option value="University">University</option>
+                </select>
+
+        </div>
+        <div class="col-xxl-3 col-lg-4 col-sm-6">
+               <label for="board_university" class="form-label">Board /Institution<span
+                       class="validateRq">*</span></label>
+                <input type="text" name="board_university[]" class="form-control board_university form-control-sm"
+                       id="board_university" placeholder="Board / Institution Name">
+           </div>
+        <div class="col-xxl-3 col-lg-4 col-sm-6">
+            <label for="degree" class="form-label">Certification<span class="validateRq">*</span></label>
+                <input type="text" name="degree[]" class="form-control degree required" id="degree"
+                       placeholder="Example: B.Sc. Engr.(Bachelor of Science in Engineering)">
+        </div>
+        <div class="col-xxl-3 col-lg-4 col-sm-6">
+            <label for="passing_year" class="form-label">Year of Completion</label>
+            <div class="input-group">
+                <span class="  form-group-addon input-group-text"><i class="fa fa-calendar"></i></span>
+                <input type="text" name="passing_year[]" class="form-control yearPicker required"
+                       id="passing_year" placeholder="Completion Year" />
+            </div>
+        </div>
+        <div class="col-xxl-3 col-lg-4 col-sm-6">
+
+                <label for="result" class="form-label">Result</label>
+                <select name="result[]" class="form-control result form-control-sm" id="result">
+                    <option value="">--- Choose ---</option>
+                    <option value="First class">First class</option>
+                    <option value="Second class">Second class</option>
+                    <option value="Third class">Third class</option>
+                </select>
+
+        </div>
+        <div class="col-xxl-3 col-lg-4 col-sm-6">
+                <label for="cgpa" class="form-label">GPA/ CGPA</label>
+                <input type="text" name="cgpa[]" class="form-control cgpa" id="cgpa"
+                       placeholder="Example: 5.00,4.63">
+        </div>
+        <div class="col-xxl-3 col-lg-4 col-sm-6"></div>
+        <div class="col-xxl-3 col-lg-4 col-sm-6">
+            <div class="form-group">
+                <input type="button" class=" btn btn-danger deleteEducationQualification appendBtnColor"
+                       style="margin-top: 17px" value="Delete">
+            </div>
+        </div>
+    </div>
+    <hr>
+</div>
+    <div class="row_element2" style="display: none;">
+    <input name="employeeExperience_cid[]" type="hidden">
+    <div class="row g-3">
+        <div class="col-xxl-3 col-lg-4 col-sm-6">
+            <label for="organization_name" class="form-label">Organization Name<span class="validateRq">*</span></label>
+            <input type="text" name="organization_name[]" class="form-control organization_name" id="organization_name" placeholder="Organization Name">
+        </div>
+        <div class="col-xxl-3 col-lg-4 col-sm-6">
+            <label for="designation" class="form-label">Designation<span class="validateRq">*</span></label>
+            <input type="text" name="designation[]" class="form-control designation" id="designation"
+                   placeholder="Designation">
+        </div>
+        <div class="col-xxl-3 col-lg-4 col-sm-6">
+            <label for="from_date" class="form-label">From Date</label>
+            <div class="input-group">
+                <span class="input-group-text"><i class="fa fa-calendar"></i></span>
+                <input type="text"  id="from_date" name="from_date[]" class="form-control date-picker" placeholder="From Date"  />
+            </div>
+        </div>
+        <div class="col-xxl-3 col-lg-4 col-sm-6">
+            <label for="to_date" class="form-label">To Date</label>
+      <div class="input-group">
+                <span class="input-group-text" ><i class="fa fa-calendar"></i></span>
+                <input type="text" name="to_date[]" class="form-control dateField form-control-sm" id="to_date"
+                       placeholder="To Date">
+             </div>
+        </div>
+        <div class="col-xxl-3 col-lg-4 col-sm-6">
+            <label for="responsibility">Responsibility<span class="validateRq">*</span></label>
+            <textarea id="responsibility" name="responsibility[]" class="form-control responsibility form-control-sm" placeholder="Responsibility"
+                      cols="30" rows="2"></textarea>
+        </div>
+        <div class="col-xxl-3 col-lg-4 col-sm-6">
+            <label for="skills">Skill<span class="validateRq">*</span></label>
+            <textarea id="skills" name="skill[]" class="form-control skill form-control-sm " placeholder="Skills" cols="30" rows="2"></textarea>
+        </div>
+        <div class="col-xxl-3 col-lg-4 col-sm-6"></div>
+        <div class="col-xxl-3 col-lg-4 col-sm-6">
+            <div class="form-group">
+                <input type="button" class="form-control btn btn-danger deleteExperience appendBtnColor"
+                       style="margin-top: 17px" value="Delete">
+            </div>
+        </div>
+    </div>
+    <hr>
+</div>
+    <div class="row_element2" style="display: none;">
+    <input name="emergency_contact" type="hidden">
+    <div class="row g-3">
+     <div class="col-12">
+                <div class="panel">
+                    <div class="panel-header">
+                        <h5>Emergency Contact Information</h5>
+                    </div>
+                    <div class="panel-body">
+                        <div class="row g-3">
+                            <div class="col-xxl-3 col-lg-4 col-sm-6">
+                                <label class="form-label">Contact Person Name</label>
+                                <input class="form-control form-control-sm" placeholder="Name" type="text" th:field="*{employeeEmergencyContact.contactPersonName}">
+                            </div>
+                            <div class="col-xxl-3 col-lg-4 col-sm-6">
+                                <label class="form-label">Contact Person Phone</label>
+                                <input class="form-control form-control-sm" placeholder="Phone" type="text" th:field="*{employeeEmergencyContact.contactPersonPhone}">
+                            </div>
+                            <div class="col-xxl-3 col-lg-4 col-sm-6">
+                                <label class="form-label">Relation</label>
+                                <input class="form-control form-control-sm" placeholder="Relation" type="text" th:field="*{employeeEmergencyContact.contactPersonRelationship}">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+     </div>
+    <hr>
+</div>
+
+</span>
+<th:block layout:fragment="script">
+    <!--    <script th:src="@{/assets/vendor/js/jquery.uploader.min.js}"></script>-->
+    <script th:src="@{/assets/vendor/js/jquery-ui.min.js}"></script>
+    <script th:src="@{/assets/vendor/js/select2.min.js}"></script>
+    <script th:src="@{/assets/js/select2-init.js}"></script>
+
+    <script th:inline="javascript">
+
+        /*<![CDATA[*/
+        $(document).ready(function () {
+            // Add event listener for selecting paneler category
+            $("#ddlCounty").change(function () {
+                // Fetch standardized panelers based on selected paneler category
+                let countyId = $(this).val();
+
+                // Define a JavaScript variable to hold the URL
+                let fetchSubCountyUrl = /*[[@{/system/subcounty/list/{id}}]]*/;
+
+                let url = fetchSubCountyUrl.replace("{id}", countyId); // Replace {id} with the actual value
+
+                $.ajax({
+                    type: "GET",
+                    url: url, // Use Thymeleaf URL expression
+                    success: function (response) {
+                        // Update the standardized paneler select options
+                        let selectElement = $("#ddlSubCounty");
+                        selectElement.empty(); // Clear existing options
+                        selectElement.append('<option value="" selected>Choose...</option>'); // Add default option
+                        console.log(eval(response));
+                        // Add options for standardized panelers
+                        for (let i = 0; i < response.length; i++) {
+                            selectElement.append('<option value="' + response[i].district_id + '">' + response[i].district_nom + '</option>');
+                        }
+                    },
+                    error: function (error) {
+                        // Handle error response here
+                        alert("Error fetching standardized panelers: " + error.responseText);
+                    }
+                });
+            });
+
+
+
+        // Add event listener for selecting paneler category
+        $("#ddlSubCounty").change(function () {
+            // Fetch standardized panelers based on selected paneler category
+            let subCountyId = $(this).val();
+
+            // Define a JavaScript variable to hold the URL
+            let fetchSubcountyUrl = /*[[@{/system/facility/list/{id}}]]*/;
+
+            let url = fetchSubcountyUrl.replace("{id}", subCountyId); // Replace {id} with the actual value
+
+            $.ajax({
+                type: "GET",
+                url: url, // Use Thymeleaf URL expression
+                success: function (response) {
+                    // Update the standardized paneler select options
+                    let selectElement = $("#ddlFacility");
+                    selectElement.empty(); // Clear existing options
+                    selectElement.append('<option value="" selected>Choose...</option>'); // Add default option
+                    console.log(eval(response));
+                    // Add options for standardized panelers
+                    for (let i = 0; i < response.length; i++) {
+                        selectElement.append('<option value="' + response[i].centre_sante_id + '">' + response[i].sub_partner_nom + '</option>');
+                    }
+                },
+                error: function (error) {
+                    // Handle error response here
+                    alert("Error fetching standardized panelers: " + error.responseText);
+                }
+            });
+
+        });
+
+        // Add event listener for selecting paneler category
+        $("#ddlEmployeeType").change(function () {
+            // Fetch standardized panelers based on selected paneler category
+            let employeeType = $(this).val();
+
+            // Define a JavaScript variable to hold the URL
+            let fetchStandardCarder = /*[[@{/system/standard_carder/list/{id}}]]*/;
+
+            let url = fetchStandardCarder.replace("{id}", employeeType); // Replace {id} with the actual value
+
+            $.ajax({
+                type: "GET",
+                url: url, // Use Thymeleaf URL expression
+                success: function (response) {
+                    // Update the standardized paneler select options
+                    let selectElement = $("#ddlCadreCategory");
+                    selectElement.empty(); // Clear existing options
+                    selectElement.append('<option value="" selected>Choose...</option>'); // Add default option
+                    console.log(eval(response));
+                    // Add options for standardized panelers
+                    for (let i = 0; i < response.length; i++) {
+                        selectElement.append('<option value="' + response[i].id + '">' + response[i].standardized_cadre_name + '</option>');
+                    }
+                },
+                error: function (error) {
+                    // Handle error response here
+                    alert("Error fetching standardized panelers: " + error.responseText);
+                }
+            });
+
+        });
+
+
+        // Add event listener for selecting paneler category
+        $("#ddlCadreCategory").change(function () {
+            // Fetch standardized panelers based on selected paneler category
+            let panelerCategory = $(this).val();
+
+            // Define a JavaScript variable to hold the URL
+            let fetchCarderCategory = /*[[@{/system/designation/list/{id}}]]*/;
+
+            let url = fetchCarderCategory.replace("{id}", panelerCategory); // Replace {id} with the actual value
+
+            $.ajax({
+                type: "GET",
+                url: url, // Use Thymeleaf URL expression
+                success: function (response) {
+                    // Update the standardized paneler select options
+                    let selectElement = $("#ddlPos");
+                    selectElement.empty(); // Clear existing options
+                    selectElement.append('<option value="" selected>Choose...</option>'); // Add default option
+                    console.log(eval(response));
+                    // Add options for standardized panelers
+                    for (let i = 0; i < response.length; i++) {
+                        selectElement.append('<option value="' + response[i].id + '">' + response[i].position_title + '</option>');
+                    }
+                },
+                error: function (error) {
+                    // Handle error response here
+                    alert("Error fetching standardized panelers: " + error.responseText);
+                }
+            });
+
+        });
+
+
+        $('#addEducationQualification').click(function() {
+            $('.education_qualification_append_div').append(
+                '<div class="education_qualification_row_element">' + $('.row_element1').html() +
+                '</div>');
+        });
+
+        $('#addExperience').click(function() {
+            $('.experience_append_div').append('<div class="experience_row_element">' + $(
+                '.row_element2').html() + '</div>');
+        });
+
+        $(document).on("click", ".deleteEducationQualification", function() {
+            $(this).parents('.education_qualification_row_element').remove();
+            let deletedID = $(this).parents('.education_qualification_row_element').find(
+                '.educationQualification_cid').val();
+            if (deletedID) {
+                let prevDelId = $('#delete_education_qualifications_cid').val();
+                if (prevDelId) {
+                    $('#delete_education_qualifications_cid').val(prevDelId + ',' + deletedID);
+                } else {
+                    $('#delete_education_qualifications_cid').val(deletedID);
+                }
+            }
+        });
+
+        $(document).on("click", ".deleteExperience", function() {
+            $(this).parents('.experience_row_element').remove();
+            let deletedID = $(this).parents('.experience_row_element').find('.employee_experience_id')
+                .val();
+            if (deletedID) {
+                let prevDelId = $('#delete_experiences_cid').val();
+                if (prevDelId) {
+                    $('#delete_experiences_cid').val(prevDelId + ',' + deletedID);
+                } else {
+                    $('#delete_experiences_cid').val(deletedID);
+                }
+            }
+        });
+
+        });
+        /*]]>*/
+
+
+    </script>
+
+</th:block>
+</body>
+
+</html>

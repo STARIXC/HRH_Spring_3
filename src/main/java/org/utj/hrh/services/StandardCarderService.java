@@ -2,6 +2,7 @@ package org.utj.hrh.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.utj.hrh.model.CarderCat;
 import org.utj.hrh.model.StandardCarder;
 import org.utj.hrh.repository.StandardCarderRepository;
 
@@ -34,6 +35,12 @@ public class StandardCarderService {
             throw new StandardCarderNotFoundException("could not find any carder with ID :"+id);
         }
 
+    }
+    public List<StandardCarder> fetchDataFromDataSource(Integer carderCategoryId) {
+        return standardCarderRepository.findStandardCardersByCarderCategoryId(carderCategoryId);
+    }
+    public List<StandardCarder> getByCarderType(Integer carder_type_id) {
+        return standardCarderRepository.findStandardCardersByCarderType(carder_type_id);
     }
 
     public void delete(Integer id) throws  StandardCarderNotFoundException {

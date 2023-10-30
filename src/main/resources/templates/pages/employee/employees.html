@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en" layout:decorate="~{layouts/layout.html}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta content="IE=edge" http-equiv="X-UA-Compatible">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>HRMIS Employees | UTJ</title>
+</head>
+<body>
+<span layout:fragment="content">
+    <div class="row">
+        <div class="col-12">
+            <div class="panel">
+                <div class="panel-header">
+                    <h5>All Employee</h5>
+                    <div class="btn-box d-flex flex-wrap gap-2">
+                        <div id="tableSearch"></div>
+                        <button class="btn btn-sm btn-icon btn-outline-primary"><i
+                                class="fa-light fa-arrows-rotate"></i></button>
+
+                        <a class="btn btn-sm btn-primary" th:href="@{/system/employee/form}"><i
+                                class="fa-light fa-plus"></i> Add
+                            New</a>
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <div class="table-filter-option">
+                        <div class="row g-3">
+                          <div class="col-xxl-12 col-lg-12 col-xs-12 d-flex justify-content-end">
+                                <div id="employeeTableLength"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <table class="table table-dashed table-hover utj-dataTable all-employee-table table-striped"
+                           id="allEmployeeTable">
+                        <thead>
+                        <tr>
+                            <th>Photo</th>
+                            <th>Name</th>
+                            <th>Employee ID</th>
+                            <th>Designation</th>
+                            <th>Phone</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="employee : ${employees}">
+
+                            <td>
+                                <div class="avatar">
+                                    <img alt="User" th:src="@{../../assets/images/avatar-2.png}">
+                                </div>
+                            </td>
+                            <td th:text="${'ID-'+employee.empNo}">ID-100221033</td>
+                            <td>
+                               <span class="font-medium">
+                            <a href="../employee_view"><strong
+                                    th:text="${employee.surname + ' ' + employee.firstName + (employee.otherName != null ? ' ' + employee.otherName : '')}"> </strong></a>
+                            </span>
+
+                            </td>
+                            <td>
+                                <br>
+                                <span th:if="${employee.position != null}" th:text="${employee.position.position_title}"></span>
+                                <span th:if="${employee.position == null}">Not defined</span>
+                            </td>
+                            <td>
+                                <span class="font-medium-" th:text="${employee.phone}"></span>
+                                <br><span class="text-dark" th:text="${'Email :'+employee.email}"></span>
+                            </td>
+
+                            <td><span class="active-mark"><i class="fa-regular fa-check"></i></span> Active</td>
+                              <td>
+                                <div class="utj-dropdown dropdown d-inline-block">
+                                    <button aria-expanded="false" class="btn btn-sm btn-outline-primary"
+                                            data-bs-toggle="dropdown">Action <i class="fa-regular fa-angle-down"></i>
+                                    </button>
+                                    <ul class="utj-dropdown-menu dropdown-menu dropdown-slim dropdown-menu-sm">
+                                        <li><a class="dropdown-item" th:href="@{'/system/employee/view/'+${employee.empNo}}"><span class="dropdown-icon"><i
+                                                class="fa-light fa-eye"></i></span> View</a></li>
+                                        <li><a class="dropdown-item" th:href="@{'/system/employee/'+${employee.empNo}+'/edit'}"><span class="dropdown-icon"><i
+                                                class="fa-light fa-pen-to-square"></i></span> Edit</a></li>
+                                        <!--                                        <li><a class="dropdown-item" href="#"><span class="dropdown-icon"><i-->
+                                        <!--                                                class="fa-light fa-id-card"></i></span> ID Card</a></li>-->
+                                        <li><a class="dropdown-item" href="#"><span class="dropdown-icon"><i
+                                                class="fa-light fa-pen-nib"></i></span> Resign</a></li>
+                                        <li><a class="dropdown-item" href="#"><span class="dropdown-icon"><i
+                                                class="fa-light fa-arrow-right-from-bracket"></i></span> Transfer</a></li>
+                                        <li><a class="dropdown-item" href="#"><span class="dropdown-icon"><i
+                                                class="fa-light fa-trash-can"></i></span> Delete</a></li>
+                                    </ul>
+                                </div>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <div class="table-bottom-control"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</span>
+
+</body>
+
+</html>
