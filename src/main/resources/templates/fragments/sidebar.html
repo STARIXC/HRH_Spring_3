@@ -15,7 +15,7 @@
             <li class="sidebar-item">
                 <a class="sidebar-link-group-title has-sub" role="button">Administration</a>
                 <ul class="sidebar-link-group">
-                    <li class="sidebar-dropdown-item">
+                    <li class="sidebar-dropdown-item" th:if="${session.userRole == 'Admin'}">
                         <a class="sidebar-link has-sub" data-dropdown="roleMGT" role="button"><span class="nav-icon"><i
                                 class="fa-light fa-sliders-up"></i></span> <span class="sidebar-txt">Manage Role</span></a>
                         <ul class="sidebar-dropdown-menu" id="roleMGT">
@@ -23,9 +23,40 @@
                                                                  th:href="@{/system/roles/list}"><span class="nav-icon"><i
                                     class="fa-light fa-circle-o"></i></span> <span
                                     class="sidebar-txt">Add Role</span></a></li>
+<!--                            <li class="sidebar-dropdown-item"><a class="sidebar-link"-->
+<!--                                                                 th:href="@{/system/roles/role_permissions}"><span class="nav-icon"><i-->
+<!--                                    class="fa-light fa-circle-o"></i></span> <span class="sidebar-txt">Add Role Permission</span></a>-->
+<!--                            </li>-->
+
+                        </ul>
+
+                    </li>
+                    <li class="sidebar-dropdown-item" th:if="${session.userRole == 'Admin'}">
+                        <a class="sidebar-link has-sub" data-dropdown="userMGT" role="button"><span class="nav-icon"><i
+                                class="fa-light fa-sliders-up"></i></span> <span class="sidebar-txt">User Management</span></a>
+                        <ul class="sidebar-dropdown-menu" id="userMGT">
                             <li class="sidebar-dropdown-item"><a class="sidebar-link"
-                                                                 th:href="@{/system/roles/role_permissions}"><span class="nav-icon"><i
-                                    class="fa-light fa-circle-o"></i></span> <span class="sidebar-txt">Add Role Permission</span></a>
+                                                                 th:href="@{/system/user/viewSystemUsers}"><span class="nav-icon"><i
+                                    class="fa-light fa-circle-o"></i></span> <span
+                                    class="sidebar-txt">User</span></a></li>
+
+
+                        </ul>
+
+                    </li>
+                    <li class="sidebar-dropdown-item" th:if="${session.userRole == 'Admin'}">
+                        <a class="sidebar-link has-sub" data-dropdown="qualificationMGT" role="button"><span class="nav-icon"><i
+                                class="fa-light fa-sliders-up"></i></span> <span class="sidebar-txt">Qualification</span></a>
+                        <ul class="sidebar-dropdown-menu" id="qualificationMGT">
+                            <li class="sidebar-dropdown-item">
+                                <a class="sidebar-link" th:href="@{/system/qualification/education}">
+                                    <span class="nav-icon"><i class="fa-light fa-circle-o"></i></span>
+                                    <span class="sidebar-txt">Education</span></a>
+                            </li>
+                            <li class="sidebar-dropdown-item">
+                                <a class="sidebar-link" th:href="@{/system/qualification/licences}">
+                                    <span class="nav-icon"><i class="fa-light fa-circle-o"></i></span>
+                                    <span class="sidebar-txt">Licences</span></a>
                             </li>
 
                         </ul>
@@ -34,46 +65,68 @@
                     <li class="sidebar-dropdown-item"><a class="sidebar-link" th:href="@{/system/change-password}">
                         <span class="nav-icon"><i class="fa-light fa-sliders-up"></i></span> <span class="sidebar-txt">Changing Password</span></a>
                     </li>
+                    <li class="sidebar-dropdown-item"><a class="sidebar-link" th:href="@{/system/financial-year/list}">
+                        <span class="nav-icon"><i class="fa-light fa-sliders-up"></i></span> <span class="sidebar-txt">Financial Year</span></a>
+                    </li>
                 </ul>
             </li>
 
             <li class="sidebar-item">
                 <a class="sidebar-link-group-title has-sub" role="button">Employee Management</a>
                 <ul class="sidebar-link-group">
-                    <li class="sidebar-dropdown-item"><a class="sidebar-link"
-                                                         th:href="@{/system/manage/standardised_carder}"> <span class="nav-icon"><i
+                    <li class="sidebar-dropdown-item" th:if="${session.userRole == 'Admin'}">
+                        <a class="sidebar-link" th:href="@{/system/manage/standardised_carder}"> <span class="nav-icon"><i
                             class="fa-light fa-sliders-up"></i></span> Standard Carder</a></li>
-                    <li class="sidebar-dropdown-item"><a class="sidebar-link" th:href="@{/system/designation/manage}"> <span
+                    <li class="sidebar-dropdown-item"th:if="${session.userRole == 'Admin'}"><a class="sidebar-link" th:href="@{/system/designation/manage}"> <span
                             class="nav-icon"><i class="fa-light fa-sliders-up"></i></span> Position</a></li>
-                    <li class="sidebar-dropdown-item"><a class="sidebar-link" th:href="@{/system/documents/list}"> <span
+                    <li class="sidebar-dropdown-item"th:if="${session.userRole == 'Admin'}"><a class="sidebar-link" th:href="@{/system/documents/list}"> <span
                             class="nav-icon"><i class="fa-light fa-sliders-up"></i></span> Document Type</a></li>
-                    <li class="sidebar-dropdown-item"><a class="sidebar-link" th:href="@{/system/employee/all}"><span
+                    <li class="sidebar-dropdown-item"th:if="${session.userRole == 'Admin'}"><a class="sidebar-link" th:href="@{/system/employee/all}"><span
                             class="nav-icon"><i class="fa-light fa-sliders-up"></i></span> Employee Manage</a></li>
-                    <li class="sidebar-dropdown-item"><a class="sidebar-link"
+                    <li class="sidebar-dropdown-item"th:if="${session.userRole == 'Admin'}"><a class="sidebar-link"
                                                          th:href="@{/system/employee/warning}"><span class="nav-icon"><i
                             class="fa-light fa-sliders-up"></i></span> Warning</a></li>
-                    <li class="sidebar-dropdown-item"><a class="sidebar-link" th:href="@{/system/employee/designation}"><span
+                    <li class="sidebar-dropdown-item"th:if="${session.userRole == 'Admin'}"><a class="sidebar-link" th:href="@{/system/employee/designation}"><span
                             class="nav-icon"><i class="fa-light fa-sliders-up"></i></span> Transfer</a></li>
-                    <li class="sidebar-dropdown-item"><a class="sidebar-link"
+                    <li class="sidebar-dropdown-item"th:if="${session.userRole == 'Admin'}"><a class="sidebar-link"
                                                          th:href="@{/system/employee/promotion}"><span class="nav-icon"><i
                             class="fa-light fa-sliders-up"></i></span> Promotion</a></li>
-                    <li class="sidebar-dropdown-item"><a class="sidebar-link" th:href="@{/system/employee/termination}"><span
-                            class="nav-icon"><i class="fa-light fa-sliders-up"></i></span> Termination</a></li>
+                    <li class="sidebar-dropdown-item"th:if="${session.userRole == 'Admin'}">
+
+                        <a class="sidebar-link has-sub" data-dropdown="terminationMGT" role="button"><span class="nav-icon"><i
+                                class="fa-light fa-sliders-up"></i></span> <span class="sidebar-txt">Manage Terminations</span></a>
+                        <ul class="sidebar-dropdown-menu" id="terminationMGT">
+                            <li class="sidebar-dropdown-item">
+                                <a class="sidebar-link" th:href="@{/termination/types/manage/all}">
+                                    <span class="nav-icon"><i class="fa-light fa-circle"></i></span>
+                                    <span class="sidebar-txt">Termination Type</span>
+                                </a>
+                            </li>
+                            <li class="sidebar-dropdown-item">
+                                <a class="sidebar-link" th:href="@{/system/terminations/list}">
+                                    <span class="nav-icon"><i class="fa-light fa-circle"></i></span>
+                                    <span class="sidebar-txt">Employee Termination</span>
+                                </a>
+                            </li>
+
+
+                        </ul>
+                    </li>
 
                 </ul>
             </li>
             <li class="sidebar-item">
                 <a class="sidebar-link-group-title has-sub" role="button">Leave Management</a>
                 <ul class="sidebar-link-group">
-                    <li class="sidebar-dropdown-item">
+                    <li class="sidebar-dropdown-item" th:if="${session.userRole == 'Admin'}">
                         <a class="sidebar-link has-sub" data-dropdown="leaveSetup" role="button"><span class="nav-icon"><i
                                 class="fa-light fa-layer-group"></i></span> <span class="sidebar-txt">Setup</span></a>
                         <ul class="sidebar-dropdown-menu" id="leaveSetup">
-                            <li class="sidebar-dropdown-item"><a class="sidebar-link" href="#">Manage Holidays</a></li>
-
-                            <li class="sidebar-dropdown-item"><a class="sidebar-link" href="#">Public Holidays</a></li>
+                            <li class="sidebar-dropdown-item"><a class="sidebar-link" th:href="@{/system/leave/holidays/manage}">Holidays</a></li>
+                            <li class="sidebar-dropdown-item"><a class="sidebar-link" th:href="@{/system/leave/policy/all}">Leave Policy</a></li>
                             <li class="sidebar-dropdown-item"><a class="sidebar-link" href="#">Leave Type</a></li>
-                            <li class="sidebar-dropdown-item"><a class="sidebar-link" href="#">Earn Leave config</a>
+                            <li class="sidebar-dropdown-item"><a class="sidebar-link" th:href="@{/system/leave/entitlement/all}">Leave Entitlements</a>
+                            <li class="sidebar-dropdown-item"><a class="sidebar-link" th:href="@{/system/calender/view}">Calender</a></li>
                             </li>
                         </ul>
                     </li>
@@ -90,11 +143,11 @@
                     <li class="sidebar-dropdown-item">
                         <a class="sidebar-link has-sub" data-dropdown="leaveReport" role="button"><span
                                 class="nav-icon"><i class="fa-light fa-sliders-up"></i></span> <span
-                                class="sidebar-txt">Leave Application</span></a>
+                                class="sidebar-txt">Leave Reports</span></a>
                         <ul class="sidebar-dropdown-menu" id="leaveReport">
-                            <li class="sidebar-dropdown-item"><a class="sidebar-link" href="#">Leave Report</a></li>
-                            <li class="sidebar-dropdown-item"><a class="sidebar-link" href="#">Summary Report</a></li>
-                            <li class="sidebar-dropdown-item"><a class="sidebar-link" href="#">My Leave Report</a></li>
+                            <li class="sidebar-dropdown-item"th:if="${session.userRole == 'Admin'}"><a class="sidebar-link" href="#">Leave Report</a></li>
+                            <li class="sidebar-dropdown-item"th:if="${session.userRole == 'Admin'}"><a class="sidebar-link" href="#">Summary Report</a></li>
+                            <li class="sidebar-dropdown-item" th:if="${session.userRole == 'Employee'}"><a class="sidebar-link" href="#">My Leave Report</a></li>
                         </ul>
                     </li>
 
@@ -103,7 +156,7 @@
             <li class="sidebar-item">
                 <a class="sidebar-link-group-title has-sub" role="button">Attendance</a>
                 <ul class="sidebar-link-group">
-                    <li class="sidebar-dropdown-item">
+                    <li class="sidebar-dropdown-item" th:if="${session.userRole == 'Admin'}">
                         <a class="sidebar-link has-sub" data-dropdown="attendanceSetup" role="button"><span class="nav-icon"><i
                                 class="fa-light fa-layer-group"></i></span> <span class="sidebar-txt">Setup</span></a>
                         <ul class="sidebar-dropdown-menu" id="attendanceSetup">
@@ -115,11 +168,12 @@
                     <li class="sidebar-dropdown-item">
                         <a class="sidebar-link has-sub" data-dropdown="attendanceReport" role="button"><span
                                 class="nav-icon"><i class="fa-light fa-sliders-up"></i></span> <span
-                                class="sidebar-txt">Leave Application</span></a>
+                                class="sidebar-txt">Attendance Reports</span></a>
                         <ul class="sidebar-dropdown-menu" id="attendanceReport">
-                            <li class="sidebar-dropdown-item"><a class="sidebar-link" href="#">Daily Attendance</a></li>
-                            <li class="sidebar-dropdown-item"><a class="sidebar-link" href="#">Monthly Attendance</a></li>
-                            <li class="sidebar-dropdown-item"><a class="sidebar-link" href="#">Summary Report</a></li>
+                            <li class="sidebar-dropdown-item" th:if="${session.userRole == 'Admin'}"><a class="sidebar-link" href="#">Daily Attendance</a></li>
+                            <li class="sidebar-dropdown-item" th:if="${session.userRole == 'Admin'}"><a class="sidebar-link" href="#">Monthly Attendance</a></li>
+                            <li class="sidebar-dropdown-item" th:if="${session.userRole == 'Admin'}"><a class="sidebar-link" href="#">Summary Report</a></li>
+                            <li class="sidebar-dropdown-item" th:if="${session.userRole == 'Employee'}"><a class="sidebar-link" href="#">My Attendance Report</a></li>
                         </ul>
                     </li>
                     <li class="sidebar-dropdown-item">
@@ -131,7 +185,7 @@
 
                 </ul>
             </li>
-            <li class="sidebar-item">
+            <li class="sidebar-item" th:if="${session.userRole == 'Admin'}">
                 <a class="sidebar-link-group-title has-sub" role="button">Settings</a>
                 <ul class="sidebar-link-group">
                     <li class="sidebar-dropdown-item">
@@ -159,48 +213,11 @@
                 </ul>
             </li>
 
-          <!--            <th:block th:with="menuList=${menus}">-->
-            <!--                <th:block th:each="menuItem : ${menuList}">-->
-            <!--                    &lt;!&ndash; Render your menu items here using menuItem &ndash;&gt;-->
-            <!--                    <li class="sidebar-item">-->
-            <!--                        <a class="sidebar-link-group-title has-sub" role="button">Administration</a>-->
-            <!--                        <th:block th:if="${menuItem.sub_menu}">-->
-            <!--                        <ul class="sidebar-link-group">-->
 
-            <!--                            <th:block th:each="subMenu : ${menu.sub_menu}">-->
-            <!--                                <li class="sidebar-dropdown-item">-->
-
-            <!--                                    <a class="sidebar-link has-sub" data-dropdown="crmDropdown" role="button"><span-->
-            <!--                                            class="nav-icon"><i class="fa-light fa-user-headset"></i></span> <span-->
-            <!--                                            class="sidebar-txt">Manage Roles</span></a>-->
-            <!--                                    <th:block th:if="${menuItem.sub_menu}">-->
-            <!--                                    <ul class="sidebar-dropdown-menu" id="crmDropdown">-->
-            <!--                                        <th:block th:each="subMenu : ${menu.sub_menu}">-->
-            <!--                                        <li class="sidebar-dropdown-item"><a class="sidebar-link" href="audience.html">Add Role</a>-->
-            <!--                                        </li>-->
-            <!--                                        </th:block>-->
-
-
-            <!--                                    </ul>-->
-            <!--                                    </th:block>-->
-            <!--                                </li>-->
-            <!--                            </th:block>-->
-
-
-            <!--                            <li class="sidebar-dropdown-item">-->
-            <!--                                <a class="sidebar-link" href="calendar.html"><span class="nav-icon"><i-->
-            <!--                                        class="fa-light fa-calendar"></i></span> <span-->
-            <!--                                        class="sidebar-txt">Change Password</span></a>-->
-            <!--                            </li>-->
-
-            <!--                        </ul>-->
-            <!--                        </th:block>-->
-            <!--                    </li>-->
-            <!--                </th:block>-->
-            <!--            </th:block>-->
 
 
         </ul>
+
     </div>
 </div>
 </body>

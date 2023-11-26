@@ -14,7 +14,7 @@ public class CarderTypeService {
 
 
     public List<CarderType> getAll(){
-        return (List<CarderType>) carderTypeRepository.findAll();
+        return  carderTypeRepository.findAll();
     }
 
     public void save(CarderType carderType) {

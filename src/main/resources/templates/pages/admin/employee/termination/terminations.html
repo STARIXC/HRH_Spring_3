@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en" layout:decorate="~{layouts/layout.html}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta content="IE=edge" http-equiv="X-UA-Compatible">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>HRMIS Employees | UTJ</title>
+</head>
+<body>
+<span layout:fragment="content">
+    <div class="row">
+        <div class="col-12">
+            <div class="panel">
+                <div class="panel-header">
+                    <h5>All Termination</h5>
+                    <div class="btn-box d-flex flex-wrap gap-2">
+                        <div id="tableSearch"></div>
+                        <button class="btn btn-sm btn-icon btn-outline-primary"><i
+                                class="fa-light fa-arrows-rotate"></i></button>
+
+                        <a class="btn btn-sm btn-primary" th:href="@{/system/terminations/form}"><i
+                                class="fa-light fa-plus"></i> Add
+                            New</a>
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <div class="table-filter-option">
+                        <div class="row g-3">
+                          <div class="col-xxl-12 col-lg-12 col-xs-12 d-flex justify-content-end">
+                                <div id="employeeTableLength"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <table class="table table-dashed table-hover utj-dataTable all-terminations-table table-striped"
+                           id="allTerminationsTable">
+                        <thead>
+                  	 <tr class="tr_header">
+                         <th>serial</th>
+                         <th>Employee Name</th>
+                         <th>Subject</th>
+                         <th>Termination Type</th>
+                         <th>Notice Date</th>
+                         <th>Termination Date</th>
+                         <th>Terminated by</th>
+                         <th>Status</th>
+                         <th style="text-align: center;">Action</th>
+                     </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="value, itrStat : ${terminations}">
+                            <td style="width: 100px;" th:text="${itrStat.index + 1}"></td>
+                            <td>
+                                <span th:utext="${value.terminateToEmployee.firstName} + ' ' + ${value.terminateToEmployee.surname}"></span>
+                            </td>
+                                    <td th:text="${value.subject}"></td>
+                                    <td th:text="${value.terminationType}"></td>
+                                    <td th:text="${#dates.format(value.noticeDate, 'dd-MM-yyyy')}"></td>
+                                    <td th:text="${#dates.format(value.terminationDate, 'dd-MM-yyyy')}"></td>
+                                    <td>
+                                        <span th:utext="${value.terminateByEmployee.role.role_name} "></span>
+                                    </td>
+                                    <td>
+                                        <span th:utext="${value.status == 1 ? 'Pending' : 'Approved'}" class="label" th:classappend="${value.status == 1 ? 'label-info' : 'label-success'}"></span>
+                                    </td>
+                                    <td style="width: 100px;">
+                                        <a title="View Details" th:href="@{'/termination/show/' + ${value.terminationId}}" class="btn btn-primary btn-xs btnColor">
+                                            <i class="glyphicon glyphicon-th-large" aria-hidden="true"></i>
+                                        </a>
+                                        <th:block th:if="${value.status != 2}">
+                                            <a th:href="@{'/termination/edit/' + ${value.terminationId}}" class="btn btn-success btn-xs btnColor">
+                                                <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                                            </a>
+                                            <a th:href="@{'/termination/delete/' + ${value.terminationId}}" th:attr=" data-id=${value.terminationId}" class="delete btn btn-danger btn-xs deleteBtn btnColor">
+                                                <i class="fa fa-trash-o" aria-hidden="true"></i>
+                                            </a>
+                                        </th:block>
+                                    </td>
+                                </tr>
+                        </tbody>
+                    </table>
+                    <div class="table-bottom-control"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</span>
+
+</body>
+
+</html>

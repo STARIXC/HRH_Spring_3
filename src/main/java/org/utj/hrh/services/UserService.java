@@ -6,6 +6,8 @@ import org.utj.hrh.model.Role;
 import org.utj.hrh.model.User;
 import org.utj.hrh.repository.UserRepository;
 
+import java.util.List;
+
 @Service
 public class UserService {
 
@@ -16,7 +18,7 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public User getUserById(String userId) {
+    public User getUserById(Long userId) {
         return userRepository.findById(userId).orElse(null);
     }
 
@@ -40,5 +42,26 @@ public class UserService {
     public void save(User user){
         userRepository.save(user);
 
+    }
+
+    public Integer getRoleID(String username) {
+        User user = getUserByUsername(username);
+
+        if (user != null) {
+            Role role = user.getRole();
+            if (role != null) {
+                return role.getId(); // Assuming a "roleName" attribute in the Role entity
+            }
+        }
+        return null;
+    }
+
+    public List<User> getAll() {
+        return userRepository.findAll();
+    }
+
+    public boolean isUsernameTaken(String username) {
+        // Check if a user with the given username already exists
+        return userRepository.existsByUsername(username);
     }
 }

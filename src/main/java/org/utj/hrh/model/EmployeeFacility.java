@@ -8,7 +8,7 @@ import lombok.*;
 @Setter
 @Getter
 @AllArgsConstructor
-@ToString
+@ToString(exclude = {"employee","facility"})
 public class EmployeeFacility {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en" layout:decorate="~{layouts/layout.html}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta content="IE=edge" http-equiv="X-UA-Compatible">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>HRMIS [[${pageTitle}]] | UTJ</title>
+</head>
+<body>
+<span layout:fragment="content">
+       <div class="dashboard-breadcrumb mb-25">
+            <h2>Holidays</h2>
+
+           <div class="btn-box d-flex flex-wrap gap-2">
+               <button class="btn btn-sm btn-primary" th:data-bs-target="|#leaveHolidayModal|" th:data-bs-toggle="modal"><i
+                       class="fa fa-plus-circle"></i> <span>Add New </span></button>                  </div>
+        </div>
+    <div class="row">
+   
+
+        <div class="col-xxl-12 col-lg-12 col-sm-12">
+                <div class="panel">
+                    <div class="panel-header">
+                        <h5>All Holidays</h5>
+                         <div class="input-group dashboard-filter">
+                             <input class="form-control" id="dashboardFilter" name="basic" readonly type="text">
+                             <label class="input-group-text" for="dashboardFilter"><i class="fa-light fa-calendar-days"></i></label>
+                         </div>
+                    </div>
+                    <div class="panel-body">
+
+                        <table class="table table-dashed table-hover utj-dataTable all-designation-table table-striped"
+                               id="allHolidayTable">
+                            <thead>
+                                <tr>
+                                    <th>S/L</th>
+                                    <th> Title</th>
+                                    <th>Start Date</th>
+                                    <th>end Date</th>
+                                    <th>Duration</th>
+                                    <th>Description</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:each="leaveHoliday , itrStat : ${leaveHolidays}">
+                                    <td th:text="${itrStat.index + 1}"></td>
+                                    <td th:text="${leaveHoliday.holidayName} ">Name</td>
+                                      <td th:text="${leaveHoliday.startDate} ">20</td>
+                                      <td th:text="${leaveHoliday.endDate} ">20</td>
+                                      <td>Durations</td>
+                                      <td th:text="${leaveHoliday.holidayDescription} ">20</td>
+                                    <td>
+                                        <div class="utj-dropdown dropdown d-inline-block">
+                                            <button aria-expanded="false" class="btn btn-sm btn-outline-primary"
+                                                    data-bs-toggle="dropdown">Action <i
+                                                    class="fa-regular fa-angle-down"></i></button>
+                                            <ul class="utj-dropdown-menu dropdown-menu dropdown-slim dropdown-menu-sm">
+                                                <li>
+                                                    <a class="dropdown-item" onclick="editDesignation(this)"
+                                                       th:data-position-id="${leaveHoliday.id}">
+                                                        <span class="dropdown-icon">
+                                                            <i class="fa-light fa-pen-to-square"></i>
+                                                        </span> Edit
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a class="dropdown-item"
+                                                       th:holiday="${leaveHoliday.id}"
+                                                       th:href="@{'/system/leave/holidays/delete/'+${leaveHoliday.id}}">
+                                                        <span class="dropdown-icon">
+                                                            <i class="fa-light fa-trash-can"></i>
+                                                        </span> Delete
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </td>
+
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="table-bottom-control"></div>
+                    </div>
+                </div>
+            </div>
+    </div>
+    <!-- The Modal -->
+<div class="modal " th:fragment="leaveHolidayModal" th:id="leaveHolidayModal">
+    <div class="modal-dialog  modal-dialog-centered">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title">Holiday</h4>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+            <form action="#" method="post" th:action="@{/system/leave/holidays/save}" th:object="${holiday}">
+    <!-- Modal Body -->
+    <div class="modal-body">
+        <input id="id" th:field="*{id}" type="hidden">
+
+        <div class="row g-3">
+            <div class="col-xxl-12 col-lg-12 col-sm-12">
+                <label class="form-label" for="holidayName">Holiday Name</label>
+                <input class="form-control input-style" id="holidayName" maxlength="128" minlength="3"
+                       placeholder="Name" required th:field="*{holidayName}" type="text"/>
+            </div>
+
+            <div class="col-xxl-12 col-lg-12 col-sm-12">
+                <label class="form-label" for="startDate">Start Date</label>
+                <input class="form-control input-style date-picker" id="startDate" placeholder=""
+                       required th:field="*{startDate}" />
+            </div>
+
+            <div class="col-xxl-12 col-lg-12 col-sm-12">
+                <div class="form-check">
+                    <label class="form-check-label" for="range">Range
+                    <input class="form-check-input" id="range" th:field="*{rangeStatus}" type="checkbox"
+                           onclick="toggleEndDateField()">
+                    Enable</label>
+                </div>
+            </div>
+
+            <div class="col-xxl-12 col-lg-12 col-sm-12" id="endDateField" style="display: none;">
+                <label class="form-label" for="endDate">End Date</label>
+
+                <input class="form-control form-control-sm date-picker" id="endDate" placeholder="yyy-mm-dd"
+                       readonly type="text" th:field="*{endDate}">
+            </div>
+
+            <div class="col-xxl-12 col-lg-12 col-sm-12">
+                <label class="form-label input__label" for="holidayDescription">Description</label>
+                <textarea class="form-control h-150-p" id="holidayDescription" placeholder="Description"
+                          th:field="*{holidayDescription}"></textarea>
+            </div>
+        </div>
+    </div>
+
+                <!-- Modal Footer -->
+    <div class="modal-footer">
+        <button class="btn btn-secondary" data-bs-dismiss="modal" type="button">Close</button>
+        <button class="btn btn-primary" type="submit">Save changes</button>
+    </div>
+</form>
+
+
+
+
+        </div>
+    </div>
+</div>
+</span>
+
+<th:block layout:fragment="script">
+    <script th:src="@{/assets/vendor/js/jquery-ui.min.js}"></script>
+    <script th:src="@{/assets/vendor/js/select2.min.js}"></script>
+    <script th:src="@{/assets/js/select2-init.js}"></script>
+    <script th:inline="javascript">
+
+
+        /*<![CDATA[*/
+        function toggleEndDateField() {
+            const endDateField = document.getElementById('endDateField');
+            const rangeCheckbox = document.getElementById('range');
+
+            // Check if the checkbox is checked
+            if (rangeCheckbox.checked) {
+                endDateField.style.display = 'block';
+            } else {
+                endDateField.style.display = 'none';
+            }
+        }
+        /*]]>*/
+
+        $(function () {
+
+            //------------------------------------------------------------------------------------------------------------------
+            // All Designation Table In CRM Module
+            //------------------------------------------------------------------------------------------------------------------
+            if ($('#allHolidayTable').length) {
+                var dataTable = $('#allHolidayTable').DataTable({
+                    scrollX: true,
+                    "columnDefs": [{
+                        "targets": 'no-sort',
+                        "orderable": false
+                    }],
+                });
+                $('#allHolidayTable_filter input').addClass('form-control').attr("placeholder", "Search...").addClass('form-control-sm');
+                $('#allHolidayTable_length').prependTo('#allHolidayTableLength').find('select').addClass('form-control form-control-sm px-3');
+                $('#allHolidayTable_filter').prependTo('#tableSearch');
+                $('#allHolidayTable_info, #allHolidayTable_paginate').prependTo('.table-bottom-control');
+
+
+                $('#allHolidayTable').on('draw.dt', function () {
+                    $('#allHolidayTable tr').on('click', function () {
+                        $(this).toggleClass('selected');
+                        $(this).siblings().removeClass('selected');
+                    });
+
+                });
+            }
+        });
+
+        function editDesignation(link) {
+            var positionId = $(link).data('position-id');
+            var formModeInput = $('#formMode');
+
+            // Set the form into edit mode
+            formModeInput.val('edit');
+            var fetchPositionUrl = /*[[@{/system/designation/get/{id}}]]*/;
+            var url = fetchPositionUrl.replace("{id}", positionId); // Replace {id} with the actual value
+            // Use AJAX to fetch designation data based on positionId
+            $.ajax({
+                type: "GET",
+                url: url,
+                success: function (data) {
+                    // Populate the form fields with data from the server
+
+                    $('#inputCarderCategory').val(data.standardized_cadre_id);
+                    $('#position_title').val(data.position_title);
+                    $('#basic_pay').val(data.basic_pay);
+                },
+                error: function (error) {
+                    // Handle error here
+                }
+            });
+
+
+        }
+
+    </script>
+</th:block>
+</body>
+
+</html>

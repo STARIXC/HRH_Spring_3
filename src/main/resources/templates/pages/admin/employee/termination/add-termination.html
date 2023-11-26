@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en" layout:decorate="~{layouts/layout.html}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta content="IE=edge" http-equiv="X-UA-Compatible">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>HRMIS [[${pageTitle}]] | UTJ</title>
+</head>
+<body>
+<span layout:fragment="content">
+    <div class="row">
+   <div class="col-12">
+       <div class="panel">
+            <div class="panel-header">
+                    <h5>  Add New Termination</h5>
+                    <div class="btn-box d-flex flex-wrap gap-2">
+
+                          <a class="btn btn-sm btn-primary" th:href="@{/system/terminations/list}"><i
+                                  class="fa fa-bars"></i> <span> View Termination </span></a>
+                    </div>
+                </div>
+           <div class="panel-body">
+
+
+                <div class="alert alert-success alert-dismissible fade show" role="alert" th:if="${message != null}">
+                    [[${message}]]
+                    <button aria-label="Close" class="close" data-dismiss="alert" type="button">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+    <form
+            th:action="@{/system/terminations/save}"
+            th:object="${termination}"
+            method="post"
+            enctype="multipart/form-data"
+            class="form-horizontal ajaxFormSubmit"
+            id="terminationForm"
+             >
+         <div class="form-body">
+                            <div class="row  g-3">
+                                <div class="col-md-12 col-xxl-12 col-sm-12">
+                                    <label class="form-label">Employee Name<span class="validateRq">*</span></label>
+                                        <select name="terminate_to" class="form-control terminate_to select2 required" id="terminate_to" th:field="*{terminateToEmployee}">
+                                          <option th:each="staff : ${employeeList}" th:text="${staff?.firstName}+' '+${staff?.surname}" th:value="${staff?.empNo}"
+                                          ></option>
+
+                                        </select>
+                                </div>
+                                <div class="col-md-12 col-xxl-12 col-sm-12">
+                                    <label class="form-label">Termination Type<span class="validateRq">*</span></label>
+                                           <select name="termination_type" class="form-control termination_type  select2 required" id="termination_type" th:field="*{terminationType}">
+
+                                            <option th:each="terminationType : ${terminationTypeList}"
+                                                    th:value="${terminationType?.id}"
+                                                    th:text="${terminationType?.terminationName}"
+                                            ></option>
+                                        </select>
+                                </div>
+                                <div class="col-md-12 col-xxl-12 col-sm-12">
+                                        <label class="form-label">Subject<span class="validateRq">*</span></label>
+                                        <input class="form-control required subject" id="subject" placeholder="Subject" name="subject" type="text" th:field="*{subject}">
+                                </div>
+                                <div class="col-md-12 col-xxl-12 col-sm-12">
+                                    <label class="form-label ">Terminated By<span class="validateRq">*</span></label>
+                                    <input class="form-control" id="terminated_by"  readonly="readonly" name="terminated_by" type="text" th:value="${session.userRole}" th:field="*{terminateByEmployee}" >
+                                </div>
+                                <div class="col-md-12 col-xxl-12 col-sm-12">
+                                        <label class="form-label">Notice Date<span class="validateRq">*</span></label>
+                                        <div class="input-group">
+                                                <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                                <input class="form-control required date-picker" id="notice_date" placeholder="Notice Date" readonly="readonly" name="notice_date" type="text" th:field="*{noticeDate}">
+                                            </div>
+                                </div>
+                                <div class="col-md-12 col-xxl-12 col-sm-12">
+                                    <label class="form-label ">Termination Date<span class="validateRq">*</span></label>
+                                    <div class="input-group">
+                                        <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                        <input class="form-control required date-picker" id="termination_date" placeholder="Termination Date" readonly="readonly" name="termination_date" type="text" th:field="*{terminationDate}">
+                                    </div>
+                                </div>
+                                <div class="col-md-12 col-xxl-12 col-sm-12">
+                                        <label class="form-label col-md-4">Description</label>
+                                    <div class="editor" th:field="*{description}"></div>
+
+                                </div>
+                            </div>
+
+                            <div class="form-actions">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="row">
+                                            <div class="col-md-offset-4 col-md-8">
+                                                <button type="submit" class="btn btn-info btn_style"><i class="fa fa-check"></i> Save</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+    </form>
+
+
+           </div>
+       </div>
+   </div>
+    </div>
+</span>
+<th:block layout:fragment="script">
+    <!--    <script th:src="@{/assets/vendor/js/jquery.uploader.min.js}"></script>-->
+    <script th:src="@{/assets/vendor/js/jquery-ui.min.js}"></script>
+    <script th:src="@{/assets/vendor/js/select2.min.js}"></script>
+    <script th:src="@{/assets/js/select2-init.js}"></script>
+    <script th:src="@{/assets/vendor/js/ckeditor.js}"></script>
+    <script th:inline="javascript">
+
+        /*<![CDATA[*/
+        $(document).ready(function () {
+            $("#terminate_to").select2({
+                allowClear:true,
+                placeholder: 'Select One'
+            });
+            $("#termination_type").select2({
+                allowClear:true,
+                placeholder: 'Select One'
+            });
+        });
+
+        /*]]>*/
+
+
+    </script>
+
+</th:block>
+</body>
+
+</html>

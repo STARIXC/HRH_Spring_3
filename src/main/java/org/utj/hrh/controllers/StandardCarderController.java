@@ -33,7 +33,7 @@ public class StandardCarderController {
         List<StandardCarder> standardCarderList = standardCarderService.getAll();
         model.addAttribute("standardCarderList", standardCarderList);
         model.addAttribute("pageTitle", "Standard Carders");
-        return "pages/standard-carder";
+        return "pages/admin/Administration/standard-carder";
     }
 
     @GetMapping("/system/standard_carder/new")
@@ -45,7 +45,7 @@ public class StandardCarderController {
         model.addAttribute("categories", categories);
         model.addAttribute("carderTypes", carderTypes);
         model.addAttribute("pageTitle", "Create :: New Standard Carder");
-        return "pages/standard-carder-form";
+        return "pages/admin/Administration/standard-carder-form";
     }
 
     @PostMapping("/system/standard/carder/save")

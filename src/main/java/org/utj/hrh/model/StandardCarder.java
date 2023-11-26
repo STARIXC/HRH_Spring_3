@@ -2,6 +2,7 @@
 package org.utj.hrh.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -19,6 +20,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
+@JsonIgnoreProperties("standardCarderList")
 public class StandardCarder {
     public static final String TABLE_NAME = "standardized_cadre";
     @Id
@@ -32,6 +34,7 @@ public class StandardCarder {
 
 
     @ManyToOne
+    @JsonBackReference
     @JoinColumn(name = "carder_type_id")
     private CarderType carderType;
 

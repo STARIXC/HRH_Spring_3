@@ -7,11 +7,14 @@ import org.springframework.stereotype.Repository;
 import org.utj.hrh.model.User;
 
 @Repository
-public interface UserRepository extends JpaRepository<User,String> {
+public interface UserRepository extends JpaRepository<User,Long> {
     @Query("SELECT u FROM User u WHERE u.username = :username")
     User findByUsername(@Param("username") String username);
 
 
     @Query("SELECT u, r FROM User u JOIN Role r ON r.id = u.role.id WHERE u.username = :username")
     User setAuthoritiesByUsername(@Param("username") String username);
+
+    boolean existsByUsername(String username);
+
 }

@@ -18,11 +18,11 @@ public class SubCountyService {
 
 
     public List<SubCounty> getAll(){
-        return (List<SubCounty>) subCountyRepository.findAll();
+        return subCountyRepository.findAll();
     }
     public List<SubCounty> getActive(){
         Integer active=1;
-        return (List<SubCounty>) subCountyRepository.findByActive(active);
+        return subCountyRepository.findByActive(active);
     }
 
 //    public List<SubCounty> getAllByCounty(County county,Integer active_) {

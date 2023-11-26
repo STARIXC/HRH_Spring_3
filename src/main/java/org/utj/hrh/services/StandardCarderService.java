@@ -25,22 +25,25 @@ public class StandardCarderService {
         standardCarderRepository.save(standardCarder);
     }
 
-
+    public StandardCarder getStandardCarder(Integer id) throws StandardCarderNotFoundException {
+        return standardCarderRepository.findById(id)
+                .orElseThrow(() -> new StandardCarderNotFoundException("Could not find any carder with ID: " + id));
+    }
 
     //    get carder type
-    public StandardCarder getStandardCarder(Integer id) throws StandardCarderNotFoundException {
-        try{
-            return standardCarderRepository.findById(id).get();
-        }catch (NoSuchElementException ex){
-            throw new StandardCarderNotFoundException("could not find any carder with ID :"+id);
-        }
-
-    }
+//    public StandardCarder getStandardCarder(Integer id) throws StandardCarderNotFoundException {
+//        try{
+//            return standardCarderRepository.findById(id).get();
+//        }catch (NoSuchElementException ex){
+//            throw new StandardCarderNotFoundException("could not find any carder with ID :"+id);
+//        }
+//
+//    }
     public List<StandardCarder> fetchDataFromDataSource(Integer carderCategoryId) {
         return standardCarderRepository.findStandardCardersByCarderCategoryId(carderCategoryId);
     }
     public List<StandardCarder> getByCarderType(Integer carder_type_id) {
-        return standardCarderRepository.findStandardCardersByCarderType(carder_type_id);
+        return standardCarderRepository.findByCarderType_Id(carder_type_id);
     }
 
     public void delete(Integer id) throws  StandardCarderNotFoundException {

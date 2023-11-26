@@ -15,7 +15,7 @@ public class CarderCategoryService {
     @Autowired
     private CarderCategoryRepository carderCategoryDAO;
     public List<CarderCat> getAll(){
-        return (List<CarderCat>) carderCategoryDAO.findAll();
+        return carderCategoryDAO.findAll();
     }
 
     public void save(CarderCat carderCategory) {

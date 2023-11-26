@@ -23,7 +23,7 @@ public class DocumentTypeController {
         model.addAttribute("documentTypeList", documentTypeList);
         model.addAttribute("documentType",documentType);
         model.addAttribute("pageTitle", "Document Type");
-        return "pages/documents";
+        return "pages/admin/Administration/documents";
     }
     @PostMapping("/save")
     public String saveDocType(@ModelAttribute("documentType") DocumentType documentType) {

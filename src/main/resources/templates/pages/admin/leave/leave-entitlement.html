@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en" layout:decorate="~{layouts/layout.html}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta content="IE=edge" http-equiv="X-UA-Compatible">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>HRMIS [[${pageTitle}]] | UTJ</title>
+</head>
+<body>
+<span layout:fragment="content">
+       <div class="dashboard-breadcrumb mb-25">
+            <h2>Leave Entitlements</h2>
+
+           <div class="btn-box d-flex flex-wrap gap-2">
+               <a class="btn btn-sm btn-primary" th:href="@{/system/leave/entitlement/add}"><i
+                       class="fa fa-plus-circle"></i> <span>Add New </span></a>   
+           </div>
+        </div>
+    <div class="row">
+   
+
+        <div class="col-xxl-12 col-lg-12 col-sm-12">
+                <div class="panel">
+                    <div class="panel-header">
+                        <h5>Leave Entitlements</h5>
+                         <div class="input-group dashboard-filter">
+                             <input class="form-control" id="dashboardFilter" name="basic" readonly type="text">
+                             <label class="input-group-text" for="dashboardFilter"><i class="fa-light fa-calendar-days"></i></label>
+                         </div>
+                    </div>
+                    <div class="panel-body">
+
+                        <table class="table table-dashed table-hover utj-dataTable all-designation-table table-striped"
+                               id="leaveEntitlementsTable">
+                            <thead>
+                                <tr>
+                                    <th>S/L</th>
+                                    <th>Employee Name</th>
+                                    <th>Leave Policy</th>
+                                    <th>Valid From</th>
+                                    <th>Valid To</th>
+                                    <th>Entitled</th>
+                                    <th>Scheduled</th>
+                                    <th>Available</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+<!--                                <tr th:each="leaveHoliday , itrStat : ${leaveHolidays}">-->
+<!--                                    <td th:text="${itrStat.index + 1}"></td>-->
+<!--                                    <td th:text="${leaveHoliday.holidayName} ">Name</td>-->
+<!--                                      <td th:text="${leaveHoliday.startDate} ">20</td>-->
+<!--                                      <td th:text="${leaveHoliday.endDate} ">20</td>-->
+<!--                                      <td>Durations</td>-->
+<!--                                      <td th:text="${leaveHoliday.holidayDescription} ">20</td>-->
+<!--                                    <td>-->
+<!--                                        <div class="utj-dropdown dropdown d-inline-block">-->
+<!--                                            <button aria-expanded="false" class="btn btn-sm btn-outline-primary"-->
+<!--                                                    data-bs-toggle="dropdown">Action <i-->
+<!--                                                    class="fa-regular fa-angle-down"></i></button>-->
+<!--                                            <ul class="utj-dropdown-menu dropdown-menu dropdown-slim dropdown-menu-sm">-->
+<!--                                                <li>-->
+<!--                                                    <a class="dropdown-item" onclick="editDesignation(this)"-->
+<!--                                                       th:data-position-id="${leaveHoliday.id}">-->
+<!--                                                        <span class="dropdown-icon">-->
+<!--                                                            <i class="fa-light fa-pen-to-square"></i>-->
+<!--                                                        </span> Edit-->
+<!--                                                    </a>-->
+<!--                                                </li>-->
+<!--                                                <li>-->
+<!--                                                    <a class="dropdown-item"-->
+<!--                                                       th:holiday="${leaveHoliday.id}"-->
+<!--                                                       th:href="@{'/system/leave/holidays/delete/'+${leaveHoliday.id}}">-->
+<!--                                                        <span class="dropdown-icon">-->
+<!--                                                            <i class="fa-light fa-trash-can"></i>-->
+<!--                                                        </span> Delete-->
+<!--                                                    </a>-->
+<!--                                                </li>-->
+<!--                                            </ul>-->
+<!--                                        </div>-->
+<!--                                    </td>-->
+
+
+
+<!--                                </tr>-->
+                            </tbody>
+                        </table>
+                        <div class="table-bottom-control"></div>
+                    </div>
+                </div>
+            </div>
+    </div>
+    <!-- The Modal -->
+
+</span>
+
+<th:block layout:fragment="script">
+    <script th:src="@{/assets/vendor/js/jquery-ui.min.js}"></script>
+    <script th:src="@{/assets/vendor/js/select2.min.js}"></script>
+    <script th:src="@{/assets/js/select2-init.js}"></script>
+    <script th:inline="javascript">
+
+        $(function () {
+
+            //------------------------------------------------------------------------------------------------------------------
+            // All Entitlements Table In CRM Module
+            //------------------------------------------------------------------------------------------------------------------
+            if ($('#leaveEntitlementsTable').length) {
+                const dataTable = $('#leaveEntitlementsTable').DataTable({
+                    scrollX: true,
+                    "columnDefs": [{
+                        "targets": 'no-sort',
+                        "orderable": false
+                    }],
+                });
+                $('#leaveEntitlementsTable_filter input').addClass('form-control').attr("placeholder", "Search...").addClass('form-control-sm');
+                $('#leaveEntitlementsTable_length').prependTo('#leaveEntitlementsTableLength').find('select').addClass('form-control form-control-sm px-3');
+                $('#leaveEntitlementsTable_filter').prependTo('#tableSearch');
+                $('#leaveEntitlementsTable_info, #leaveEntitlementsTable_paginate').prependTo('.table-bottom-control');
+
+
+                $('#leaveEntitlementsTable').on('draw.dt', function () {
+                    $('#leaveEntitlementsTable tr').on('click', function () {
+                        $(this).toggleClass('selected');
+                        $(this).siblings().removeClass('selected');
+                    });
+
+                });
+            }
+        });
+
+    </script>
+</th:block>
+</body>
+
+</html>

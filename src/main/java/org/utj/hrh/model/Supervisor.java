@@ -22,20 +22,17 @@ public class Supervisor {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private int id;
-    @Column(name = "name")
-    private String name;
-    @Column(name = "phone")
-    private String phone;
-    @Column(name = "email")
-    private String email;
+    private Integer id;
+
     @Column(name = "status")
-    private int status;
+    private Integer status;
 
-//    @Column(name = "login_id")
-//    private String login_id;
+    @ManyToOne
+    @JoinColumn(name = "mflc", referencedColumnName = "centre_sante_id")
+    private Facility facilitySupervisors;
 
-    @OneToOne
-    @JoinColumn(name = "login_id", referencedColumnName = "userid", unique = true, insertable = false, updatable = false)
-    private User user;
+    @OneToOne(optional = true)
+    @JoinColumn(name = "login_id", referencedColumnName = "person_number") // Link to the person using the auto-generated ID
+    private Person person;
+
 }

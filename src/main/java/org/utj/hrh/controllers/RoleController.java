@@ -38,7 +38,7 @@ public class RoleController {
     List<Role> roles =roleRepository.findAll();
     model.addAttribute("roles",roles);
     model.addAttribute("pageTitle", "Roles");
-    return "pages/roles";
+    return "pages/admin/Administration/roles";
 }
     @PostMapping("/save")
     public String saveRole(@ModelAttribute("role") Role role) {

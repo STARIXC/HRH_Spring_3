@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en" layout:decorate="~{layouts/layout.html}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta content="IE=edge" http-equiv="X-UA-Compatible">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>HRMIS [[${pageTitle}]] | UTJ</title>
+</head>
+<body>
+<span layout:fragment="content">
+       <div class="dashboard-breadcrumb mb-25">
+            <h2>Termination Categories</h2>
+
+<!--           <div class="btn-box d-flex flex-wrap gap-2">-->
+<!--               <a class="btn btn-sm btn-primary" th:href="@{/system/designation/new}"><i class="fa fa-plus-circle"></i> <span>Add New </span></a>                  </div>-->
+        </div>
+    <div class="row">
+           <div class="col-xxl-5 col-sm-12 col-lg-5">
+                <div class="panel">
+                    <div class="panel-header panel">
+                        <h5>ADD/EDIT</h5>
+                    </div>
+                    <div class="panel-body">
+                                <form  action="#"
+                                       th:action="@{/system/termination/types/save}"
+                                       th:object="${terminationType}"
+                                       method="post">
+                            <input type="hidden" th:field="*{id}" id="id">
+                                    <div class="row g-3">
+
+                                        <div class="col-xxl-12 col-lg-12 col-sm-12">
+
+                                                <label for="terminationName" class="form-label input__label">Type Name</label>
+                                                <input  type="text" class="form-control input-style" id="terminationName" name="terminationName"
+                                                        placeholder="Termination Name" th:field="*{terminationName}" required minlength="3"
+                                                        maxlength="128"/>
+
+                                        </div>
+                                        <div class="col-xxl-12 col-lg-12 col-sm-12">
+
+                                                <label for="terminationDescription" class="form-label input__label">Termination Description</label>
+                                                <input type="text" class="form-control input-style" id="terminationDescription" name="terminationDescription"
+                                                       placeholder="Description" th:field="*{terminationDescription}" required minlength="8"
+                                                       />
+
+                                        </div>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary btn-style mt-4">Submit</button>
+                                </form>
+                    </div>
+                </div>
+           </div>
+
+        <div class="col-xxl-7 col-lg-7 col-sm-12">
+                <div class="panel">
+                    <div class="panel-header">
+                        <h5>All Types</h5>
+                    </div>
+                    <div class="panel-body">
+
+                        <table class="table table-dashed table-hover utj-dataTable all-termination-table table-striped"
+                               id="allTerminationTable">
+                            <thead>
+                                <tr>
+                                    <th>S/L</th>
+                                    <th>Termination Name</th>
+                                    <th>Description</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:each="type , itrStat : ${termination_types}">
+
+                                    <td th:text="${itrStat.index + 1}"></td>
+                                      <td th:text="${type.terminationName} "></td>
+                                      <td th:text="${type.terminationDescription} "></td>
+                                    <td>
+                                        <div class="utj-dropdown dropdown d-inline-block">
+                                            <button aria-expanded="false" class="btn btn-sm btn-outline-primary"
+                                                    data-bs-toggle="dropdown">Action <i
+                                                    class="fa-regular fa-angle-down"></i></button>
+                                            <ul class="utj-dropdown-menu dropdown-menu dropdown-slim dropdown-menu-sm">
+                                                <li>
+<!--                                                     th:href="@{'/system/designation/edit/' + ${position.id}}"-->
+                                                  <a class="dropdown-item"
+
+                                                     th:data-position-id="${type.id}" onclick="editDesignation(this)">
+                                                <span class="dropdown-icon">
+                                                    <i class="fa-light fa-pen-to-square"></i>
+                                                </span> Edit
+                                            </a>
+                                                </li>
+                                                <li><a class="dropdown-item"
+                                                       th:href="@{'/system/termination/types/delete/'+${type.id}}" th:type="${type.id}"><span
+                                                        class="dropdown-icon"><i
+                                                        class="fa-light fa-trash-can"></i></span> Delete</a></li>
+                                            </ul>
+                                        </div>
+                                    </td>
+
+
+
+                                </tr>
+    </tbody>
+                        </table>
+                        <div class="table-bottom-control"></div>
+                    </div>
+                </div>
+            </div>
+    </div>
+</span>
+
+<th:block layout:fragment="script">
+
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        $(document).ready(function () {
+            // Add event listener for form submission
+
+        });
+        /*]]>*/
+
+        $(function () {
+            //------------------------------------------------------------------------------------------------------------------
+            // All Designation Table In CRM Module
+            //------------------------------------------------------------------------------------------------------------------
+            if ($('#allDesignationTable').length) {
+                var dataTable = $('#allDesignationTable').DataTable({
+                    scrollX: true,
+                    "columnDefs": [{
+                        "targets": 'no-sort',
+                        "orderable": false
+                    }],
+                });
+                $('#allDesignationTable_filter input').addClass('form-control').attr("placeholder", "Search...").addClass('form-control-sm');
+                $('#allDesignationTable_length').prependTo('#allDesignationTableLength').find('select').addClass('form-control form-control-sm px-3');
+                $('#allDesignationTable_filter').prependTo('#tableSearch');
+                $('#allDesignationTable_info, #allDesignationTable_paginate').prependTo('.table-bottom-control');
+
+
+                $('#allDesignationTable').on('draw.dt', function () {
+                    $('#allDesignationTable tr').on('click', function () {
+                        $(this).toggleClass('selected');
+                        $(this).siblings().removeClass('selected');
+                    });
+
+                });
+            }
+        });
+
+        function editDesignation(link) {
+            var positionId = $(link).data('position-id');
+            var formModeInput = $('#formMode');
+
+            // Set the form into edit mode
+            formModeInput.val('edit');
+            var fetchPositionUrl = /*[[@{/system/designation/get/{id}}]]*/;
+            var url = fetchPositionUrl.replace("{id}", positionId); // Replace {id} with the actual value
+            // Use AJAX to fetch designation data based on positionId
+            $.ajax({
+                type: "GET",
+                url: url,
+                success: function (data) {
+                    // Populate the form fields with data from the server
+
+                    $('#inputCarderCategory').val(data.standardized_cadre_id);
+                    $('#position_title').val(data.position_title);
+                    $('#basic_pay').val(data.basic_pay);
+                },
+                error: function (error) {
+                    // Handle error here
+                }
+            });
+
+
+        }
+
+    </script>
+</th:block>
+</body>
+
+</html>

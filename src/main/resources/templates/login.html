@@ -37,18 +37,22 @@
             </div>
             <a href="index.html"><i class="fa-duotone fa-house-chimney"></i></a>
         </div>
-        <div>
-            <div th:if="${param.error}" >
-                <span class="alert alert-danger">Invalid Username or Password</span>
-            </div>
-            <div th:if="${param.logout}" class="mb-5">
-                <span class="alert alert-success"> You have been logged out.</span>
-            </div>
-        </div>
+
         <div class="bottom">
 
             <h3 class="panel-title">Login</h3>
+            <div th:if="${param.error}" >
+                <div class="login-status">
+                    <div class="msg-error alert alert-danger py-2 px-3 rounded mb-20 fs-14"><i class="fa-regular fa-circle-exclamation me-2"></i> Invalid Username/Password</div>
+                </div>
 
+            </div>
+            <div th:if="${param.logout}" class="mb-5">
+                <div class="login-status">
+                    <div class="msg-success alert alert-success py-2 px-3 rounded mb-20 fs-14"><i class="fa-regular fa-check me-2"></i> You have been logged out.</div>
+                </div>
+
+            </div>
             <form  th:action="@{/login}" method="post">
                 <div class="input-group mb-25">
                     <span class="input-group-text"><i class="fa-regular fa-user"></i></span>

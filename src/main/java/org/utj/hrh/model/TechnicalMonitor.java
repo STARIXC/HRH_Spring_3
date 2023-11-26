@@ -19,7 +19,7 @@ public class TechnicalMonitor {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "technical_monitor_id")
-    private int technicalMonitorId;
+    private Integer technicalMonitorId;
     @Column(name = "name")
     private String name;
     @Column(name = "email")
@@ -27,14 +27,14 @@ public class TechnicalMonitor {
     @Column(name = "phone")
     private String phone;
     @Column(name = "mdtRegion")
-    private int mdtRegion;
+    private Integer mdtRegion;
     @Column(name = "active")
-    private int active;
-//    @Column(name = "login_id")
-//    private String loginId;
+    private Integer active;
+    @OneToOne(optional = true)
+    @JoinColumn(name = "login_id", referencedColumnName = "person_number") // Link to the person using the auto-generated ID
+    private Person person; // Reference to the person
 
-    @OneToOne
-    @JoinColumn(name = "login_id", referencedColumnName = "userid",unique = true, insertable = false, updatable = false)
-    private User user;
+
+    
 
 }

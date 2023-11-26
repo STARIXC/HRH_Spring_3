@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en" layout:decorate="~{layouts/layout.html}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta content="IE=edge" http-equiv="X-UA-Compatible">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>HRMIS [[${pageTitle}]] | UTJ</title>
+</head>
+<body>
+<span layout:fragment="content">
+       <div class="dashboard-breadcrumb mb-25">
+            <h2>System Users</h2>
+           <div class="btn-box d-flex flex-wrap gap-2">
+                 <a class="btn btn-sm btn-primary" th:href="@{/system/user/add-new}"><i class="fa-light fa-plus"></i> Add New</a>
+               <form method="post"
+                     th:action="@{/system/user/migratePasswords}"
+                     >
+    <button class="btn btn-sm btn-info" type="submit">Migrate Passwords</button>
+</form>
+
+
+           </div>
+        </div>
+        <div class="row g-4">
+            <div class="col-12">
+                <div class="panel">
+                    <div class="panel-header">
+                        <h5>(<span th:text="${recordCount}"></span>) System Users Found</h5>
+                        <div class="btn-box d-flex gap-2">
+                            <div id="tableSearch"></div>
+                            <button class="btn btn-sm btn-icon btn-outline-primary"><i class="fa-light fa-arrows-rotate"></i></button>
+                            <div class="utj-dropdown dropdown">
+                                <button class="btn btn-sm btn-icon btn-outline-primary" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false"><i class="fa-regular fa-ellipsis-vertical"></i></button>
+                                <ul class="utj-dropdown-menu dropdown-menu">
+                                    <li class="dropdown-title">Show Table Title</li>
+                                    <li>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="showUsername" checked>
+                                            <label class="form-check-label" for="showUsername">
+                                                Username
+                                            </label>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="showUserRole" checked>
+                                            <label class="form-check-label" for="showUserRole">
+                                                User Role
+                                            </label>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="showEmployeeName" checked>
+                                            <label class="form-check-label" for="showEmployeeName">
+                                                Employee Name
+                                            </label>
+                                        </div>
+                                    </li>
+
+                                    <li class="dropdown-title pb-1">Showing</li>
+                                    <li>
+                                        <div class="input-group">
+                                            <input type="number" class="form-control form-control-sm w-50" value="10">
+                                            <button class="btn btn-sm btn-primary w-50">Apply</button>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <div th:if="${migrationSuccess}">
+                            <p style="color: green;">Password migration successful!</p>
+                        </div>
+                        <div class="table-filter-option">
+                            <div class="row g-3">
+                                <div class="col-xl-10 col-9 col-xs-12">
+                                    <div class="row g-3">
+                                        <div class="col">
+                                            <form class="row g-2">
+                                                <div class="col">
+                                                    <select class="form-control form-control-sm" data-placeholder="Bulk action">
+                                                        <option value="">Bulk action</option>
+                                                        <option value="0">Move to trash</option>
+                                                    </select>
+                                                </div>
+                                                <div class="col">
+                                                    <button class="btn btn-sm btn-primary w-100">Apply</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-2 col-md-3 col-3 col-xs-12 d-flex justify-content-end">
+                                    <div id="userTableLength"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <table class="table table-dashed table-hover utj-dataTable target-audience-table table-striped" id="userTable">
+                            <thead>
+                                <tr >
+                                    <th class="no-sort">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="markAllUsers">
+                                        </div>
+                                    </th>
+                                    <th>Username</th>
+                                    <th>User Role</th>
+                                    <th>Employee Name</th>
+                                    <th>Status</th>
+                                    <th>Last Login</th>
+                                    <th>Action</th>
+                                    
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:each="user , itrStat : ${users}">
+                                  <td th:if="${user.role?.role_name == 'Admin'}">
+                                      <!-- Your content here -->
+                                  </td>
+                                    <td th:if="${user.role?.role_name != 'Admin'}">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox">
+                                        </div>
+                                    </td>
+<!--                                    <td th:if="${user.role.getRole_name() != 'Admin'}" >-->
+<!--                                        <div class="form-check">-->
+<!--                                            <input class="form-check-input" type="checkbox">-->
+<!--                                        </div>-->
+<!--                                    </td>-->
+                                    <td th:text="${user.username} ">Isaac</td>
+<!--                                    <td th:text="${user.role.getRole_name()} ">Davis</td>-->
+                                    <td th:text="${user.role?.role_name} ?: 'N/A'">Davis</td>
+                                    <td th:text="${user.person.getName()} ">info@example.com</td>
+                                     <td th:if="${user.status == true}" >
+                                         <div class="form-check form-switch">
+                                            <input class="form-check-input" type="checkbox" role="switch" checked>
+                                        </div>
+                                     </td>
+                                    <td th:if="${user.status == false}" >
+                                         <div class="form-check form-switch">
+                                            <input class="form-check-input" type="checkbox" role="switch" >
+                                        </div>
+                                     </td>
+
+                                    <td>2 Hrs Ago</td>
+                                    <td>  
+                                        <div class="btn-box">
+                                            <a class="btn btn-sm btn-icon btn-primary" th:href="@{'/system/user/edit/'+${user.id}}"><i class="fa-light fa-edit"></i></a>
+                                            <a class="btn btn-sm btn-icon btn-danger" th:user="${user.id}"  th:href="@{'/system/user/delete/'+${user.id}}"><i class="fa-light fa-trash-can"></i></a>
+                                        </div>
+                                    </td>
+                                </tr>
+                                
+                            </tbody>
+                        </table>
+                        <div class="table-bottom-control"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+</span>
+<!-- Include the script fragment -->
+
+<th:block layout:fragment="script">
+
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        $(document).ready(function () {
+            // Add event listener for form submission
+
+        });
+        /*]]>*/
+
+        $(function () {
+            //------------------------------------------------------------------------------------------------------------------
+            // All User Table In HRH Module
+            //------------------------------------------------------------------------------------------------------------------
+           if ($('#userTable').length) {
+                var dataTable = $('#userTable').DataTable({
+                    responsive: true,
+                    scrollX: true,
+                    "columnDefs": [{
+                        "targets": 'no-sort',
+                        "orderable": false
+                    }],
+                });
+                $('#userTable_filter input').addClass('form-control').attr("placeholder", "Search...").addClass('form-control-sm');
+                $('#userTable_length').prependTo('#userTableLength').find('select').addClass('form-control form-control-sm px-3');
+                $('#userTable_filter').prependTo('#tableSearch');
+                $('#userTable_info, #userTable_paginate').prependTo('.table-bottom-control');
+
+                $('#markAllUsers').on('change', function () {
+                    if ($(this).is(':checked')) {
+                        $(this).parents('.dataTables_scroll').find('tbody tr .form-check-input:not([role=switch])').prop('checked', true);
+                    } else {
+                        $(this).parents('.dataTables_scroll').find('tbody tr .form-check-input:not([role=switch])').prop('checked', false);
+                    }
+                });
+                $('#userTable tr').on('click', function () {
+                    $(this).toggleClass('selected');
+                    $(this).siblings().removeClass('selected');
+                });
+
+                $('#userTable').on('draw.dt', function () {
+                    $('#userTable tr').on('click', function () {
+                        $(this).toggleClass('selected');
+                        $(this).siblings().removeClass('selected');
+                    });
+                    if ($('#userTable_wrapper thead th input[type=checkbox]').is(':checked')) {
+                        $('#userTable_wrapper thead th input[type=checkbox]').parents('.dataTables_wrapper').find('tbody .form-check-input:not([role=switch])').prop('checked', true);
+                    } else {
+                        $('#userTable_wrapper thead th input[type=checkbox]').parents('.dataTables_wrapper').find('tbody .form-check-input:not([role=switch])').prop('checked', false);
+                    }
+                });
+            }
+
+
+
+        });
+
+  
+    </script>
+</th:block>
+
+</body>
+
+</html>

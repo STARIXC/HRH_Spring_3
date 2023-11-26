@@ -22,7 +22,7 @@ class ActivityRepositoryTest {
         Activity saveActivity = activityRepository.save(activity);
 //     display activity info
         System.out.println(saveActivity.getActivity_id());
-        System.out.println(saveActivity.toString());
+        System.out.println(saveActivity);
     }
 
     @Test

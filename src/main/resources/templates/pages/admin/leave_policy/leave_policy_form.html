@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en" layout:decorate="~{layouts/layout.html}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+>
+<head>
+    <meta charset="UTF-8">
+    <meta content="IE=edge" http-equiv="X-UA-Compatible">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>HRMIS [[${pageTitle}]] | UTJ</title>
+</head>
+<body>
+<span layout:fragment="content">
+    <div class="dashboard-breadcrumb mb-25">
+        <h2>Form Elements</h2>
+    </div>
+
+  <div class="row g-3">
+      <div class="col-xxl-4 col-sm-12 col-lg-4">
+          <div class="panel">
+                    <div class="panel-header">
+                        <h2>Leave Policies</h2>
+                        <div class="btn-box">
+                <a class="btn btn-sm btn-primary" th:href="@{/system/leave/policy/all}">Back To Leave Policies</a>
+            </div>
+                    </div>
+                    <div class="panel-body">
+                        <form  action="#"
+                               th:action="@{/system/leave/policy/save}"
+                               th:object="${leavePolicy}"
+                               method="post">
+                               <div class="row g-3">
+                                   <div class="col-sm-12">
+                                                <label class="form-label" for="f-year">Year <span
+                                                        class="required">*</span></label>
+                                                <select class="leave-policy-input form-control" id="f-year"
+                                                        name="f-year" required="required">
+                                                    <option selected="selected" value="">— select year —</option>
+                                                    <option value="1">2019</option>
+                                                </select>
+                                                <span class="description text-muted text-sm-start">Select Year Or <a
+                                                        th:href="@{/system/financial/year/new}">Add New</a></span>
+                                            </div>
+                                   <div class="col-sm-12">
+                                                <label for="leave-id">Leave Type <span class="required">*</span></label>
+                                                <select class="leave-policy-input form-control" id="leave-id"
+                                                        name="leave-id" required="required">
+                                                    <option selected="selected" value="">— select leave type —</option>
+                                                </select>
+                                                <span class="description text-sm-start text-muted">Select A Leave Type Or <a
+                                                        href="">Add New</a></span>
+
+                                            </div>
+                                   <div class="col-sm-12">
+                                                 <label class="form-label" for="employee_type">Employee Type <span
+                                                         class="required">*</span></label>
+                                                <select class="leave-policy-input form-control " id="employee_type"
+                                                        name="employee_type" required="required">
+                                                    <option value="-1">All</option>
+                                                </select>
+
+                                            </div>
+                                   <div class="col-sm-12">
+                                                <label class="form-label" for="description">Description</label>
+                                                <textarea class="leave-policy-input form-control" id="description"
+                                                          name="description" placeholder="(optional)"
+                                                          rows="3"> </textarea>
+
+                                            </div>
+                                   <div class="col-sm-12">
+                                                <label class="form-label" for="days">Days <span
+                                                        class="required">*</span></label>
+                                                <input class="leave-policy-input form-control" id="days" name="days"
+                                                       placeholder="20" required="required" type="text" value="">
+                                                <span class="description text-sm-start text-muted">Days in a calendar year.</span>
+                                            </div>
+                                   <div class="col-sm-12">
+                                                <label class="form-label" for="applicable-from">Applicable After</label>
+                                                <input class="leave-policy-input form-control" id="applicable-from"
+                                                       name="applicable-from" type="number" value="0">
+                                                <span class="description text-sm-start text-muted">Days</span>
+                                                <p class="description text-sm-start text-muted">Based on employee joining date.</p>
+                                            </div>
+                                   <div class="col-sm-12">
+                                                <label class="form-label" for="colorPicker">Calendar Color <span
+                                                        class="required">*</span></label>
+                                                <input class="form-control form-control-color w-50" id="colorPicker"
+                                                       type="color" value="#0D99FF">
+                                            </div>
+                                   <div class="col-sm-12">
+                                       <div class="form-check">
+                                            <label for="apply-for-new-users">Entitle New Employees
+                                                <span class="utj-help-tip utj-tips"></span>
+                                            </label>
+                                           <span class="checkbox">
+
+                                            <label class="form-check-label" for="apply-for-new-users">
+                                                <input class="form-check-input" name="apply-for-new-users" type="checkbox" value="on" id="apply-for-new-users">
+                                                Entitle new employees to this policy after hiring?
+                                            </label>
+                                           </span>
+                                        </div>
+                                   </div>
+                                   <div class="col-sm-12">
+                                                <label for="apply-for-existing-users" class="form-label">Apply for existing employees</label>
+                                                <span class="checkbox">
+                                                    <label for="apply-for-existing-users">
+                                                        <input id="apply-for-existing-users" class=""
+                                                               name="apply-for-existing-users" type="checkbox"
+                                                               value="on">Entitle existing employees to this policy?
+                                                    </label>
+                                                </span>
+
+                                            </div>
+                                   <div class="col-sm-12">
+                                                <label for="gender" class="form-label">Gender</label>
+                                                <select class="leave-policy-input form-control" id="gender" name="gender">
+                                                    <option selected="selected" value="-1">All</option>
+                                                    <option value="male">Male</option>
+                                                    <option value="female">Female</option>
+                                                    <option value="other">Other</option>
+
+                                                </select>
+
+                                            </div>
+                                   <div class="col-sm-12">
+
+                                                <label for="marital" class="form-label">Marital Status</label>
+                                                <select class="leave-policy-input form-control"
+                                                        id="marital" name="marital">
+                                                    <option selected="selected" value="-1">All</option>
+                                                    <option value="single">Single</option>
+                                                    <option value="married">Married</option>
+                                                    <option value="widowed">Widowed</option>
+                                                </select>
+                                            </div>
+                                   <div class="col-sm-12">
+                                                 <label for="carryover-days" class="form-label">Carryover Days <span
+                                                         class="utj-help-tip utj-tips"></span></label>
+
+                                                <input id="carryover-days" name="carryover-days" type="number"
+                                                       value="0" class="form-control">
+
+                                            
+                                                    <label for="carryover-uses-limit" class="form-label">Expired by</label>
+                                                    <input id="carryover-uses-limit" class="form-control" name="carryover-uses-limit" type="number" value="0">
+                                               
+                                                <span>Days</span>
+
+                                            </div>
+                                   <div class="col-sm-12">
+                                                <label for="enable-half-day" class="form-label">Enable Half Day Leave</label>
+                                                <span class="checkbox">
+                                                    <label for="enable-half-day">
+                                                        <input id="enable-half-day" name="enable-half-day" type="checkbox" value="on">
+                                                    </label>
+                                                </span>
+                                            </div>
+                               </div>
+                        </form>
+
+                    </div>
+                </div>
+      </div>
+          <div class="col-xxl-8 col-sm-12 col-lg-8">
+        <div class="panel">
+            <div class="panel-header">
+                <h5>Leave Policies</h5>
+                <div class="btn-box d-flex flex-wrap gap-2">
+
+                    <a class="btn btn-sm btn-primary" th:href="@{/system/leave/policy/form}"><i
+                            class="fa fa-plus-circle"></i> <span>Add New </span></a>
+                </div>
+            </div>
+            <div class="panel-body">
+
+
+                <div class="alert alert-success alert-dismissible fade show" role="alert" th:if="${message != null}">
+                    [[${message}]]
+                    <button aria-label="Close" class="close" data-dismiss="alert" type="button">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <table class="table table-bordered table-dashed table-hover  table-striped"
+                       id="allLeavePolicies">
+                    <thead>
+                    <tr>
+                        <th>S/L</th>
+                        <th>Policy Name</th>
+                        <th>Year</th>
+                        <th>Description</th>
+                        <th>Days</th>
+                        <th>Calender Color</th>
+                        <th>Cadre Type</th>
+                        <th>Gender</th>
+                        <th>Marital</th>
+                        <th>Action</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="leavePolicy , itrStat : ${leavePolicies}">
+                        <td th:text="${itrStat.index + 1}"></td>
+                        <td th:text="${leavePolicy.leaveType.leaveType} ">Name</td>
+                        <td th:text="${leavePolicy.f_year.name} ">Name</td>
+                        <td th:text="${leavePolicy.description} ">Name</td>
+                        <td th:text="${leavePolicy.days} ">Name</td>
+                        <td th:text="${leavePolicy.color} ">Name</td>
+                        <td th:text="${leavePolicy.employee_type} ">Name</td>
+                        <td th:text="${leavePolicy.gender} ">Name</td>
+                        <td th:text="${leavePolicy.marital} ">Name</td>
+                        <td>
+                            <div class="btn-box">
+                                <a class="btn btn-sm btn-icon btn-primary" th:href="@{'/system/role/edit/'+${leavePolicy.id}}"><i class="fa-light fa-edit"></i></a>
+                                <a class="btn btn-sm btn-icon btn-danger" th:carderType="${leavePolicy.id}"  th:href="@{'/system/role/delete/'+${leavePolicy.id}}"><i class="fa-light fa-trash-can"></i></a>
+                            </div>
+                        </td>
+
+                    </tr>
+                    </tbody>
+
+                </table>
+            </div>
+        </div>
+    </div>
+
+  </div>
+
+</span>
+
+</body>
+
+</html>

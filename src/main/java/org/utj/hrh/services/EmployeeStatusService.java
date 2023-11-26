@@ -16,7 +16,7 @@ public class EmployeeStatusService {
 
 
     public List<EmployeeStatus> getAll(){
-        return (List<EmployeeStatus>) employeeStatusRepository.findAll();
+        return employeeStatusRepository.findAll();
     }
 
 }

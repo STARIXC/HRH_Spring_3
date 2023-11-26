@@ -15,7 +15,7 @@ public class DocumentTypeService {
 
 
     public List<DocumentType> getAll(){
-        return (List<DocumentType>) documentTypeRepository.findAll();
+        return documentTypeRepository.findAll();
     }
 
     public void save(DocumentType documentType) {

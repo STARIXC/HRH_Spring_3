@@ -27,7 +27,7 @@ public class CarderTypeController {
         List<CarderType> types = carderTypeService.getAll();
         model.addAttribute("carder_types", types);
         model.addAttribute("pageTitle", "View :: Carder Type");
-        return "carderTypes";
+        return "admin/Administrator/carderTypes";
     }
 
     @GetMapping("/new")
@@ -62,7 +62,7 @@ public class CarderTypeController {
     @GetMapping("/delete/{id}")
     public String deleteCarderType(@PathVariable(name = "id") Integer id,Model model,RedirectAttributes redirectAttributes){
         try {
-            carderTypeService.delete(id);;
+            carderTypeService.delete(id);
             redirectAttributes.addFlashAttribute("message","User has been deleted successfully");
 
         } catch (CarderTypeNotFoundException e) {

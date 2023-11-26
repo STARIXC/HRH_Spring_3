@@ -27,14 +27,8 @@ public class Facility {
 	private Integer centre_sante_id;
 
 
-	@OneToMany(mappedBy = "facility")
+	@OneToMany(mappedBy = "facility",fetch = FetchType.LAZY)
 	private List<EmployeeFacility> employeeFacilities;
-
-//	@ManyToMany
-//	@JoinTable(name = "tbl_user_facility",
-//			joinColumns = @JoinColumn(name = "centre_sante_id"),
-//			inverseJoinColumns = @JoinColumn(name = "emp_no"))
-//	private List<Employee> employees;
 
 
 }

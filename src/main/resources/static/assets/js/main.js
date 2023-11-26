@@ -17,6 +17,7 @@
 
 
 
+
         //------------------------------------------------------------------------------------------------------------------
         // Show Active Menu On Top In Main Sidebar
         //------------------------------------------------------------------------------------------------------------------
@@ -1192,7 +1193,9 @@
             $('.date-picker').datepicker({
                 showOtherMonths: true,
                 selectOtherMonths: true,
-                dateFormat: 'd M, y',
+                changeMonth: true,
+                changeYear: true,
+                dateFormat: 'yy-mm-dd',
             });
         }
 
@@ -1565,8 +1568,8 @@
         //------------------------------------------------------------------------------------------------------------------
         // Target Audience Table In CRM Module
         //------------------------------------------------------------------------------------------------------------------
-        if ($('#targetAudienceTable').length) {
-            var dataTable = $('#targetAudienceTable').DataTable({
+        if ($('#allTerminationTable').length) {
+            var dataTable = $('#allTerminationTable').DataTable({
                 responsive: true,
                 scrollX: true,
                 "columnDefs": [{
@@ -1574,10 +1577,10 @@
                     "orderable": false
                 }],
             });
-            $('#targetAudienceTable_filter input').addClass('form-control').attr("placeholder", "Search...").addClass('form-control-sm');
-            $('#targetAudienceTable_length').prependTo('#employeeTableLength').find('select').addClass('form-control form-control-sm px-3');
-            $('#targetAudienceTable_filter').prependTo('#tableSearch');
-            $('#targetAudienceTable_info, #targetAudienceTable_paginate').prependTo('.table-bottom-control');
+            $('#allTerminationTable_filter input').addClass('form-control').attr("placeholder", "Search...").addClass('form-control-sm');
+            $('#allTerminationTable_length').prependTo('#TerminationTableLength').find('select').addClass('form-control form-control-sm px-3');
+            $('#allTerminationTable_filter').prependTo('#tableSearch');
+            $('#allTerminationTable_info, #allTerminationTable_paginate').prependTo('.table-bottom-control');
 
             $('#markAllAudience').on('change', function () {
                 if ($(this).is(':checked')) {
@@ -1586,20 +1589,20 @@
                     $(this).parents('.dataTables_scroll').find('tbody tr .form-check-input:not([role=switch])').prop('checked', false);
                 }
             });
-            $('#targetAudienceTable tr').on('click', function () {
+            $('#allTerminationTable tr').on('click', function () {
                 $(this).toggleClass('selected');
                 $(this).siblings().removeClass('selected');
             });
 
-            $('#targetAudienceTable').on('draw.dt', function () {
-                $('#targetAudienceTable tr').on('click', function () {
+            $('#allTerminationTable').on('draw.dt', function () {
+                $('#allTerminationTable tr').on('click', function () {
                     $(this).toggleClass('selected');
                     $(this).siblings().removeClass('selected');
                 });
-                if ($('#targetAudienceTable_wrapper thead th input[type=checkbox]').is(':checked')) {
-                    $('#targetAudienceTable_wrapper thead th input[type=checkbox]').parents('.dataTables_wrapper').find('tbody .form-check-input:not([role=switch])').prop('checked', true);
+                if ($('#allTerminationTable_wrapper thead th input[type=checkbox]').is(':checked')) {
+                    $('#allTerminationTable_wrapper thead th input[type=checkbox]').parents('.dataTables_wrapper').find('tbody .form-check-input:not([role=switch])').prop('checked', true);
                 } else {
-                    $('#targetAudienceTable_wrapper thead th input[type=checkbox]').parents('.dataTables_wrapper').find('tbody .form-check-input:not([role=switch])').prop('checked', false);
+                    $('#allTerminationTable_wrapper thead th input[type=checkbox]').parents('.dataTables_wrapper').find('tbody .form-check-input:not([role=switch])').prop('checked', false);
                 }
             });
         }

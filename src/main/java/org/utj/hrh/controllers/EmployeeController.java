@@ -54,47 +54,35 @@ public class EmployeeController {
         this.designationService = designationService;
     }
 
-//    @Autowired
-//private RoleService roleService;
-//    @Autowired
-//    private UserService userService;
-//
-//    @Autowired
-//    private EmployeeRepository employeeRepository;
-//    @Autowired
-//    private CarderTypeService carderTypeService;
-//
-//    @Autowired
-//    private EmployeeStatusService employeeStatusService;
-//    @Autowired
-//    private EmployeeService employeeService;
-//
-//    @Autowired
-//    private EmployeePositionService employeePositionService;
-//
-//    @Autowired
-//    private CountyService countyService;
-//    @Autowired
-//    private StandardCarderService standardCarderService;
-//
-//    @Autowired
-//    private DesignationService designationService;
-
   public MD5PasswordEncoder md5PasswordEncoder;
 
 
 
     @GetMapping("/system/employee/all")
     public String getAllEmployees(Model model) {
-        List<Employee> employeeList=employeeRepository.findAll();
-//        System.out.println(employeeList.toString());
-        // Add the data to the model
-
-        model.addAttribute("employees", employeeList);
-        model.addAttribute("pageTitle", "STAFF");
-        model.addAttribute("httpStatus", HttpStatus.OK);
-//        System.out.println(model);
-        return "pages/employee/employees";
+        try {
+            List<Employee> employeeList = employeeService.getAll();
+            model.addAttribute("employees", employeeList);
+            model.addAttribute("pageTitle", "STAFF");
+            model.addAttribute("httpStatus", HttpStatus.OK);
+            return "pages/admin/employee/employees";
+        } catch (NullPointerException e) {
+            // Log the error message and stack trace
+            logger.error("An error occurred while fetching employees.", e);
+            // Handle the exception, e.g., return an error page or message
+            model.addAttribute("error", "An error occurred while fetching employees.");
+            model.addAttribute("httpStatus", HttpStatus.INTERNAL_SERVER_ERROR);
+            return "/error/error-500"; // Create an error page view
+        }
+//        List<Employee> employeeList=employeeService.getAll();
+////        System.out.println(employeeList.toString());
+//        // Add the data to the model
+//
+//        model.addAttribute("employees", employeeList);
+//        model.addAttribute("pageTitle", "STAFF");
+//        model.addAttribute("httpStatus", HttpStatus.OK);
+////        System.out.println(model);
+//        return "pages/admin/employee/employees";
     }
 
     // Mapping for displaying the add new product form
@@ -108,10 +96,12 @@ public class EmployeeController {
             model.addAttribute("employeeStatuses",employeeStatuses);
             List<CarderType> types = carderTypeService.getAll();
             model.addAttribute("carder_types", types);
+            List<StandardCarder> standardCarders = standardCarderService.getAll();
+            model.addAttribute("standardCarders", standardCarders);
             List<County> counties = countyService.getActive();
             model.addAttribute("counties",counties);
 
-        return "pages/employee/add-employee"; // This corresponds to the Thymeleaf template
+        return "pages/admin/employee/add-employee"; // This corresponds to the Thymeleaf template
     }
     @GetMapping("system/employee/{id}/edit")
     public String showEditForm(@PathVariable String id, Model model) {
@@ -130,7 +120,7 @@ public class EmployeeController {
         List<StandardCarder> standardCarders = standardCarderService.getAll();
         model.addAttribute("standardCarders",standardCarders);
         // Load and pass the data to populate the form fields
-        return "pages/employee/edit-employee"; // This corresponds to the Thymeleaf template
+        return "pages/admin/employee/edit-employee"; // This corresponds to the Thymeleaf template
     }
 //    @GetMapping("/employees/{id}/enabled/{status}")
 //    public String updateStaffEnabledStatus(@PathVariable("id") String id, @PathVariable("status") boolean enabled, RedirectAttributes redirectAttributes) throws EmployeeNotFoundException {
@@ -173,8 +163,23 @@ public class EmployeeController {
 
 
     @GetMapping("system/employee/view/{emp_no}")
-    public String viewEmployee(@PathVariable(name="emp_no") String emp_no, Model model){
-        Employee employee = employeeRepository.getEmployeeByEmp_no(emp_no);
+    public String viewEmployee(@PathVariable(name="emp_no") String emp_no, Model model) throws EmployeeNotFoundException {
+        Employee employee = employeeService.getEmployee(emp_no);
+        Optional<Supervisor> activeSupervisor = employeeService.getActiveSupervisorForEmployee(emp_no);
+
+        if (activeSupervisor.isPresent()) {
+            Supervisor supervisor = activeSupervisor.get();
+            // Do something with the supervisor
+            String supervisorName = supervisor.getPerson().getName();
+            model.addAttribute("supervisorName", supervisorName);
+        } else {
+            String supervisorName = "Not Assigned";
+            model.addAttribute("supervisorName", supervisorName);
+        }
+//        System.out.println(activeSupervisor.toString());
+        model.addAttribute("employee", employee);
+
+
 //                System.out.println(employee);
         model.addAttribute("employee", employee);
 //
@@ -191,7 +196,7 @@ public class EmployeeController {
         List<StandardCarder> standardCarders = standardCarderService.getAll();
         model.addAttribute("standardCarders",standardCarders);
         model.addAttribute("pageTitle","View ::  Employee Profile");
-        return "pages/employee/view-profile";
+        return "pages/admin/employee/view-profile";
 
     }
 
@@ -200,7 +205,7 @@ public class EmployeeController {
         // Save the employee data to the database or perform other necessary actions
         EmployeePosition employeePosition= employeePositionService.getDesignation(employee.getPosition().getId());
         employee.setPosition(employeePosition);
-        employee.setId(employee.getEmpNo());
+//        employee.setId(employee.getEmpNo());
         employeeService.save(employee);
         User user= new User();
         // Create a username based on the rules
@@ -213,30 +218,30 @@ public class EmployeeController {
                 String username = firstName.substring(0, 1).toLowerCase() + surname.toLowerCase();
                 user.setUsername(username);
             }
-            user.setUserid(employee.getEmpNo());
+//            user.setPerson(user.getPerson().setPersonNumber());
             // Ensure that md5PasswordEncoder is not null before using it
             if (md5PasswordEncoder != null) {
                 String password = employee.getNationalId(); // Use empNo as the initial password
                 String encryptedPassword = md5PasswordEncoder.encode(password); // Password hashing
                 user.setPassword(encryptedPassword);
             } else {
-                        logger.info("Error Encripting  form data: " + employee.getNationalId().toString());
+                        logger.info("Error Encripting  form data: " + employee.getNationalId());
             }
 
             String role_name="Employee";
             Role role =roleService.getRoleByName(role_name);
             user.setRole(role);
-            user.setStatus(1);
+            user.setStatus(true);
             userService.save(user);
 
         }
 
-        String empNumber = employee.getEmpNo();
+//        String empNumber = employee.getEmpNo();
 //        System.out.println(employee.toString());
 //        logger.info("Received form data: " + employee.toString());
         // Redirect to a success page or another appropriate page
-        return "redirect:/system/employee/view/" + empNumber;
-//        return null;
+//        return "redirect:/system/employee/view/" + empNumber;
+        return null;
     }
 
 }

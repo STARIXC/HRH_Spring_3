@@ -1,0 +1,15 @@
+{
+  "maritalStatus": [
+    {"id": "-1", "name": "All"},
+    {"id": "1", "name": "Single"},
+    {"id": "2", "name": "Married"},
+    {"id": "3", "name": "Divorced"},
+    {"id": "4", "name": "Widowed"}
+  ],
+  "gender": [
+    {"id": "-1", "name": "All"},
+    {"id": "1", "name": "Male"},
+    {"id": "2", "name": "Female"},
+    {"id": "3", "name": "Other"}
+  ]
+}

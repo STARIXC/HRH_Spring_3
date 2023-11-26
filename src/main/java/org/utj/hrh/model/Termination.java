@@ -6,6 +6,7 @@ package org.utj.hrh.model;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
 
@@ -22,19 +23,12 @@ import java.util.Date;
 @AllArgsConstructor
 @ToString
 public class Termination {
-//    String t_id,emp_no,termination_date,notice_date,termination_reason,voluntary_termination;
-
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "termination_id")
-    private Long terminationId;
+    private Integer terminationId;
 
-    @Column(name = "terminate_to")
-    private String terminateTo;
-
-    @Column(name = "terminate_by")
-    private String terminateBy;
 
     @Column(name = "termination_type")
     private String terminationType;
@@ -42,9 +36,11 @@ public class Termination {
     @Column(name = "subject")
     private String subject;
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Column(name = "notice_date")
-    private java.util.Date noticeDate;
+    private Date noticeDate;
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Column(name = "termination_date")
     private Date terminationDate;
 

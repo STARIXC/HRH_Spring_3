@@ -39,7 +39,7 @@ public class DesignationController {
         List<Designation> designations = designationService.getAll();
         model.addAttribute("designations", designations);
         model.addAttribute("pageTitle", "View :: Designations");
-        return "pages/designations";
+        return "pages/admin/Administration/designations";
     }
 //
 //    @GetMapping("/new")
@@ -71,7 +71,7 @@ public class DesignationController {
             Designation designation = designationService.getDesignation(id);
             model.addAttribute("designation", designation);
             model.addAttribute("pageTitle","Update ::  Standard Carder");
-            return "pages/designation-form";
+            return "pages/admin/Administration/designation-form";
         } catch (DesignationNotFoundException e) {
             redirectAttributes.addFlashAttribute("message",e.getMessage());
             return "redirect:/system/designation/manage";

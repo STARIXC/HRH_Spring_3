@@ -6,6 +6,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.utj.hrh.model.Facility;
 import org.utj.hrh.model.SubCounty;
+import org.utj.hrh.model.Supervisor;
 
 import java.util.List;
 
@@ -18,6 +19,8 @@ public interface FacilityRepository extends JpaRepository<Facility,Integer> {
      List<Facility> fetchDataFromDataSource(@Param("districtID") Integer districtID);
     @Query("SELECT fd from Facility fd  where fd.centre_sante_id=:centreSanteID")
     String findByMFL(@Param("centreSanteID") Integer centreSanteID);
+    @Query("SELECT s FROM Supervisor s WHERE s.facilitySupervisors.centre_sante_id = :facility AND s.status = 1")
+    Supervisor getActiveSupervisor(@Param("facility") Facility facility);
 
 //    Long countCountyByCountyID(Integer id);
 //List<Facility> findBySubCounty(SubCounty subCounty);

@@ -14,7 +14,7 @@ public class DocumentService {
     private DocumentRepository documentRepository;
 
     public List<Document> getAll(){
-        return (List<Document>) documentRepository.findAll();
+        return documentRepository.findAll();
     }
 
 

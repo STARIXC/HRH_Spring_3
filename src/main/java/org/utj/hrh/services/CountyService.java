@@ -22,11 +22,11 @@ public class CountyService {
 
 
     public List<County> getAll(){
-        return (List<County>) countyRepository.findAll();
+        return countyRepository.findAll();
     }
     public List<County> getActive(){
         Integer active=1;
-        return (List<County>) countyRepository.findByActive(active);
+        return countyRepository.findByActive(active);
     }
 
     public void save(County county) {

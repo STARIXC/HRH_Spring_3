@@ -10,7 +10,7 @@ import org.utj.hrh.model.DocumentType;
 @Repository
 public interface DocumentTypeRepository extends JpaRepository<DocumentType,Integer> {
     @Query("SELECT d from DocumentType d where d.name =:name ")
-    public DocumentType getDocumentTypeByName(@Param("name") String name);
+    DocumentType getDocumentTypeByName(@Param("name") String name);
 
-    public long countById(Integer id);
+    long countById(Integer id);
 }

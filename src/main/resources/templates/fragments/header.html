@@ -51,8 +51,17 @@
                     <ul class="dropdown-menu profile-dropdown-menu">
                         <li>
                             <div class="dropdown-txt text-center">
-                                <p class="mb-0">Shaikh Abu Dardah</p>
-                                <span class="d-block">Web Developer</span>
+
+<!--                                <div th:if="${session.userSpecificData.isPresent()}">-->
+
+                                    <p class="mb-0"th:text="${session.userDetails}" th:unless="${session == null}"></p>
+                                    <!-- Other fields or logic related to the Person object -->
+<!--                                </div>-->
+<!--                                <div th:unless="${session.userSpecificData.isPresent()}">-->
+<!--                                    <p>No person in session.</p>-->
+<!--                                </div>-->
+
+                                <span class="d-block" th:text="${session.userRole}" th:unless="${session == null}">Web Developer</span>
 
                             </div>
                         </li>

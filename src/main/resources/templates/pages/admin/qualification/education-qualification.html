@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html data-menu="vertical" data-nav-size="nav-default" lang="en" layout:decorate="~{layouts/layout.html}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta content="IE=edge" http-equiv="X-UA-Compatible">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>HRMIS [[${pageTitle}]] | UTJ</title>
+</head>
+<body>
+
+<span layout:fragment="content">
+<div class="row">
+
+  <div class="row g-3">
+      <div class="col-xxl-4 col-sm-12 col-lg-4">
+          <div class="panel">
+                    <div class="panel-header">
+                        <h5>Education</h5>
+                        <div class="btn-box">
+
+            </div>
+                    </div>
+                    <div class="panel-body">
+                        <form  action="#"
+                               th:action="@{/system/qualification/education/save}"
+                               th:object="${education}"
+                               method="post">
+                               <div class="row g-3">
+
+                                   <div class="col-sm-12">
+                                       <label for="level" class="form-label">Level</label>
+                                       <span> <input id="level" class="form-control" name="levelName" type="Text"  th:field="*{levelName}"> Days</span>
+                                   </div>
+
+                                    <div class="col-12 d-flex justify-content-end">
+                <button class="btn btn-sm btn btn-success">Save Policy</button>
+            </div>
+                               </div>
+                        </form>
+
+                    </div>
+                </div>
+      </div>
+      <div class="col-xxl-8 col-sm-12 col-lg-8">
+        <div class="panel">
+            <div class="panel-header">
+                <h5>Leave Policies</h5>
+
+            </div>
+            <div class="panel-body">
+
+
+                <div class="alert alert-success alert-dismissible fade show" role="alert" th:if="${message != null}">
+                    [[${message}]]
+                    <button aria-label="Close" class="close" data-dismiss="alert" type="button">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <table class="table table-bordered table-dashed table-hover  table-striped"
+                       id="allLeavePolicies">
+                    <thead>
+                    <tr>
+                        <th>S/L</th>
+                        <th>Policy Name</th>
+                        <th>Year</th>
+<!--                        <th>Description</th>-->
+                        <th>Days</th>
+                        <th>Calender Color</th>
+                        <th>Cadre Type</th>
+                        <th>Gender</th>
+                        <th>Marital</th>
+                        <th>Action</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="leavePolicy , itrStat : ${leavePolicies}">
+                        <td th:text="${itrStat.index + 1}"></td>
+                        <td th:text="${leavePolicy.leaveType.leaveType} ">Name</td>
+                        <td th:text="${leavePolicy.f_year.name} ">Name</td>
+<!--                        <td th:text="${leavePolicy.description} ">Name</td>-->
+                        <td th:text="${leavePolicy.days} ">Name</td>
+                        <td th:text="${leavePolicy.color} ">Name</td>
+                        <td th:text="${leavePolicy.employee_type.cadre_type_name} ">Name</td>
+                        <td th:if="${leavePolicy.gender == 'male'}" th:text="Males">Males</td>
+                        <td th:if="${leavePolicy.gender == 'female'}" th:text="Females">Females</td>
+                        <td th:if="${leavePolicy.gender == '-1'}" th:text="All">All</td>
+                         <td th:if="${leavePolicy.marital == 'single'}" th:text="Single">Males</td>
+                        <td th:if="${leavePolicy.marital == 'married'}" th:text="Married">Females</td>
+                        <td th:if="${leavePolicy.marital == 'widowed'}" th:text="Widowed">Females</td>
+                        <td th:if="${leavePolicy.marital == '-1'}" th:text="All">All</td>
+
+                        <td>
+                            <div class="btn-box">
+                                <a class="btn btn-sm btn-icon btn-primary" th:href="@{'/system/role/edit/'+${leavePolicy.id}}"><i class="fa-light fa-edit"></i></a>
+                                <a class="btn btn-sm btn-icon btn-danger" th:carderType="${leavePolicy.id}"  th:href="@{'/system/role/delete/'+${leavePolicy.id}}"><i class="fa-light fa-trash-can"></i></a>
+                            </div>
+                        </td>
+
+                    </tr>
+                    </tbody>
+
+                </table>
+            </div>
+        </div>
+      </div>
+
+  </div>
+</div>
+
+</span>
+<!-- Include the script fragment -->
+
+</body>
+
+</html>

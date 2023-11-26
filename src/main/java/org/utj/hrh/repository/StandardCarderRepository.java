@@ -11,15 +11,15 @@ import java.util.List;
 @Repository
 public interface StandardCarderRepository extends JpaRepository<StandardCarder,Integer> {
     @Query("SELECT s from StandardCarder s where s.standardized_cadre_name =:standardized_cadre_name ")
-    public StandardCarder getStandardCarderByStandardized_cadre_name(@Param("standardized_cadre_name") String standardized_cadre_name);
+    StandardCarder getStandardCarderByStandardized_cadre_name(@Param("standardized_cadre_name") String standardized_cadre_name);
 
-    public long countById(Integer id);
+    long countById(Integer id);
 
     @Query("SELECT s FROM StandardCarder s WHERE s.carderCat.id = :carder_category_id")
     List<StandardCarder> findStandardCardersByCarderCategoryId(@Param("carder_category_id") Integer carder_category_id);
 
     @Query("SELECT s FROM StandardCarder s WHERE s.carderType.id = :carder_type_id")
     List<StandardCarder> findStandardCardersByCarderType(@Param("carder_type_id") Integer carder_type_id);
-
+    List<StandardCarder> findByCarderType_Id(Integer carderTypeId);
 
 }

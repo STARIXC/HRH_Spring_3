@@ -13,7 +13,7 @@ public class DesignationService {
     @Autowired
     private DesignationRepository designationRepository;
     public List<Designation> getAll(){
-        return (List<Designation>) designationRepository.findAll();
+        return designationRepository.findAll();
     }
     public void save(Designation designation) {
         boolean isUpdatingDesignation = (designation.getId() !=null);

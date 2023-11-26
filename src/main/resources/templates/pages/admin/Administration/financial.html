@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en" layout:decorate="~{layouts/layout.html}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta content="IE=edge" http-equiv="X-UA-Compatible">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>HRMIS [[${pageTitle}]] | UTJ</title>
+</head>
+<body>
+<span layout:fragment="content">
+       <div class="dashboard-breadcrumb mb-25">
+            <h2>Financial Year</h2>
+        </div>
+        <div class="row">
+            <div class="col-xxl-4 col-md-5">
+                <div class="panel">
+                    <div class="panel-header">
+                        <h5>Add New </h5>
+                    </div>
+                    <div class="panel-body">
+                        <div class="alert alert-success alert-dismissible fade show" role="alert" th:if="${message != null}">
+                    [[${message}]]
+                    <button aria-label="Close" class="close" data-dismiss="alert" type="button">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                        <div class="row g-3">
+                             <form  action="#"
+                                    th:action="@{/system/financial-year/save}"
+                                    th:object="${financialYear}"
+                                    method="post">
+                            <input type="hidden" th:field="*{id}" id="id">
+                            <div class="col-xxl-12 col-lg-12 col-sm-12">
+                                <label class="form-label">Year Name</label>
+                                <input type="text" class="form-control form-control-sm" id="yearName" name="yearName" th:field="*{name}">
+
+                            </div>
+                                 <div class="col-xxl-12 col-lg-12 col-sm-12">
+                                <label class="form-label">Year</label>
+                                <input type="text" class="form-control form-control-sm" id="year" name="year" th:field="*{year}">
+
+                            </div>
+                                 <div class="col-xxl-12 col-lg-12 col-sm-12">
+                                <label class="form-label">Start Date</label>
+                                <input type="text" class="form-control form-control-sm date-picker" id="start_date" name="start_date" th:field="*{start_date}">
+
+                            </div>
+                                 <div class="col-xxl-12 col-lg-12 col-sm-12">
+                                <label class="form-label">End Date</label>
+                                <input type="text" class="form-control form-control-sm date-picker" id="end_date" name="end_date" th:field="*{end_date}">
+
+                            </div>
+                                 <div class="col-xxl-12 col-lg-12 col-sm-12">
+                                <label class="form-label">No of Days</label>
+                                <input type="text" class="form-control form-control-sm" id="contract_period" name="contract_period" th:field="*{contract_period}">
+
+                            </div>       <div class="col-xxl-12 col-lg-12 col-sm-12">
+                                <label class="form-label">No of Months </label>
+                                <input type="text" class="form-control form-control-sm" id="contract_no_months" name="contract_no_months" th:field="*{contract_no_months}">
+
+                            </div>
+
+                            <div class="col-xxl-12 col-lg-12 col-sm-12 d-flex justify-content-end mt-3">
+                                <div class="btn-box">
+                                    <button class="btn btn-sm btn-primary">Save Financial Year</button>
+                                </div>
+                            </div>
+                             </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xxl-8 col-md-7">
+                <div class="panel">
+                    <div class="panel-header">
+                        <h5>Financial Years List</h5>
+
+                    </div>
+                    <div class="panel-body">
+                       <table class="table table-dashed table-hover utj-dataTable all-financial-year-table table-striped" id="allFyTable">
+                            <thead>
+                                <tr>
+
+                                    <th>SL</th>
+                                    <th>Name</th>
+                                    <th>Start to End</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                               <tr th:each="financialYear , itrStat : ${financialYears}">
+
+                          <td th:text="${itrStat.index + 1}"></td>
+                          <td th:text="${financialYear.name} ">Name</td>
+                          <td th:text="${financialYear.start_date}+'-'+${financialYear.end_date} ">Name</td>
+                              <td>
+                                        <div class="btn-box">
+                                            <button th:onclick="'editItem(' + ${financialYear.id} + ')'" class="btn btn-sm btn-icon btn-primary">Edit</button>
+
+                                            <a class="btn btn-sm btn-icon btn-primary" th:role="${financialYear.id}" th:href="@{'/system/financial-year/list/'+${financialYear.id}}"><i class="fa-light fa-edit"
+                                                                                                                                                             style="color: #ffffff;"></i></a>
+                                            <a class="btn btn-sm btn-icon btn-danger" th:role="${financialYear.id}"  th:href="@{'/system/financial-year/delete/'+${financialYear.id}}"><i class="fa-light fa-trash-can"></i></a>
+                                        </div>
+                                    </td>
+
+                      </tr>
+
+
+                            </tbody>
+                        </table>
+                        <div class="table-bottom-control"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+</span>
+<!-- Include the script fragment -->
+
+</span>
+
+<th:block layout:fragment="script">
+    <!--    <script th:src="@{/assets/vendor/js/jquery.uploader.min.js}"></script>-->
+    <script th:src="@{/assets/vendor/js/jquery-ui.min.js}"></script>
+    <script th:src="@{/assets/vendor/js/select2.min.js}"></script>
+    <script th:src="@{/assets/js/select2-init.js}"></script>
+
+    <script th:inline="javascript">
+
+        /*<![CDATA[*/
+        $(document).ready(function () {
+
+            // // Add event listener for selecting paneler category
+            // $("#ddlEmployeeType").change(function () {
+            //     // Fetch standardized panelers based on selected paneler category
+            //     let employeeType = $(this).val();
+            //
+            //     // Define a JavaScript variable to hold the URL
+            //     let fetchStandardCarder = /*[[@{/system/standard_carder/list/{id}}]]*/;
+            //
+            //     let url = fetchStandardCarder.replace("{id}", employeeType); // Replace {id} with the actual value
+            //
+            //     $.ajax({
+            //         type: "GET",
+            //         url: url, // Use Thymeleaf URL expression
+            //         success: function (response) {
+            //             // Update the standardized paneler select options
+            //             let selectElement = $("#ddlCadreCategory");
+            //             selectElement.empty(); // Clear existing options
+            //             selectElement.append('<option value="" selected>Choose...</option>'); // Add default option
+            //             console.log(eval(response));
+            //             // Add options for standardized panelers
+            //             for (let i = 0; i < response.length; i++) {
+            //                 selectElement.append('<option value="' + response[i].id + '">' + response[i].standardized_cadre_name + '</option>');
+            //             }
+            //         },
+            //         error: function (error) {
+            //             // Handle error response here
+            //             alert("Error fetching standardized panelers: " + error.responseText);
+            //         }
+            //     });
+            //
+            // });
+            //
+            //
+            // // Add event listener for selecting paneler category
+            // $("#ddlCadreCategory").change(function () {
+            //     // Fetch standardized panelers based on selected paneler category
+            //     let panelerCategory = $(this).val();
+            //
+            //     // Define a JavaScript variable to hold the URL
+            //     let fetchCarderCategory = /*[[@{/system/designation/list/{id}}]]*/;
+            //
+            //     let url = fetchCarderCategory.replace("{id}", panelerCategory); // Replace {id} with the actual value
+            //
+            //     $.ajax({
+            //         type: "GET",
+            //         url: url, // Use Thymeleaf URL expression
+            //         success: function (response) {
+            //             // Update the standardized paneler select options
+            //             let selectElement = $("#ddlPos");
+            //             selectElement.empty(); // Clear existing options
+            //             selectElement.append('<option value="" selected>Choose...</option>'); // Add default option
+            //             console.log(eval(response));
+            //             // Add options for standardized panelers
+            //             for (let i = 0; i < response.length; i++) {
+            //                 selectElement.append('<option value="' + response[i].id + '">' + response[i].position_title + '</option>');
+            //             }
+            //         },
+            //         error: function (error) {
+            //             // Handle error response here
+            //             alert("Error fetching standardized panelers: " + error.responseText);
+            //         }
+            //     });
+            //
+            // });
+        });
+
+        /*]]>*/
+
+
+    </script>
+
+</th:block>
+
+</body>
+
+</html>

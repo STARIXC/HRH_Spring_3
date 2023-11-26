@@ -16,13 +16,13 @@ public class Admin {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long admin_id;
 
-    @OneToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "userid", unique = true)
-    private User user;
 
-    private String full_name;
+    @Column(name = "full_name")
+    private String fullName;
 
-
+    @OneToOne(optional = true)
+    @JoinColumn(name = "user_id", referencedColumnName = "person_number") // Link to the person using the auto-generated ID
+    private Person person; // Reference to the person
     @ManyToOne
     @JoinColumn(name = "role_id", referencedColumnName = "role_id")
     private Role role; // Relationship with the Role table

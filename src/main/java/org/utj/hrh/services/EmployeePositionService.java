@@ -15,7 +15,7 @@ public class EmployeePositionService {
     @Autowired
     private EmployeePositionRepository employeePositionRepository;
     public List<EmployeePosition> getAll(){
-        return (List<EmployeePosition>) employeePositionRepository.findAll();
+        return employeePositionRepository.findAll();
     }
 
     //    get carder type

@@ -16,7 +16,7 @@ public class FacilityService {
 
 
     public List<Facility> getAll(){
-        return (List<Facility>) facilityRepository.findAll();
+        return facilityRepository.findAll();
     }
 //    public List<Facility> getActive(){
 //        Integer active=1;

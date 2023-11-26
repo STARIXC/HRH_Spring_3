@@ -13,26 +13,17 @@ import lombok.*;
 public class Menu {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Long id;
-    @Column(name = "parent_id")
-    private int parent_id;
-    @Column(name = "action")
-    private Integer action; // Use Integer wrapper class
-
-    @Column(name = "name")
+    private Integer id;
+    private String action;
+    private String menuUrl;
     private String name;
-    @Column(name = "menu_url")
-    private String menu_url;
+    private Integer parentId;
+    private int status;
 
     @ManyToOne
     @JoinColumn(name = "module_id")
-    private MenuModule module;
+    private MenuItemModule  module;
 
-    @Column(name = "status")
-    private int status;
 
-    public Menu(Long id) {
-        this.id=id;
-    }
+
 }

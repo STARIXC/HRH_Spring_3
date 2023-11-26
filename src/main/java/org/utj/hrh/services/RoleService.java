@@ -6,6 +6,7 @@ import org.utj.hrh.model.Role;
 import org.utj.hrh.repository.RoleRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class RoleService {
@@ -20,5 +21,9 @@ public class RoleService {
     }
     public List<Role> getAllRoles() {
         return roleRepository.findAll();
+    }
+
+    public Role findRoleById(Integer id) {
+        return roleRepository.findById(id).orElse(null);
     }
 }

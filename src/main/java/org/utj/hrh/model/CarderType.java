@@ -1,5 +1,6 @@
 package org.utj.hrh.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -35,6 +36,7 @@ public class CarderType {
     private LocalDateTime lastUpdated;
 
     @OneToMany(mappedBy = "carderType")
+    @JsonManagedReference
     private List< StandardCarder > standardCarderList;
 
 }

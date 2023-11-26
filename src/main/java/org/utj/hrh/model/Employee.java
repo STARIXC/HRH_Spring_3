@@ -22,12 +22,22 @@ import java.util.Set;
 @AllArgsConstructor
 @ToString
 public class Employee {
+
+    public static final String GENDER_MALE = "MALE";
+    public static final String GENDER_FEMALE = "FEMALE";
+    public static final String GENDER_OTHER = "OTHER";
+
+    public static final String MARITAL_STATUS_SINGLE = "Single";
+    public static final String MARITAL_STATUS_MARRIED = "Married";
+    public static final String MARITAL_STATUS_OTHER = "Other";
+
     @Id
     @Column(name = "id")
     private String id;
-    @Column(name = "emp_no")
-    private String empNo;
 
+    @OneToOne(optional = true)
+    @JoinColumn(name = "emp_no", referencedColumnName = "person_number") // Link to the person using the auto-generated ID
+    private Person person; // Reference to the person
 
     @Column(name = "first_name")
     private String firstName;
@@ -39,6 +49,7 @@ public class Employee {
     private String nationalId;
     @Column(name = "gender")
     private String gender;
+
     @Column(name = "phone")
     private String phone;
     @Column(name = "email")
@@ -106,20 +117,44 @@ public class Employee {
     @OneToMany(mappedBy = "employee")
     private Set<Document> documents;
 
-    @OneToOne(mappedBy = "employeeContact")
+    @OneToOne(mappedBy = "employeeContact", optional = true)
     private EmployeeEmergencyContact employeeEmergencyContact;
-
+//
     @OneToMany(mappedBy = "expEmployee")
     private Set<EmployeeExperience> employeeExperiences;
 
     @OneToMany(mappedBy = "academicPerformance")
     private Set<EmployeeAcademicQualification> academicQualifications;
-
+//
     private boolean hasLoginAccess;
-
-    @OneToOne(mappedBy = "employee")
-    private EmployeeFacility employeeFacility;
-
+//
+@OneToOne(mappedBy = "employee", optional = true)
+private EmployeeFacility employeeFacility;
+//
     @OneToMany(mappedBy = "employee",fetch = FetchType.LAZY)
     private List<EmploymentHistory> employmentHistory;
+//
+    @OneToMany(mappedBy = "employee",fetch = FetchType.LAZY)
+    private List<EmployeeAward> employeeAwards;
+
+    @OneToMany(mappedBy = "employeePerformance",fetch = FetchType.LAZY)
+    private List<EmployeePerformance> employeePerformances;
+
+    @OneToMany(mappedBy = "employeeLicense",fetch = FetchType.LAZY)
+    private List<EmployeeLicense> employeeLicenses;
+
+
+    public String getGenderString() {
+        if (gender == null) {
+            return null;
+        }
+        switch (gender) {
+            case GENDER_MALE:
+                return "Male";
+            case GENDER_FEMALE:
+                return "Female";
+            default:
+                return null; // You may want to throw an exception or handle this differently
+        }
+    }
 }

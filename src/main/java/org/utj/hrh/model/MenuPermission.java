@@ -13,11 +13,11 @@ import lombok.*;
 public class MenuPermission {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Long id;
-    @Column(name = "role_id")
-    private int role_id;
+    private Integer id;
     @ManyToOne
     @JoinColumn(name = "menu_id")
     private Menu menu;
+    @ManyToOne
+    @JoinColumn(name = "role_id")
+    private Role role;
 }
