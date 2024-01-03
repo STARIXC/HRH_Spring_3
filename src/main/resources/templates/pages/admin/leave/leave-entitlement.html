@@ -43,46 +43,50 @@
                                     <th>Entitled</th>
                                     <th>Scheduled</th>
                                     <th>Available</th>
+                                    <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody>
-<!--                                <tr th:each="leaveHoliday , itrStat : ${leaveHolidays}">-->
-<!--                                    <td th:text="${itrStat.index + 1}"></td>-->
-<!--                                    <td th:text="${leaveHoliday.holidayName} ">Name</td>-->
-<!--                                      <td th:text="${leaveHoliday.startDate} ">20</td>-->
-<!--                                      <td th:text="${leaveHoliday.endDate} ">20</td>-->
-<!--                                      <td>Durations</td>-->
-<!--                                      <td th:text="${leaveHoliday.holidayDescription} ">20</td>-->
-<!--                                    <td>-->
-<!--                                        <div class="utj-dropdown dropdown d-inline-block">-->
-<!--                                            <button aria-expanded="false" class="btn btn-sm btn-outline-primary"-->
-<!--                                                    data-bs-toggle="dropdown">Action <i-->
-<!--                                                    class="fa-regular fa-angle-down"></i></button>-->
-<!--                                            <ul class="utj-dropdown-menu dropdown-menu dropdown-slim dropdown-menu-sm">-->
-<!--                                                <li>-->
-<!--                                                    <a class="dropdown-item" onclick="editDesignation(this)"-->
-<!--                                                       th:data-position-id="${leaveHoliday.id}">-->
-<!--                                                        <span class="dropdown-icon">-->
-<!--                                                            <i class="fa-light fa-pen-to-square"></i>-->
-<!--                                                        </span> Edit-->
-<!--                                                    </a>-->
-<!--                                                </li>-->
-<!--                                                <li>-->
-<!--                                                    <a class="dropdown-item"-->
-<!--                                                       th:holiday="${leaveHoliday.id}"-->
-<!--                                                       th:href="@{'/system/leave/holidays/delete/'+${leaveHoliday.id}}">-->
-<!--                                                        <span class="dropdown-icon">-->
-<!--                                                            <i class="fa-light fa-trash-can"></i>-->
-<!--                                                        </span> Delete-->
-<!--                                                    </a>-->
-<!--                                                </li>-->
-<!--                                            </ul>-->
-<!--                                        </div>-->
-<!--                                    </td>-->
+                                <tr th:each="leaveEntitlement , itrStat : ${leaveEntitlementList}">
+                                    <td th:text="${itrStat.index + 1}"></td>
+                                    <td th:text="${leaveEntitlement.employee.person.name} ">Name</td>
+                                      <td th:text="${leaveEntitlement.leavePolicy.leaveType.leaveType} ">20</td>
+                                      <td th:text="${leaveEntitlement.leavePolicy.f_year.start_date} ">20</td>
+                                      <td th:text="${leaveEntitlement.leavePolicy.f_year.end_date} ">20</td>
+                                      <td th:text="${leaveEntitlement.entitlement} ">20</td>
+                                      <td th:text="${leaveEntitlement.used} ">20</td>
+                                      <td><span th:text="${leaveEntitlement.entitlement - leaveEntitlement.used}">[Available Leave]</span> days </td>
+
+                                    <td>
+                                        <div class="utj-dropdown dropdown d-inline-block">
+                                            <button aria-expanded="false" class="btn btn-sm btn-outline-primary"
+                                                    data-bs-toggle="dropdown">Action <i
+                                                    class="fa-regular fa-angle-down"></i></button>
+                                            <ul class="utj-dropdown-menu dropdown-menu dropdown-slim dropdown-menu-sm">
+                                                <li>
+                                                    <a class="dropdown-item" onclick="editDesignation(this)"
+                                                       th:data-position-id="${leaveEntitlement.id}">
+                                                        <span class="dropdown-icon">
+                                                            <i class="fa-light fa-pen-to-square"></i>
+                                                        </span> Edit
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a class="dropdown-item"
+                                                       th:entitlememt="${leaveEntitlement.id}"
+                                                       th:href="@{'/system/leave/entitlement/delete/'+${leaveEntitlement.id}}">
+                                                        <span class="dropdown-icon">
+                                                            <i class="fa-light fa-trash-can"></i>
+                                                        </span> Delete
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </td>
 
 
 
-<!--                                </tr>-->
+                                </tr>
                             </tbody>
                         </table>
                         <div class="table-bottom-control"></div>

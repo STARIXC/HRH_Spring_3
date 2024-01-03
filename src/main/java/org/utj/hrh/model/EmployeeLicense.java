@@ -21,9 +21,9 @@ public class EmployeeLicense  {
     @JoinColumn(name = "license_id", referencedColumnName = "id")
     private License license;
 
-    @Id
-    @Column(name = "emp_number")
-    private Long empNumber;
+//    @Id
+//    @Column(name = "emp_number")
+//    private Long empNumber;
 
     @Column(name = "license_no", length = 50, nullable = true)
     private String licenseNo;
@@ -37,7 +37,7 @@ public class EmployeeLicense  {
     private Date licenseExpiryDate;
 
     @ManyToOne
-    @JoinColumn(name = "emp_number", referencedColumnName = "emp_no")
+    @JoinColumn(name = "emp_number", referencedColumnName = "id")
     private Employee employeeLicense;
 
 

@@ -19,13 +19,14 @@ public class PositionChangeHistory {
     private Long id;
 
     @ManyToOne
+    @JoinColumn(name = "employee_id", referencedColumnName = "emp_no")
     private Employee employee;
 
     @ManyToOne
-    private EmployeePosition oldPosition;
+    private Designation oldPosition;
 
     @ManyToOne
-    private EmployeePosition newPosition;
+    private Designation newPosition;
 
     @Column(name = "change_date")
     @UpdateTimestamp

@@ -12,13 +12,7 @@ class EmployeeFacilityRepositoryTest {
 
     @Autowired
     private EmployeeRepository employeeRepository;
-    @Test
-    void findByEmployee() {
-        Employee employee= new Employee();
-        employee.setEmpNo("0004");
 
-
-    }
 
     @Test
     void findByFacility() {

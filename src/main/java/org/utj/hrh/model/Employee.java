@@ -1,43 +1,38 @@
 package org.utj.hrh.model;
 
+
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import java.awt.*;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Set;
+
 
 /**
  * @author UTJ
  */
 
 @Entity
-@Table(name = "emp_bio") // This annotation specifies the database table name
+@Table(name = Employee.TABLE_NAME) // This annotation specifies the database table name
 @Setter
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
 public class Employee {
-
-    public static final String GENDER_MALE = "MALE";
-    public static final String GENDER_FEMALE = "FEMALE";
-    public static final String GENDER_OTHER = "OTHER";
-
-    public static final String MARITAL_STATUS_SINGLE = "Single";
-    public static final String MARITAL_STATUS_MARRIED = "Married";
-    public static final String MARITAL_STATUS_OTHER = "Other";
-
+    public static final String TABLE_NAME = "employee";
+    
     @Id
-    @Column(name = "id")
-    private String id;
-
-    @OneToOne(optional = true)
-    @JoinColumn(name = "emp_no", referencedColumnName = "person_number") // Link to the person using the auto-generated ID
-    private Person person; // Reference to the person
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    
+    @OneToOne
+    @JoinColumn(name = "emp_no", referencedColumnName = "person_number")
+    @JsonManagedReference
+    private Person person;
 
     @Column(name = "first_name")
     private String firstName;
@@ -60,6 +55,7 @@ public class Employee {
     private String altEmail;
     @Column(name = "dob")
     private String dob;
+
     @OneToOne
     private Address presentAddress;
     @OneToOne
@@ -67,6 +63,7 @@ public class Employee {
 
     @Column(name = "marital_status")
     private String maritalStatus;
+
     @Column(name = "nationality")
     private String nationality;
     @Column(name = "disability")
@@ -83,8 +80,8 @@ public class Employee {
     private String certGoodConductNo;
     @Column(name = "helb_clearance_no")
     private String helbClearanceNo;
-    @Column(name = "helbBenefitiary")
-    private int helbBenefitiary;
+    @Column(name = "helb_beneficiary")
+    private Integer helbBeneficiary;
     @Column(name = "bank_name")
     private String bankName;
     @Column(name = "branch")
@@ -104,7 +101,7 @@ public class Employee {
 
     @ManyToOne
     @JoinColumn(name = "position_id")
-    private EmployeePosition position;
+    private Designation position;
 
     @Column(name = "created_at")
     @CreationTimestamp
@@ -114,47 +111,41 @@ public class Employee {
     @UpdateTimestamp
     private LocalDateTime updated_at;
 
-    @OneToMany(mappedBy = "employee")
-    private Set<Document> documents;
-
-    @OneToOne(mappedBy = "employeeContact", optional = true)
-    private EmployeeEmergencyContact employeeEmergencyContact;
-//
-    @OneToMany(mappedBy = "expEmployee")
-    private Set<EmployeeExperience> employeeExperiences;
-
-    @OneToMany(mappedBy = "academicPerformance")
-    private Set<EmployeeAcademicQualification> academicQualifications;
-//
     private boolean hasLoginAccess;
-//
-@OneToOne(mappedBy = "employee", optional = true)
-private EmployeeFacility employeeFacility;
-//
-    @OneToMany(mappedBy = "employee",fetch = FetchType.LAZY)
+    
+    @OneToOne(mappedBy = "employee")
+    private EmployeeFacility employeeFacility;
+    
+    @OneToMany(mappedBy = "academicQualification")
+    @ToString.Exclude
+    private List<EmployeeEducation> educationList;
+    
+    @OneToMany(mappedBy = "documentOwner")
+    @ToString.Exclude
+    private List<Document> documents;
+
+    @OneToMany(mappedBy = "employeeHistory")
+    @ToString.Exclude
     private List<EmploymentHistory> employmentHistory;
-//
-    @OneToMany(mappedBy = "employee",fetch = FetchType.LAZY)
+
+    @OneToMany(mappedBy = "employeeAward")
+    @ToString.Exclude
     private List<EmployeeAward> employeeAwards;
 
-    @OneToMany(mappedBy = "employeePerformance",fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "employeePerformance")
+    @ToString.Exclude
     private List<EmployeePerformance> employeePerformances;
 
-    @OneToMany(mappedBy = "employeeLicense",fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "employeeLicense")
+    @ToString.Exclude
     private List<EmployeeLicense> employeeLicenses;
-
-
-    public String getGenderString() {
-        if (gender == null) {
-            return null;
-        }
-        switch (gender) {
-            case GENDER_MALE:
-                return "Male";
-            case GENDER_FEMALE:
-                return "Female";
-            default:
-                return null; // You may want to throw an exception or handle this differently
-        }
-    }
+//
+    @OneToMany(mappedBy = "employeeContact")
+    @ToString.Exclude
+    private List<EmployeeEmergencyContact> employeeContacts;
+    
+    @OneToMany(mappedBy = "employeeLeaveEntitlement")
+    @ToString.Exclude
+    private List<LeaveEntitlement> leaveEntitlements;
+    
 }

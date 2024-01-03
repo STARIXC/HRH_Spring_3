@@ -18,9 +18,7 @@ public class EmployeeAcademicQualification {
 @GeneratedValue(strategy = GenerationType.IDENTITY)
 @Column(name = "employee_education_qualification_id")
 private Integer employee_education_qualification_id;
-    @ManyToOne
-    @JoinColumn(name = "employee_id",referencedColumnName = "emp_no")
-    private Employee academicPerformance;
+
     @Column(name = "institute")
     private String institute;
     @Column(name = "board_university")

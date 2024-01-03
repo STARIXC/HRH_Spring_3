@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en" layout:decorate="~{layouts/layout.html}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta content="IE=edge" http-equiv="X-UA-Compatible">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>HRMIS [[${pageTitle}]] | UTJ</title>
+</head>
+<body>
+<span layout:fragment="content">
+    <div class="row">
+   <div class="col-12">
+       <div class="panel">
+            <div class="panel-header">
+                    <h5>All Categories</h5>
+                    <div class="btn-box d-flex flex-wrap gap-2">
+
+                          <a class="btn btn-sm btn-primary" th:href="@{/system/carder_category/new}"><i
+                                  class="fa fa-plus-circle"></i> <span>Add New </span></a>
+                    </div>
+                </div>
+           <div class="panel-body">
+
+
+                <div class="alert alert-success alert-dismissible fade show" role="alert" th:if="${message != null}">
+                    [[${message}]]
+                    <button aria-label="Close" class="close" data-dismiss="alert" type="button">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                  <table class="table table-bordered table-dashed table-hover table-striped"
+                         id="allStandardCarder">
+                      <thead>
+                      <tr>
+                          <th>S/L</th>
+                          <th>Category Name</th>
+                          <th>Action</th>
+                      </tr>
+                      </thead>
+                      <tbody>
+                      <tr th:each="category , itrStat : ${categories}">
+                          <td th:text="${itrStat.index + 1}"></td>
+                          <td th:text="${category.carderCategoryName} ">Name</td>
+                          <td>
+                              <div class="btn-box">
+
+                                      <a class="btn btn-success btn-sm" th:href="@{'/system/carder_category/edit/'+${category.id}}">
+                                        <i class="fa fa-edit"></i>
+                                    </a>
+
+                                      <a class="btn btn-danger link_delete btn-sm" th:carderType="${category.id}"  th:href="@{'/system/carder_category/delete/'+${category.id}}">
+                                          <i class="fa fa-trash "></i>
+
+                                      </a>
+
+                              </div>
+                          </td>
+                      </tr>
+                      </tbody>
+
+                  </table>
+           </div>
+       </div>
+   </div>
+    </div>
+</span>
+
+</body>
+
+</html>

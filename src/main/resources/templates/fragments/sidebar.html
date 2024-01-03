@@ -75,8 +75,8 @@
                 <a class="sidebar-link-group-title has-sub" role="button">Employee Management</a>
                 <ul class="sidebar-link-group">
                     <li class="sidebar-dropdown-item" th:if="${session.userRole == 'Admin'}">
-                        <a class="sidebar-link" th:href="@{/system/manage/standardised_carder}"> <span class="nav-icon"><i
-                            class="fa-light fa-sliders-up"></i></span> Standard Carder</a></li>
+                        <a class="sidebar-link" th:href="@{/system/manage/carderCategories}"> <span class="nav-icon"><i
+                            class="fa-light fa-sliders-up"></i></span> Carder Category</a></li>
                     <li class="sidebar-dropdown-item"th:if="${session.userRole == 'Admin'}"><a class="sidebar-link" th:href="@{/system/designation/manage}"> <span
                             class="nav-icon"><i class="fa-light fa-sliders-up"></i></span> Position</a></li>
                     <li class="sidebar-dropdown-item"th:if="${session.userRole == 'Admin'}"><a class="sidebar-link" th:href="@{/system/documents/list}"> <span
@@ -127,6 +127,7 @@
                             <li class="sidebar-dropdown-item"><a class="sidebar-link" href="#">Leave Type</a></li>
                             <li class="sidebar-dropdown-item"><a class="sidebar-link" th:href="@{/system/leave/entitlement/all}">Leave Entitlements</a>
                             <li class="sidebar-dropdown-item"><a class="sidebar-link" th:href="@{/system/calender/view}">Calender</a></li>
+                            <li class="sidebar-dropdown-item"><a class="sidebar-link" th:href="@{/system/leave/defineWOrkWeek/view}">Calender</a></li>
                             </li>
                         </ul>
                     </li>
@@ -135,9 +136,12 @@
                                 class="nav-icon"><i class="fa-light fa-sliders-up"></i></span> <span
                                 class="sidebar-txt">Leave Application</span></a>
                         <ul class="sidebar-dropdown-menu" id="leaveApplication">
-                            <li class="sidebar-dropdown-item"><a class="sidebar-link" href="#">Apply for Leave</a></li>
-                            <li class="sidebar-dropdown-item"><a class="sidebar-link" href="#">Requested
-                                Applications</a></li>
+                            <li class="sidebar-dropdown-item"><a class="sidebar-link" th:href="@{/system/leave/application/apply}">Apply for Leave</a></li>
+                            <li class="sidebar-dropdown-item"><a class="sidebar-link" th:href="@{/system/leave/application/myApplications}">My Leave</a></li>
+                            <li class="sidebar-dropdown-item"><a class="sidebar-link" th:href="@{/system/leave/entitlement/myEntitlements}" >My Entitlements</a></li>
+                            <li class="sidebar-dropdown-item"><a class="sidebar-link" th:href="@{/system/leave/application/all}">Leave List</a></li>
+                            <li class="sidebar-dropdown-item"><a class="sidebar-link" href="#">Assign Leave</a></li>
+
                         </ul>
                     </li>
                     <li class="sidebar-dropdown-item">
@@ -145,9 +149,9 @@
                                 class="nav-icon"><i class="fa-light fa-sliders-up"></i></span> <span
                                 class="sidebar-txt">Leave Reports</span></a>
                         <ul class="sidebar-dropdown-menu" id="leaveReport">
-                            <li class="sidebar-dropdown-item"th:if="${session.userRole == 'Admin'}"><a class="sidebar-link" href="#">Leave Report</a></li>
-                            <li class="sidebar-dropdown-item"th:if="${session.userRole == 'Admin'}"><a class="sidebar-link" href="#">Summary Report</a></li>
-                            <li class="sidebar-dropdown-item" th:if="${session.userRole == 'Employee'}"><a class="sidebar-link" href="#">My Leave Report</a></li>
+                            <li class="sidebar-dropdown-item"th:if="${session.userRole == 'Admin'}"><a class="sidebar-link" th:href="@{/system/leave/application/viewLeaveBalanceReport}">Leave Entitlement & Usage Report</a></li>
+<!--                            <li class="sidebar-dropdown-item" th:if="${session.userRole == 'Admin'}"><a class="sidebar-link" href="#">Summary Report</a></li>-->
+                            <li class="sidebar-dropdown-item" ><a class="sidebar-link" href="#">My Leave Entitlements and Usage</a></li>
                         </ul>
                     </li>
 
@@ -198,7 +202,7 @@
                                 class="nav-icon"><i class="fa-light fa-sliders-up"></i></span> <span
                                 class="sidebar-txt">Front Settings</span></a>
                         <ul class="sidebar-dropdown-menu" id="frontSettings">
-                            <li class="sidebar-dropdown-item"><a class="sidebar-link" href="#">General Setting</a></li>
+                            <li class="sidebar-dropdown-item"><a class="sidebar-link" th:href="@{/system/organization/view}">General Setting</a></li>
                             <li class="sidebar-dropdown-item"><a class="sidebar-link" href="#">Front Services</a></li>
 
                         </ul>

@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.utj.hrh.dto.StaffDTO;
 import org.utj.hrh.model.*;
 import org.utj.hrh.services.*;
 
@@ -64,7 +65,7 @@ private  EmployeeService employeeService;
         model.addAttribute("terminationTypeList", terminationTypeList);
         Termination termination = new Termination();
         model.addAttribute("termination",termination);
-        List<Employee> employeeList= employeeService.getAll();
+        List<StaffDTO> employeeList= employeeService.getAll();
         model.addAttribute("employeeList",employeeList);
         model.addAttribute("pageTitle", "Add Termination");
 

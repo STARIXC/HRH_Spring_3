@@ -14,27 +14,36 @@ import org.utj.hrh.services.MenuService;
 import org.utj.hrh.services.UserService;
 
 import java.io.IOException;
-import java.util.Map;
-import java.util.Optional;
 
 @Component
 public class CustomAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
-    @Autowired
-    private UserService userService;
-    @Autowired
-    private MenuService menuService;
+    
+    private final UserService userService;
+    
+    private final MenuService menuService;
 
-    @Autowired
-    private AdminRepository adminRepository;
-    @Autowired
-    private SupervisorRepository supervisorRepository;
+    
+    private final AdminRepository adminRepository;
+    
+    private final SupervisorRepository supervisorRepository;
 
+    
+    private final TechnicalMonitorRepository technicalMonitorRepository;
+    
+    private final EmployeeRepository employeeRepository;
+    
+    private final PersonRepository personRepository;
     @Autowired
-    private TechnicalMonitorRepository technicalMonitorRepository;
-    @Autowired
-    private EmployeeRepository employeeRepository;
-    @Autowired
-    private PersonRepository personRepository;
+    public CustomAuthenticationSuccessHandler(UserService userService, MenuService menuService, AdminRepository adminRepository, SupervisorRepository supervisorRepository, TechnicalMonitorRepository technicalMonitorRepository, EmployeeRepository employeeRepository, PersonRepository personRepository) {
+        this.userService = userService;
+        this.menuService = menuService;
+        this.adminRepository = adminRepository;
+        this.supervisorRepository = supervisorRepository;
+        this.technicalMonitorRepository = technicalMonitorRepository;
+        this.employeeRepository = employeeRepository;
+        this.personRepository = personRepository;
+    }
+    
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
 
@@ -50,13 +59,10 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
             response.sendRedirect(request.getContextPath() + "/unknown-role-page");
         } else {
             Integer user_role_id= userService.getRoleID(username);
-// String userSpecificData = fetchUserSpecificData(userRole,login_id);
-            System.out.println("Login_ID:"+authUser);
             String login_id=authUser.getPerson().getPersonNumber();
             Person userSpecificData = personRepository.findPersonByPersonNumber(login_id);
             String personName=userSpecificData.getName();
-            System.out.println("Logged in Full Name"+personName);
- // Store the user's role as a session attribute
+            // Store the user's role as a session attribute
             request.getSession().setAttribute("userRole", userRole);
             request.getSession().setAttribute("userDetails", personName);
 

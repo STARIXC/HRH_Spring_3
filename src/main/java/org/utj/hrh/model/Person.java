@@ -1,5 +1,6 @@
 package org.utj.hrh.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -12,6 +13,7 @@ import lombok.*;
 @ToString(exclude = {"employee"})
 public class Person {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "person_id")
     private Long id;
 
@@ -27,7 +29,9 @@ public class Person {
     @Column(name = "phone_number", nullable = true)
     private String phone;
 
-    @OneToOne(mappedBy = "person", optional = true)
+
+    @OneToOne(mappedBy = "person", optional = true, fetch = FetchType.LAZY)
+    @JsonBackReference
     private Employee employee;
 
 }

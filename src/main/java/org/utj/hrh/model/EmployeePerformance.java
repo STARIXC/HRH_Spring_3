@@ -19,7 +19,7 @@ public class EmployeePerformance {
     private Long employeePerformanceId;
 
     @ManyToOne
-    @JoinColumn(name = "employee_id", referencedColumnName = "emp_no",insertable = false, updatable = false)
+    @JoinColumn(name = "employee_id", referencedColumnName = "id",insertable = false, updatable = false)
     private Employee employeePerformance;
 
     @Column(name = "month")

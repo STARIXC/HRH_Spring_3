@@ -31,7 +31,7 @@
                                                 <label class="form-label" for="f-year">Year <span
                                                         class="required">*</span></label>
                                                 <select class="leave-policy-input form-control" id="f-year"
-                                                        name="f-year" required="required" th:field="*{f_year}">
+                                                        name="f-year" required="required" th:field="*{financialYear}">
                                                     <option selected="selected" value="">— select year —</option>
                                                     <option th:each="financialYear : ${financialYears}" th:value="${financialYear.id}" th:text="${financialYear.name}">2019</option>
                                                 </select>
@@ -54,9 +54,9 @@
                                                  <label class="form-label" for="employee_type">Employee Type <span
                                                          class="required">*</span></label>
                                                 <select class="leave-policy-input form-control " id="employee_type"
-                                                        name="employee_type" required="required" th:field="*{employee_type.id}">
+                                                        name="employee_type" required="required" th:field="*{employee_type}">
                                                     <option value="-1">All</option>
-                                                      <option th:each="cType : ${carderTypes}" th:value="${cType.id}" th:text="${cType.cadre_type_name}"></option>
+                                                      <option th:each="carderCategory : ${carderCategories}" th:value="${carderCategory.id}" th:text="${carderCategory.carderCategoryName}"></option>
 
                                                 </select>
 
@@ -198,11 +198,11 @@
                     <tr th:each="leavePolicy , itrStat : ${leavePolicies}">
                         <td th:text="${itrStat.index + 1}"></td>
                         <td th:text="${leavePolicy.leaveType.leaveType} ">Name</td>
-                        <td th:text="${leavePolicy.f_year.name} ">Name</td>
+                        <td th:text="${leavePolicy.financialYear.name} ">Name</td>
 <!--                        <td th:text="${leavePolicy.description} ">Name</td>-->
                         <td th:text="${leavePolicy.days} ">Name</td>
                         <td th:text="${leavePolicy.color} ">Name</td>
-                        <td th:text="${leavePolicy.employee_type.cadre_type_name} ">Name</td>
+                        <td th:text="${leavePolicy.employee_type.carderCategoryName} ">Name</td>
                         <td th:if="${leavePolicy.gender == 'male'}" th:text="Males">Males</td>
                         <td th:if="${leavePolicy.gender == 'female'}" th:text="Females">Females</td>
                         <td th:if="${leavePolicy.gender == '-1'}" th:text="All">All</td>

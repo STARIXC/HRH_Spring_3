@@ -27,7 +27,7 @@ public class EmploymentHistory {
 
     @ManyToOne
     @JoinColumn(name = "position_id",referencedColumnName = "id")
-    private EmployeePosition employeePosition;
+    private Designation employeePosition;
 
     @Column(name = "date_started")
     private String dateStarted; // Storing as string for now, could consider LocalDate in the future
@@ -61,10 +61,8 @@ public class EmploymentHistory {
 
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
-
-
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "empno",referencedColumnName = "emp_no")
-    private Employee employee;
+    @JoinColumn(name = "emp_hist_number",referencedColumnName = "id")
+    private Employee employeeHistory;
 
 }

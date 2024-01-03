@@ -16,8 +16,11 @@ public class Address {
     @Column(name = "address_id")
     private Long address_id;
     private String street;
-    private String postal_address;
-    private String city_town;
+    private String postalAddress;
+    private String cityTown;
     private String postalCode;
     private String country;
+    @ManyToOne
+    @JoinColumn(name = "emp_number", referencedColumnName = "id")
+    private Employee employeeAddress;
 }

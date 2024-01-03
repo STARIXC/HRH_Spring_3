@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en" layout:decorate="~{layouts/layout.html}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta content="IE=edge" http-equiv="X-UA-Compatible">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>HRMIS [[${pageTitle}]] | UTJ</title>
+</head>
+<body>
+<span layout:fragment="content">
+       <div class="dashboard-breadcrumb mb-25">
+            <h2>Leave Entitlements</h2>
+
+           <div class="btn-box d-flex flex-wrap gap-2">
+               <a class="btn btn-sm btn-primary" th:href="@{/system/leave/entitlement/add}"><i
+                       class="fa fa-plus-circle"></i> <span>Add New </span></a>   
+           </div>
+        </div>
+    <div class="row">
+       <div class="col-xxl-12 col-sm-12 col-lg-4">
+          <div class="panel">
+                    <div class="panel-header">
+                        <h2>Leave Entitlement</h2>
+                        <div class="btn-box">
+                <a class="btn btn-sm btn-primary" th:href="@{/system/leave/policy/all}">Back To Leave Policies</a>
+            </div>
+                    </div>
+                    <div class="panel-body">
+                    <form action="#" th:action="@{/system/leave/entitlement/save}" th:object="${leaveEntitlement}" method="post">
+
+    <div class="row g-3">
+        <!-- Employee Type Selection -->
+        <div class="col-sm-4">
+            <input type="radio" class="form-check-input" id="individual" name="employeeType" value="individual" onclick="toggleEmployeeSelect()">
+            <label for="individual" class="form-check-label">Individual Employee</label>
+        </div>
+        <div class="col-sm-4">
+            <input type="radio" id="all" class="form-check-input" name="employeeType" value="all" onclick="toggleEmployeeSelect()">
+            <label for="all" class="form-check-label">All Employees</label>
+        </div>
+    </div>
+
+    <div class="row g-3">
+        <!-- Financial Year -->
+        <div class="col-sm-6">
+            <label class="form-label">Financial Year</label>
+            <select class="form-select" id="financialYearSelect" onchange="onFinancialYearChange()" >
+                <option value="">Select Name</option>
+                <option th:each="financialYear : ${financialYears}" th:text="${financialYear.year}" th:value="${financialYear.id}"></option>
+            </select>
+        </div>
+
+        <!-- Leave Policy -->
+        <div class="col-sm-6">
+            <label class="form-label">Leave Policy</label>
+            <select class="form-select" id="leavePolicySelect" onchange="onLeavePolicyChange()" th:field="*{leavePolicy}">
+                <option value="">Select Name</option>
+
+            </select>
+        </div>
+
+        <!-- Individual Employee Selection -->
+        <div class="col-sm-6" id="individualSelect" style="display:none;">
+            <label class="form-label">Employee Name</label>
+            <select class="form-select" id="employeeId" name="employeeId">
+                <option value="">-- Select Employee --</option>
+                <option th:each="employee : ${employees}" th:value="${employee.id}" th:text="${employee.firstName} ${employee.surname}"></option>
+            </select>
+        </div>
+
+        <!-- Number of Days -->
+        <div class="col-sm-4">
+            <label class="form-label">Number of Days</label>
+            <input type="number" class="form-control" id="noOfDays" readonly th:field="*{noDays}">
+        </div>
+
+        <!-- Period -->
+        <div class="col-sm-4">
+            <label class="form-label">Period</label>
+            <input type="text" class="form-control" id="period" readonly>
+            <input type="text" class="form-control" id="fromDate" hidden th:field="*{fromDate}">
+            <input type="text" class="form-control" id="toDate" hidden th:field="*{toDate}">
+        </div>
+
+        <!-- Submit Button -->
+        <div class="col-12 mt-3">
+            <button type="submit" class="btn btn-primary">Save</button>
+        </div>
+    </div>
+</form>
+
+
+                    </div>
+                </div>
+      </div>
+    </div>
+    <!-- The Modal -->
+
+</span>
+
+<th:block layout:fragment="script">
+    <script th:src="@{/assets/vendor/js/jquery-ui.min.js}"></script>
+    <script th:src="@{/assets/vendor/js/select2.min.js}"></script>
+    <script th:src="@{/assets/js/select2-init.js}"></script>
+    <script th:inline="javascript">
+        function toggleEmployeeSelect() {
+            if (document.getElementById('individual').checked) {
+                document.getElementById('individualSelect').style.display = 'block';
+            } else if (document.getElementById('all').checked) {
+                document.getElementById('individualSelect').style.display = 'none';
+                // Clear the selection
+                document.getElementById('employeeId').value = '';
+            }
+            // const individualSelect = document.getElementById("individualSelect");
+            // const selectedValue = document.querySelector('input[name="employeeType"]:checked').value;
+            // individualSelect.style.display = (selectedValue === 'individual') ? 'block' : 'none';
+        }
+
+        /*<![CDATA[*/
+        function onFinancialYearChange() {
+            const selectedYear = $('#financialYearSelect').val();
+            // Define a JavaScript variable to hold the URL
+            let fetchUrl = /*[[@{/system/leave/policy/getPoliciesForYear}]]*/;
+            let url = fetchUrl + '?year=' + selectedYear;
+            $.ajax({
+                url: url,
+                type: 'GET',
+                   success: function(response) {
+
+                       const leavePolicySelect = $('#leavePolicySelect');
+                       leavePolicySelect.empty();
+                    leavePolicySelect.append($('<option>', {
+                        value: '',
+                        text : 'Select Policy'
+                    }));
+                    $.each(response, function(index, policy) {
+                        leavePolicySelect.append($('<option>', {
+                            value: policy.id,
+                            text : policy.leaveType.leaveType
+                        }));
+                    });
+                },
+                error: function(xhr, status, error) {
+                    console.error("Error fetching policies: " + error);
+                }
+            });
+        }
+        /*]]>*/
+        function onLeavePolicyChange() {
+            var policyId = $("#leavePolicySelect").val();
+
+            $.ajax({
+                url: '/hrh/system/leave/policy/details/' + policyId, // Update with the correct URL
+                type: 'GET',
+                success: function(response) {
+                    $("#noOfDays").val(response.days);
+                    $("#period").val(response.fromDate+' to '+response.toDate);
+                    $("#fromDate").val(response.fromDate);
+                    $("#toDate").val(response.toDate);
+                    filterEmployeesByGender(response.gender);
+                },
+                error: function(error) {
+                    console.error('Error fetching policy details:', error);
+                    // Handle any errors
+                }
+            });
+        }
+
+        function filterEmployeesByGender(gender) {
+            $.ajax({
+                url: '/hrh/system/leave/policy/filtered-employees/' + gender, // Update with the correct URL
+                type: 'GET',
+                success: function(response) {
+                    updateEmployeeDropdown(response);
+                },
+                error: function(error) {
+                    console.error('Error fetching filtered employees:', error);
+                    // Handle any errors
+                }
+            });
+        }
+
+        function updateEmployeeDropdown(employees) {
+            var employeeSelect = $('#employeeId');
+            employeeSelect.empty(); // Remove current options
+
+            if (employees.length === 0) {
+                employeeSelect.append('<option value="">No employees available</option>');
+            } else {
+                employeeSelect.append('<option value="">-- Select Employee --</option>');
+                employees.forEach(function(employee) {
+                    employeeSelect.append('<option value="' + employee.id + '">' + employee.surname +' '+ employee.firstName+ '</option>');
+                });
+            }
+        }
+        function updateFormFields(policyDetails) {
+            // Assuming policyDetails object contains fields like period, numberOfDays, etc.
+            // Update form fields accordingly
+
+            $("#numberOfDaysInput").val(policyDetails.numberOfDays);
+            // Add more fields as needed
+        }
+
+        /*<![CDATA[*/
+        function onLeavePolicyChange_() {
+            const selectedPolicy = $('#leavePolicySelect').val();
+            let fetchUrl = /*[[@{/system/leave/policy/getEmployeesForPolicy}]]*/;
+            let url = fetchUrl + '?policy=' + selectedPolicy;
+            $.ajax({
+                url: url,
+                type: 'GET',
+                    success: function(response) {
+                    var employeeSelect = $('#employeeSelect');
+                    employeeSelect.empty();
+                    employeeSelect.append($('<option>', {
+                        value: '',
+                        text : 'Select Employee'
+                    }));
+                    $.each(response, function(index, employee) {
+                        employeeSelect.append($('<option>', {
+                            value: employee.id,
+                            text : employee.surname + ' ' + employee.firstName
+                        }));
+                    });
+                },
+                error: function(xhr, status, error) {
+                    console.error("Error fetching employees: " + error);
+                }
+            });
+        }
+        /*]]>*/
+
+        $(function () {
+
+            //------------------------------------------------------------------------------------------------------------------
+            // All Entitlements Table In CRM Module
+            //------------------------------------------------------------------------------------------------------------------
+            if ($('#leaveEntitlementsTable').length) {
+                const dataTable = $('#leaveEntitlementsTable').DataTable({
+                    scrollX: true,
+                    "columnDefs": [{
+                        "targets": 'no-sort',
+                        "orderable": false
+                    }],
+                });
+                $('#leaveEntitlementsTable_filter input').addClass('form-control').attr("placeholder", "Search...").addClass('form-control-sm');
+                $('#leaveEntitlementsTable_length').prependTo('#leaveEntitlementsTableLength').find('select').addClass('form-control form-control-sm px-3');
+                $('#leaveEntitlementsTable_filter').prependTo('#tableSearch');
+                $('#leaveEntitlementsTable_info, #leaveEntitlementsTable_paginate').prependTo('.table-bottom-control');
+
+
+                $('#leaveEntitlementsTable').on('draw.dt', function () {
+                    $('#leaveEntitlementsTable tr').on('click', function () {
+                        $(this).toggleClass('selected');
+                        $(this).siblings().removeClass('selected');
+                    });
+
+                });
+            }
+        });
+
+    </script>
+</th:block>
+</body>
+
+</html>

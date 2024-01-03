@@ -19,9 +19,8 @@ public class EmployeeExperience {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "employee_experience_id")
     private Integer employee_experience_id;
-    @ManyToOne
-    @JoinColumn(name = "employee_id",referencedColumnName = "emp_no")
-    private Employee expEmployee;
+
+
     @Column(name = "organization_name")
     private String organization_name;
     @Column(name = "designation")

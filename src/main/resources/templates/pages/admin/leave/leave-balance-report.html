@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en" layout:decorate="~{layouts/layout.html}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta content="IE=edge" http-equiv="X-UA-Compatible">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>HRMIS [[${pageTitle}]] | UTJ</title>
+</head>
+<body>
+<span layout:fragment="content">
+       <div class="dashboard-breadcrumb mb-25">
+            <h2>Leave</h2>
+
+        </div>
+ <div class="row mb-25">
+        <div class="col-xxl-12 col-lg-12 col-sm-12">
+     <div class="panel">
+         <div class="panel-header">
+             <h5>Leave Entitlements and Usage Report</h5>
+         </div>
+         <div class="panel-body">
+             <form class="">
+                 <div class="row   g-3 mb-4">
+            <div class="col-md-4">
+                  <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="generateFor" id="leaveTypeRadio" value="leaveType" checked>
+            <label class="form-check-label" for="leaveTypeRadio">Leave Type</label>
+          </div>
+            </div>
+            <div class="col-md-4">
+                    <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="generateFor" id="employeeRadio" value="employee">
+            <label class="form-check-label" for="employeeRadio">Employee</label>
+          </div>
+            </div>
+
+
+
+        </div>
+                 <div class="row   g-3 mb-4">
+           <div class="col-md-3">
+          <label for="leaveType" class="form-label">Leave Type</label>
+          <select id="leaveType" class="form-select">
+            <option selected>Annual Leave</option>
+              <!-- Add more options here -->
+          </select>
+        </div>
+           <div class="col-md-3">
+          <label for="leavePeriod" class="form-label">Leave Period*</label>
+          <input type="text" class="form-control" id="leavePeriod" placeholder="2023-10-01 - 2024-09-30" required>
+        </div>
+
+        <div class="col-md-3">
+          <label for="jobTitle" class="form-label">Job Title</label>
+          <select id="jobTitle" class="form-select">
+            <option>-- Select --</option>
+              <!-- Add more options here -->
+          </select>
+        </div>
+
+        <div class="col-md-3">
+          <label for="location" class="form-label">Location</label>
+          <select id="location" class="form-select">
+            <option>-- Select --</option>
+              <!-- Add more options here -->
+          </select>
+        </div>
+
+        <div class="col-md-3">
+          <label for="subUnit" class="form-label">Sub Unit</label>
+          <select id="subUnit" class="form-select">
+            <option>-- Select --</option>
+              <!-- Add more options here -->
+          </select>
+        </div>
+
+        <div class="col-md-3">
+          <div class="form-check form-switch mt-4">
+            <input class="form-check-input" type="checkbox" id="includePastEmployees">
+            <label class="form-check-label" for="includePastEmployees">Include Past Employees</label>
+          </div>
+        </div>
+       </div>
+                 <div class="row   g-3 mb-4">
+                     <div class="col-md-6">
+          <label for="employeeName" class="form-label">Employee Name*</label>
+          <input type="text" class="form-control" id="employeeName" name="employeeName" value="Elinor Stan Wiza Skiles" required>
+        </div>
+                     <div class="col-md-6">
+                         <label for="leavePeriod" class="form-label">Leave Period*</label>
+                         <input type="text" class="form-control" id="leavePeriodEmployee" name="leavePeriod" value="2023-10-01 - 2024-09-30" required>
+                     </div>
+                 </div>
+                 <div class="row">
+                     <div class="col-12 d-grid"><button type="submit" class="btn btn-success">Generate</button></div>
+                 </div>
+      </form>
+    </div>
+     </div>
+        </div>
+ </div>
+    <div class="row  g-3 mb-4">
+        <div class="col-xxl-12 col-lg-12 col-sm-12">
+                 <div class="panel">
+                     <div class="panel-header">
+                         <div class="d-flex justify-content-between align-items-center">
+                             <span>(1) Record Found</span>
+                             <span>Total 21.00 Day(s)</span>
+                         </div>
+                     </div>
+     <div class="panel-body">
+         <div class="table-responsive">
+            <table class="table">
+        <caption class="visually-hidden">Entitlements and Usage Report</caption>
+        <thead>
+          <tr>
+            <th scope="col">Employee</th>
+            <th scope="col">Leave Entitlements (Days)</th>
+            <th scope="col">Leave Pending Approval (Days)</th>
+            <th scope="col">Leave Scheduled (Days)</th>
+            <th scope="col">Leave Taken (Days)</th>
+            <th scope="col">Leave Balance (Days)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>James Petterson</td>
+            <td>21.00</td>
+            <td>0.00</td>
+            <td>0.00</td>
+            <td>0.00</td>
+            <td>21.00</td>
+          </tr>
+          <!-- More rows -->
+        </tbody>
+      </table>
+
+      <div class="d-flex justify-content-end">
+        <span>(3) Records Found</span>
+      </div>
+         </div>
+
+     </div>
+     </div>
+     </div>
+     </div>
+    <div class="row  g-3 mb-4">
+        <div class="col-xxl-12 col-lg-12 col-sm-12">
+                 <div class="panel">
+                     <div class="panel-header">
+                         <div class="d-flex justify-content-between align-items-center">
+                             <span>(1) Record Found</span>
+                             <span>Total 21.00 Day(s)</span>
+                         </div>
+                     </div>
+     <div class="panel-body">
+         <div class="table-responsive">
+          <table class="table">
+          <caption class="visually-hidden">Entitlements and Usage Report</caption>
+          <thead>
+            <tr>
+              <th scope="col">Leave Type</th>
+              <th scope="col">Leave Entitlements (Days)</th>
+              <th scope="col">Leave Pending Approval (Days)</th>
+              <th scope="col">Leave Scheduled (Days)</th>
+              <th scope="col">Leave Taken (Days)</th>
+              <th scope="col">Leave Balance (Days)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Annual Leave</td>
+              <td>21.00</td>
+              <td>0.00</td>
+              <td>0.00</td>
+              <td>0.00</td>
+              <td>21.00</td>
+            </tr>
+            <!-- More rows -->
+          </tbody>
+        </table>
+      <div class="d-flex justify-content-end">
+        <span>(3) Records Found</span>
+      </div>
+         </div>
+
+     </div>
+     </div>
+     </div>
+     </div>
+
+</span>
+
+<th:block layout:fragment="script">
+    <script th:src="@{/assets/vendor/js/jquery-ui.min.js}"></script>
+    <script th:src="@{/assets/vendor/js/select2.min.js}"></script>
+    <script th:src="@{/assets/js/select2-init.js}"></script>
+    <script th:inline="javascript">
+
+        $(function () {
+
+            //------------------------------------------------------------------------------------------------------------------
+            // All Entitlements Table In CRM Module
+            //------------------------------------------------------------------------------------------------------------------
+            if ($('#myLeaveEntitlementTable').length) {
+                const dataTable = $('#myLeaveEntitlementTable').DataTable({
+                    scrollX: true,
+                    "columnDefs": [{
+                        "targets": 'no-sort',
+                        "orderable": false
+                    }],
+                });
+                $('#myLeaveEntitlementTable_filter input').addClass('form-control').attr("placeholder", "Search...").addClass('form-control-sm');
+                $('#myLeaveEntitlementTable_length').prependTo('#myLeaveEntitlementTableLength').find('select').addClass('form-control form-control-sm px-3');
+                $('#myLeaveEntitlementTable_filter').prependTo('#tableSearch');
+                $('#myLeaveEntitlementTable_info, #myLeaveEntitlementTable_paginate').prependTo('.table-bottom-control');
+
+
+                $('#myLeaveEntitlementTable').on('draw.dt', function () {
+                    $('#myLeaveEntitlementTable tr').on('click', function () {
+                        $(this).toggleClass('selected');
+                        $(this).siblings().removeClass('selected');
+                    });
+
+                });
+            }
+        });
+
+    </script>
+</th:block>
+</body>
+
+</html>

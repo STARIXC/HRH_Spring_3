@@ -1,5 +1,6 @@
 package org.utj.hrh.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -16,15 +17,16 @@ import java.time.LocalDateTime;
 @ToString
 public class Designation {
 
-    public static final String TABLE_NAME = "cadre_positions";
+    public static final String TABLE_NAME = "employee_positions";
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Integer id;
+    
     @ManyToOne
-    @JoinColumn(name = "standardized_cadre_id")
-    private StandardCarder standard_carder;
-
+    @JsonIgnore
+    @JoinColumn(name = "carder_category_id")
+    private CarderCategory carderCategory;
     @Column(name = "position_title")
     private String position_title;
     @Column(name = "basic_pay")
@@ -33,6 +35,5 @@ public class Designation {
     private LocalDateTime created_at;
     @Column(name = "updated_at")
     private LocalDateTime updated_at;
-
-
+ 
 }

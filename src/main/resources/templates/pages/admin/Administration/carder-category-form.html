@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en" layout:decorate="~{layouts/layout.html}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta content="IE=edge" http-equiv="X-UA-Compatible">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>HRMIS [[${pageTitle}]] | UTJ</title>
+</head>
+<body>
+<span layout:fragment="content">
+     <div class="dashboard-breadcrumb mb-25">
+
+         <h2>Add Standard Carder</h2>
+         <div class="btn-box">
+                <a th:href="@{/system/manage_standardised_carder}" class="btn btn-sm btn-primary">All Standard Carders</a>
+         </div>
+     </div>
+    <div class="row">
+           <div class="row">
+            <div class="col-xxl-12 col-sm-12">
+                <div class="panel">
+                    <div class="panel-header">
+                        <h5>Add New</h5>
+                    </div>
+                    <div class="panel-body">
+                             <form  action="#"
+                                    th:action="@{/system/standard/carder/save}"
+                                    th:object="${carderCategory}"
+                                    method="post">
+                            <input type="hidden" th:field="*{id}" id="id">
+
+                            <div class="form-group row">
+                                <label for="cadre_type_name" class="col-sm-2 col-form-label input__label">Carder Category Name</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control input-style" id="cadre_type_name"
+                                           placeholder="Name" th:field="*{carderCategoryName}" required minlength="8"
+                                           maxlength="128"/>
+                                </div>
+                            </div>
+
+
+                            <button type="submit" class="btn btn-primary btn-style mt-4">Submit</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+ </div>
+    </div>
+</span>
+
+</body>
+
+</html>

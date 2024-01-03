@@ -30,10 +30,10 @@
                                     <div class="row g-3">
                                         <div class="col-xxl-12 col-lg-12 col-sm-12">
 
-                                                <label for="inputCarderCategory" class="form-label">Standard Carder Category</label>
-                                                <select id="inputCarderCategory" class="form-control form-control-sm" th:field="*{standard_carder.id}" required>
+                                                <label for="inputCarderCategory" class="form-label">Carder Category</label>
+                                                <select id="inputCarderCategory" class="form-control form-control-sm" th:field="*{carderCategory.id}" required>
                                                     <option value ="" selected>Choose...</option>
-                                                    <option th:each="sCarder : ${standardCarders}" th:value="${{sCarder.id}}" th:text="${sCarder.standardized_cadre_name}" ></option>
+                                                    <option th:each="category : ${categories}" th:value="${{category.id}}" th:text="${category.carderCategoryName}" ></option>
                                                 </select>
 
                                         </div>

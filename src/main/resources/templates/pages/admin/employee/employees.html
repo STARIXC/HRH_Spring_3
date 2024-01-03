@@ -20,8 +20,10 @@
                                 class="fa-light fa-arrows-rotate"></i></button>
 
                         <a class="btn btn-sm btn-primary" th:href="@{/system/employee/form}"><i
-                                class="fa-light fa-plus"></i> Add
+                                class="fa-light fa-user-plus"></i> Add
                             New</a>
+<!--                        <button class="btn btn-sm btn-primary" th:data-bs-target="|#addEmployeeModal|" th:data-bs-toggle="modal"><i-->
+<!--                                class="fa fa-user-plus"></i> <span>Add New </span></button>-->
                     </div>
                 </div>
                 <div class="panel-body">
@@ -36,11 +38,10 @@
                            id="allEmployeeTable">
                         <thead>
                         <tr>
-                            <th>Photo</th>
+
+                            <th>PF_No#</th>
                             <th>Name</th>
-                            <th>Employee ID</th>
-                            <th>Designation</th>
-                            <th>Phone</th>
+                            <th>Contact</th>
                             <th>Status</th>
                             <th>Action</th>
                         </tr>
@@ -48,24 +49,25 @@
                         <tbody>
                         <tr th:each="employee : ${employees}">
 
+                           <td th:text="'ID-' + ${employee?.personNumber}"></td>
+<!--                            <td th:text="${'ID-'+employee.person.personNumber}">ID-100221033</td>-->
+
                             <td>
-                                <div class="avatar">
-                                    <img alt="User" th:src="@{../../assets/images/avatar-2.png}">
+                                <div class="table-employee-card">
+                                    <div class="part-img">
+                                        <img th:src="@{../../assets/images/avatar-2.png}" alt="Profile Photo">
+                                    </div>
+                                    <div class="part-txt">
+                                        <span class="employee-name">
+                                            <a class="table-txt link-underline-light" th:href="@{'/system/employee/'+${employee.id}+'/view'}">
+                                                <strong th:text="${employee.surname + ' ' + employee.firstName + (employee.otherName != null ? ' ' + employee.otherName : '')}"> </strong></a>
+                                        </span>
+                                        <span class="employee-category" th:if="${employee.position_title != null}" th:text="${'Designation: '+employee.position_title}"></span>
+                                        <span class="employee-category" th:if="${employee.position_title == null}" th:text="${'Designation: Not Defined'}">Category: electronics/music</span>
+                                    </div>
                                 </div>
                             </td>
-                            <td th:text="${'ID-'+employee.person.personNumber}">ID-100221033</td>
-                            <td>
-                               <span class="font-medium">
-                            <a href="../employee_view"><strong
-                                    th:text="${employee.surname + ' ' + employee.firstName + (employee.otherName != null ? ' ' + employee.otherName : '')}"> </strong></a>
-                            </span>
 
-                            </td>
-                            <td>
-                                <br>
-                                <span th:if="${employee.position != null}" th:text="${employee.position.position_title}"></span>
-                                <span th:if="${employee.position == null}">Not defined</span>
-                            </td>
                             <td>
                                 <span class="font-medium-" th:text="${employee.phone}"></span>
                                 <br><span class="text-dark" th:text="${'Email :'+employee.email}"></span>
@@ -78,9 +80,9 @@
                                             data-bs-toggle="dropdown">Action <i class="fa-regular fa-angle-down"></i>
                                     </button>
                                     <ul class="utj-dropdown-menu dropdown-menu dropdown-slim dropdown-menu-sm">
-                                        <li><a class="dropdown-item" th:href="@{'/system/employee/view/'+${employee.person.personNumber}}"><span class="dropdown-icon"><i
+                                        <li><a class="dropdown-item" th:href="@{'/system/employee/'+${employee.id}+'/view'}"><span class="dropdown-icon"><i
                                                 class="fa-light fa-eye"></i></span> View</a></li>
-                                        <li><a class="dropdown-item" th:href="@{'/system/employee/'+${employee.person.personNumber}+'/edit'}"><span class="dropdown-icon"><i
+                                        <li><a class="dropdown-item" th:href="@{'/system/employee/'+${employee.id}+'/edit'}"><span class="dropdown-icon"><i
                                                 class="fa-light fa-pen-to-square"></i></span> Edit</a></li>
                                         <!--                                        <li><a class="dropdown-item" href="#"><span class="dropdown-icon"><i-->
                                         <!--                                                class="fa-light fa-id-card"></i></span> ID Card</a></li>-->
@@ -101,6 +103,8 @@
             </div>
         </div>
     </div>
+
+
 </span>
 
 </body>

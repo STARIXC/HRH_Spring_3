@@ -1,13 +1,14 @@
 package org.utj.hrh.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.utj.hrh.dto.LeavePolicyDetailsDTO;
+import org.utj.hrh.dto.StaffDTO;
 import org.utj.hrh.model.*;
 import org.utj.hrh.services.*;
 
@@ -20,14 +21,17 @@ public class LeavePolicyController {
     private final LeavePolicyService leavePolicyService;
     private final FinancialYearService financialYearService;
     private final LeaveTypeService leaveTypeService;
-    private final CarderTypeService carderTypeService;
+    private final CarderCategoryService carderCategoryService;
+    private final EmployeeService employeeService;
 
     @Autowired
-    public LeavePolicyController(LeavePolicyService leavePolicyService, FinancialYearService financialYearService, LeaveTypeService leaveTypeService, CarderTypeService carderTypeService) {
+    public LeavePolicyController(LeavePolicyService leavePolicyService, FinancialYearService financialYearService, LeaveTypeService leaveTypeService, CarderCategoryService carderCategoryService, EmployeeService employeeService) {
         this.leavePolicyService = leavePolicyService;
         this.financialYearService = financialYearService;
         this.leaveTypeService = leaveTypeService;
-        this.carderTypeService = carderTypeService;
+        this.carderCategoryService = carderCategoryService;
+    
+        this.employeeService = employeeService;
     }
 
 
@@ -40,8 +44,8 @@ public class LeavePolicyController {
         LeavePolicy leavePolicy = new LeavePolicy();
         model.addAttribute("leavePolicy", leavePolicy);
         List<LeavePolicy> leavePolicies = leavePolicyService.getAll();
-        List<CarderType> carderTypes = carderTypeService.getAll();
-        model.addAttribute("carderTypes", carderTypes);
+        List<CarderCategory> carderCategories = carderCategoryService.getAll();
+        model.addAttribute("carderCategories", carderCategories);
         model.addAttribute("leavePolicies", leavePolicies);
         model.addAttribute("pageTitle", "View :: LeaveType Policies");
         return "pages/admin/leave_policy/leave_policies";
@@ -69,7 +73,7 @@ public class LeavePolicyController {
     }
 
     @GetMapping("/delete/{id}")
-    public String deletePolicy(@PathVariable(name = "id") Integer id,Model model,RedirectAttributes redirectAttributes){
+    public String deletePolicy(@PathVariable(name = "id") Long id,Model model,RedirectAttributes redirectAttributes){
         try {
             leavePolicyService.delete(id);
             redirectAttributes.addFlashAttribute("message","Policy has been deleted successfully");
@@ -79,5 +83,36 @@ public class LeavePolicyController {
         }
         return "redirect:/system/leave/policy/all";
     }
-
+    
+    @GetMapping("/getList")
+    public List<LeavePolicy> getPoliciesForYear(@RequestParam("year") Integer year) {
+        return leavePolicyService.getPoliciesForFinancialYear(year);
+    }
+    @GetMapping("/getPoliciesForYear")
+    public ResponseEntity<?> getListByYear(@RequestParam("year") Integer year) {
+        List<LeavePolicy> leavePolicies = leavePolicyService.getPoliciesForFinancialYear(year);
+        
+        if (leavePolicies.isEmpty()) {
+            // Return a 404 Not Found response when no data is found
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        
+        // Return the data as JSON in the response body
+        return new ResponseEntity<>(leavePolicies, HttpStatus.OK);
+    }
+    
+    @GetMapping("/details/{policyId}")
+    public ResponseEntity<LeavePolicyDetailsDTO> getPolicyDetails(@PathVariable Long policyId) throws EntityNotFoundException {
+        LeavePolicyDetailsDTO policyDetails = leavePolicyService.getPolicyDetails(policyId);
+        return ResponseEntity.ok(policyDetails);
+    }
+    
+    
+    @GetMapping("/filtered-employees/{gender}")
+    public ResponseEntity<List<StaffDTO>> getEmployeesByGender(@PathVariable String gender) {
+        List<StaffDTO> filteredEmployees = employeeService.getByGender(gender);
+        return ResponseEntity.ok(filteredEmployees);
+    }
+    
+    
 }

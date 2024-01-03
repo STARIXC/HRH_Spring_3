@@ -323,7 +323,7 @@
                     console.log(eval(response));
                     // Add options for standardized panelers
                     for (let i = 0; i < response.length; i++) {
-                        selectElement.append('<option value="' + response[i].district_id + '">' + response[i].district_nom + '</option>');
+                        selectElement.append('<option value="' + response[i].districtId + '">' + response[i].districtName + '</option>');
                     }
                 },
                 error: function (error) {

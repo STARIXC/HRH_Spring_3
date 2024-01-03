@@ -2,10 +2,17 @@ package org.utj.hrh.model;
 
 
 import jakarta.persistence.*;
+import lombok.*;
+
 import java.time.LocalDate;
 
 @Entity
 @Table(name = "emp_education")
+@Setter
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
+@ToString
 public class EmployeeEducation {
 
     @Id
@@ -13,12 +20,12 @@ public class EmployeeEducation {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "emp_number", referencedColumnName = "emp_number")
-    private Employee employee;
+    @JoinColumn(name = "emp_number", referencedColumnName = "id")
+    private Employee academicQualification;
 
     @ManyToOne
     @JoinColumn(name = "education_id", referencedColumnName = "id")
-    private Education education;
+    private EducationLevel education;
 
     @Column(name = "institute", length = 100)
     private String institute;
@@ -37,6 +44,7 @@ public class EmployeeEducation {
 
     @Column(name = "end_date")
     private LocalDate endDate;
+    
 
 }
 

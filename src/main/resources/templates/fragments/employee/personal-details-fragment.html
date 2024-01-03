@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div th:fragment="personal-details">
+    <form
+            method="post"
+            th:action="@{/system/employee/saveEmployee}"
+            th:object="${employeeDetails.basicInfoDTO}">
+        <div class="row">
+            <div class="col-12">
+                <div class="panel">
+                    <div class="panel-header">
+                        <h5>Basic Information</h5>
+                    </div>
+                    <div class="panel-body">
+                        <div class="row g-3">
+
+                            <div class="col-xxl-3 col-lg-4 col-sm-6">
+                                <label class="form-label">Surname</label>
+                                <input class="form-control form-control-sm" id="txtSurname" maxlength="50" name="txtSurname" th:field="*{surname}" type="text" value=""/>
+                            </div>
+                            <div class="col-xxl-3 col-lg-4 col-sm-6">
+                                <label class="form-label">First Name</label>
+                                <input class="form-control form-control-sm" th:field="*{firstName}" type="text">
+                            </div>
+                            <div class="col-xxl-3 col-lg-4 col-sm-6">
+                                <label class="form-label">Middle Name</label>
+                                <input class="form-control form-control-sm" id="txtFirstName" maxlength="50" name="txtFirstName" th:field="*{otherName}" type="text" value=""/>
+                            </div>
+
+                            <div class="col-xxl-3 col-lg-4 col-sm-6">
+                                <label class="form-label"> Nationality</label>
+                                <input autocomplete="off" class="form-control input-width-xlarge" id="nationality" name="txtNationality" placeholder="Nationality" th:field="*{nationality}" type="text" value=""/>
+                            </div>
+                            <div class="col-xxl-3 col-lg-4 col-sm-6">
+                                <label class="form-label">National ID /Passport #</label>
+                                <input class="form-control form-control-sm" th:field="*{nationalId}" type="number">
+                            </div>
+                            <div class="col-xxl-3 col-lg-4 col-sm-6">
+                                <label class="form-label">EmployeeNo / PFNo#</label>
+                                <input autocomplete="off" class="form-control form-control-sm" id="txtEmployeeNumber" maxlength="50" name="txtEmployeeNumber" th:field="*{personNumber}" type="text" value=""/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12">
+                <div class="panel">
+                    <div class="panel-header">
+                        <h5>Biographical Information</h5>
+                    </div>
+                    <div class="panel-body">
+                        <div class="row g-3">
+                            <div class="col-xxl-4 col-lg-6 col-sm-6">
+                                <label class="form-label">Date of Birth</label>
+                                <input class="form-control form-control-sm date-picker" placeholder="yyyy-mm-dd" readonly th:field="*{dob}" type="text">
+                            </div>
+
+                            <div class="col-xxl-4 col-lg-6 col-sm-6">
+                                <label class="form-label">Gender</label>
+                                <select class="form-select form-control-sm" data-placeholder="Gender" th:field="*{gender}">
+                                    <option value="">Gender</option>
+                                    <option value="MALE">Male</option>
+                                    <option value="FEMALE">Female</option>
+                                </select>
+                            </div>
+
+                            <div class="col-xxl-4 col-lg-6 col-sm-6">
+                                <label class="form-label">Marital Status</label>
+                                <select class="form-select form-control-sm" data-placeholder="Marital Status" th:field="*{maritalStatus}">
+                                    <option value="">Marital Status</option>
+                                    <option value="0">Married</option>
+                                    <option value="1">Unmarried</option>
+                                    <option value="1">Divorced</option>
+                                </select>
+                            </div>
+
+                            <div class="col-xxl-4 col-lg-6 col-sm-6">
+                                <label class="form-label">Disability</label>
+                                <label class="radio-inline">
+                                    <input id="rbtnDisability_yes"  th:field="*{disability}" th:value="1" type="radio"/>
+                                    <label for="rbtnDisability_no">Yes</label>
+                                </label>
+                                <label class="radio-inline">
+                                    <input checked="checked" id="rbtnDisability_no" name="rbtnDisability" th:field="*{disability}" th:value="0" type="radio"/>
+                                    <label for="rbtnDisability_no">No</label>
+                                </label>
+                            </div>
+
+                            <div class="col-xxl-8 col-lg-6 col-sm-6">
+                                <label class="form-label">Disability Explained</label>
+                                <textarea class="form-control input-width-xlarge" cols="10" id="txtDisabilityExplain" maxlength="200" name="txtDisabilityExplain" rows="5" th:field="*{disabilityExplain}" value="">
+
+                                </textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 d-flex justify-content-end">
+                <button class="btn btn-sm btn btn-success">Save Employee</button>
+            </div>
+        </div>
+    </form>
+
+</div>
+
+</body>
+</html>

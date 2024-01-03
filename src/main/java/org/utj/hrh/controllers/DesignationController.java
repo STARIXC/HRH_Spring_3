@@ -10,9 +10,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import org.utj.hrh.model.CarderCat;
+import org.utj.hrh.model.CarderCategory;
 import org.utj.hrh.model.Designation;
-import org.utj.hrh.model.StandardCarder;
 import org.utj.hrh.services.*;
 
 import java.util.*;
@@ -21,21 +20,25 @@ import java.util.*;
 @RequestMapping("/system/designation")
 public class DesignationController {
 
+  
+   
+    private final CarderCategoryService carderCategoryService;
+   
+    private final DesignationService designationService;
     @Autowired
-    private StandardCarderService standardCarderService;
-    @Autowired
-    private CarderCategoryService carderCategoryService;
-    @Autowired
-    private DesignationService designationService;
-
+    
+    public DesignationController( CarderCategoryService carderCategoryService, DesignationService designationService) {
+       
+        this.carderCategoryService = carderCategoryService;
+        this.designationService = designationService;
+    }
+    
     @GetMapping("/manage")
     public String viewDesignations(Model model) {
         Designation designation = new Designation();
         model.addAttribute("designation", designation);
-        List<StandardCarder> standardCarders = standardCarderService.getAll();
-//        List<CarderCat> categories = carderCategoryService.getAll();
-//        model.addAttribute("categories", categories);
-        model.addAttribute("standardCarders", standardCarders);
+        List<CarderCategory> categories = carderCategoryService.getAll();
+        model.addAttribute("categories", categories);
         List<Designation> designations = designationService.getAll();
         model.addAttribute("designations", designations);
         model.addAttribute("pageTitle", "View :: Designations");
@@ -64,11 +67,10 @@ public class DesignationController {
     public String editDesignation(@PathVariable(name="id") Integer id, Model model, RedirectAttributes redirectAttributes){
 
         try {
-            List<StandardCarder> standardCarders = standardCarderService.getAll();
-            List<CarderCat> categories = carderCategoryService.getAll();
+
+            List<CarderCategory> categories = carderCategoryService.getAll();
             model.addAttribute("categories", categories);
-            model.addAttribute("standardCarders", standardCarders);
-            Designation designation = designationService.getDesignation(id);
+              Designation designation = designationService.getDesignation(id);
             model.addAttribute("designation", designation);
             model.addAttribute("pageTitle","Update ::  Standard Carder");
             return "pages/admin/Administration/designation-form";

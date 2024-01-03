@@ -16,6 +16,7 @@ public class LeavePolicy {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
+    
     private Double accrued_amount;
     private String accrued_based_on;
     private Integer accrued_max_days;
@@ -29,9 +30,10 @@ public class LeavePolicy {
     private String color;
     private Integer days;
     private String description;
+    
     @ManyToOne
     @JoinColumn(name = "employee_type", referencedColumnName = "id")
-    private CarderType employee_type;
+    private CarderCategory employee_type;
 
     private String forward_default;
     private String gender;
@@ -40,7 +42,7 @@ public class LeavePolicy {
     private String marital;
     @ManyToOne
     @JoinColumn(name = "f_year", referencedColumnName = "id")
-    private FinancialYear f_year;
+    private FinancialYear financialYear;
     @ManyToOne
     @JoinColumn(name = "leave_id", referencedColumnName = "leave_type_id")
     private LeaveType leaveType;

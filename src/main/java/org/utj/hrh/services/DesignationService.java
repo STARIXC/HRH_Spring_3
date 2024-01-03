@@ -3,7 +3,6 @@ package org.utj.hrh.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.utj.hrh.model.Designation;
-import org.utj.hrh.model.StandardCarder;
 import org.utj.hrh.repository.DesignationRepository;
 
 import java.util.*;

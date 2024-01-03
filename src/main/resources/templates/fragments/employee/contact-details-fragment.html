@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div th:fragment="contact-details">
+    <div class="col-12">
+        <div class="panel">
+            <div class="panel-header">
+                <h5>Contact Information</h5>
+            </div>
+        </div>
+    </div>
+
+    <form
+            method="post"
+            th:action="@{/system/employee/saveEmployee/contact}"
+            th:object="${employeeDetails.contactInfoDTO}">
+        <div class="col-12">
+            <div class="panel">
+                <div class="panel-header">
+                    <h6>Home/Permanent Address</h6>
+                </div>
+                <div class="panel-body">
+
+                    <div class="row g-3">
+                        <!-- Permanent Address -->
+                        <div class="col-xxl-3 col-lg-4 col-sm-6">
+                            <label class="form-label">Postal Address</label>
+                            <input class="form-control input-width-xlarge" th:field="*{homeAddress.postalAddress}" type="text"/>
+                        </div>
+
+                        <div class="col-xxl-3 col-lg-4 col-sm-6">
+                            <label class="form-label">City: </label>
+                            <input class="form-control input-width-xlarge" th:field="*{homeAddress.cityTown}" type="text"/>
+                        </div>
+                        <div class="col-xxl-3 col-lg-4 col-sm-6">
+                            <label class="form-label">Postal Code:</label>
+                            <input class="form-control input-width-xlarge" th:field="*{homeAddress.postalCode}" type="text"/>
+                        </div>
+                        <div class="col-xxl-3 col-lg-4 col-sm-6">
+                            <label class="form-label">Country: </label>
+                            <input class="form-control input-width-xlarge" th:field="*{homeAddress.country}" type="text"/>
+                        </div>
+                        <div class="col-xxl-3 col-lg-4 col-sm-6">
+                            <label class="form-label">Street</label>
+                            <input class="form-control input-width-xlarge" th:field="*{homeAddress.street}" type="text"/>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12">
+            <div class="panel">
+                <div class="panel-header">
+                    <h6>Present Address</h6>
+                </div>
+                <div class="panel-body">
+                    <!-- Present Address -->
+                    <div class="row g-3">
+
+                        <div class="col-xxl-3 col-lg-4 col-sm-6">
+                            <label class="form-label">Postal Address</label>
+                            <input class="form-control input-width-xlarge" th:field="*{presentAddress.postalAddress}" type="text"/>
+                        </div>
+
+                        <div class="col-xxl-3 col-lg-4 col-sm-6">
+                            <label class="form-label">City: </label>
+                            <input class="form-control input-width-xlarge" th:field="*{presentAddress.cityTown}" type="text"/>
+                        </div>
+                        <div class="col-xxl-3 col-lg-4 col-sm-6">
+                            <label class="form-label">Postal Code:</label>
+                            <input class="form-control input-width-xlarge" th:field="*{presentAddress.postalCode}" type="text"/>
+                        </div>
+                        <div class="col-xxl-3 col-lg-4 col-sm-6">
+                            <label class="form-label">Country: </label>
+                            <input class="form-control input-width-xlarge" th:field="*{presentAddress.country}" type="text"/>
+                        </div>
+                        <div class="col-xxl-3 col-lg-4 col-sm-6">
+                            <label class="form-label">Street</label>
+                            <input class="form-control input-width-xlarge" th:field="*{presentAddress.street}" type="text"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-12">
+            <div class="panel">
+                <div class="panel-header">
+                    <h5>Telephone</h5>
+                </div>
+                <div class="panel-body">
+                    <!-- Present Address -->
+                    <div class="row g-3">
+                        <div class="col-xxl-6 col-lg-6 col-sm-12">
+                            <label class="form-label">Phone Number</label>
+                            <input autocomplete="off" class="form-control input-width-xlarge" th:field="*{phone}"  type="text" />
+                        </div>
+
+                        <div class="col-xxl-6 col-lg-6 col-sm-12">
+                            <label class="form-label"> Alternative Phone Number</label>
+                            <input autocomplete="off" class="form-control input-width-xlarge"  placeholder="Alternative Phone Number"  type="text" th:field="*{altPhone}"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-12">
+            <div class="panel">
+                <div class="panel-header">
+                    <h5>Email</h5>
+                </div>
+                <div class="panel-body">
+                    <!-- Present Address -->
+                    <div class="row g-3">
+                        <div class="col-xxl-6 col-lg-6 col-sm-12">
+                            <label class="form-label">Email</label>
+                            <input autocomplete="off" class="form-control input-width-xlarge" type="email" th:field="*{email}"/>
+                        </div>
+                        <div class="col-xxl-6 col-lg-6 col-sm-12">
+                            <label class="form-label">Alternative Email Address</label>
+                            <input autocomplete="off" class="form-control input-width-xlarge"  type="email" th:field="*{altEmail}"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 d-flex justify-content-end">
+            <button class="btn btn-sm btn btn-success">Save </button>
+        </div>
+    </form>
+</div>
+
+</body>
+</html>

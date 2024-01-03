@@ -23,7 +23,11 @@ public class Document {
 
     @Column(name = "docIdentifier")
     private String docID;
-
+    
+    @ManyToOne
+    @JoinColumn(name = "emp_number", referencedColumnName = "emp_no")
+    private Employee documentOwner;
+    
     @Column(name = "document_value")
     private String documentValue;
     @Column(name = "created_by")
@@ -38,8 +42,5 @@ public class Document {
     @ToString.Exclude
     private DocumentType documentType;
 
-    @ManyToOne
-    @JoinColumn(name = "employee_id",referencedColumnName = "emp_no")
-    @ToString.Exclude
-    private Employee employee;
+
 }

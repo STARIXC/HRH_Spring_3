@@ -26,8 +26,8 @@ public class EmployeeAward {
     private String month;
 
     @ManyToOne
-    @JoinColumn(name = "employee_id",referencedColumnName = "emp_no", insertable = false, updatable = false)
-    private Employee employee;
+    @JoinColumn(name = "employee_id",referencedColumnName = "id", insertable = false, updatable = false)
+    private Employee employeeAward;
 
 //    @ManyToOne
 //    @JoinColumn(name = "department_id", insertable = false, updatable = false)

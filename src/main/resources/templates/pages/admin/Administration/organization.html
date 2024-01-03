@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html data-menu="vertical" data-nav-size="nav-default" lang="en" layout:decorate="~{layouts/layout.html}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta content="IE=edge" http-equiv="X-UA-Compatible">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>HRMIS [[${pageTitle}]] | UTJ</title>
+</head>
+<body>
+
+<span layout:fragment="content">
+<div class="row">
+
+  <div class="row g-3">
+      <div class="col-xxl-12 col-sm-12 col-lg-12">
+          <div class="panel">
+                    <div class="panel-header">
+                        <h5>General Information</h5>
+                        <div class="btn-box">
+                             <div class="form-check form-switch">
+                                        <span>Edit</span>    <input class="form-check-input" type="checkbox" role="switch" id="formEdit" th:checked="${organizationEditable}" th:onclick="toggleReadOnly()" >
+                                        </div>
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <form  action="#"
+                               th:action="@{/system/organization/info/save}"
+                               th:object="${organization}"
+                               method="post">
+                            <div class="row g-3 m-2">
+                            <div class="col-sm-8">
+                                 <label for="orgName" class="form-label">Organization Name</label>
+                                <input type="text" class="form-control form-control-sm" id="orgName" placeholder="Organization Name*" required th:field="*{name}"  th:readonly="${!organizationEditable}">
+                            </div>
+                            <div class="col-sm-4">
+                                 <label for="numberEmp" class="form-label">Number of Employees</label>
+                                <span id="numberEmp" th:text="${totalEmployees}">000</span>
+                            </div>
+                            <div class="col-sm-4">
+                                <label for="regNumber" class="form-label">Registration Number</label>
+                                <input type="text" class="form-control form-control-md" id="regNumber"  placeholder="Registration Number" th:field="*{registrationNumber}" th:readonly="${!organizationEditable}">
+                            </div>
+                            <div class="col-sm-4">
+                                 <label for="taxId" class="form-label">Tax ID</label>
+                                <input type="text" id="taxId" class="form-control form-control-md" placeholder="KRA PIN*" th:field="*{taxId}"  th:readonly="${!organizationEditable}">
+                            </div>
+                            </div>
+                            <div class="row g-3 m-2">
+                            <div class="col-sm-4">
+                                <label for="phone" class="form-label">Phone</label>
+                                <input type="text" class="form-control form-control-sm" id="phone" placeholder="Phone Number" th:field="*{phone}"  th:readonly="${!organizationEditable}">
+                            </div>
+                                <div class="col-sm-4">
+                                    <label for="fax" class="form-label">Fax</label>
+                                <input type="text" id="fax" class="form-control form-control-sm" placeholder="Fax" th:field="*{fax}" th:readonly="${!organizationEditable}">
+                            </div>
+                                <div class="col-sm-4">
+                                    <label for="email" class="form-label">Email</label>
+                                <input type="email" class="form-control form-control-sm" id="email" placeholder="Email" th:field="*{email}" th:readonly="${!organizationEditable}">
+                            </div>
+                                <div class="col-sm-4">
+                                    <label for="addressStreet1" class="form-label">Address Street 1</label>
+                                <input type="text" class="form-control form-control-sm" id="addressStreet1" placeholder="Street 1" th:field="*{street1}"  th:readonly="${!organizationEditable}">
+                            </div>
+                            <div class="col-sm-4">
+                                <label for="addressStreet2" class="form-label">Address Street 2</label>
+                                <input type="text" class="form-control form-control-sm" id="addressStreet2" placeholder="Street 2" th:field="*{street2}"  th:readonly="${!organizationEditable}">
+                            </div>
+                                <div class="col-sm-4">
+                                <label for="city" class="form-label">City</label>
+                                <input type="text" class="form-control form-control-sm" id="city" placeholder="City*" th:field="*{city}"  th:readonly="${!organizationEditable}">
+                            </div>
+                                <div class="col-sm-4">
+                                <label for="county" class="form-label">County</label>
+                                <input type="text" class="form-control form-control-sm" id="county" placeholder="County*" th:field="*{county}" th:readonly="${!organizationEditable}">
+                            </div>   <div class="col-sm-4">
+                                <label for="country"  class="form-label">Country</label>
+                                <select class="form-control form-control-sm select-2" id="country" th:field="*{country}" th:readonly="${!organizationEditable}">
+                                    <option value ="" selected>Choose...</option>
+                                    <option th:each="country : ${countryList}" th:value="${country.countryCode}" th:text="${country.name}" ></option>
+                                </select>
+                            </div>
+                            <div class="col-sm-6">
+                                <label for="notes"  class="form-label">Notes</label>
+                                <textarea class="form-control form-control-sm" id="notes" rows="8"
+                                          placeholder="Your Message*"  th:field="*{note}" th:readonly="${!organizationEditable}"></textarea>
+                            </div>
+                            <div class="col-12 text-end">
+                                <button class="btn btn-sm btn-primary" th:readonly="${!organizationEditable}">Send Message</button>
+                            </div>
+                        </div>
+
+                        </form>
+
+                    </div>
+                </div>
+      </div>
+
+  </div>
+</div>
+
+</span>
+<!-- Include the script fragment -->
+<th:block layout:fragment="script">
+    <script th:src="@{/assets/vendor/js/jquery-ui.min.js}"></script>
+    <script th:src="@{/assets/vendor/js/sweetalert2.all.min.js}"></script>
+    <script th:inline="javascript">
+
+        $(function () {
+            /*<![CDATA[*/
+            $(document).ready(function () {
+                /* JavaScript function to toggle readonly state of form fields */
+                function toggleReadOnly() {
+                    const checkbox = document.getElementById('formEdit'); // Replace with your actual checkbox ID
+                    const fields = document.querySelectorAll('[th\\:readonly]');
+
+                    fields.forEach(function (field) {
+                        field.readOnly = !checkbox.checked;
+                    });
+                }
+                // Add event listener for form submission
+                $("form").submit(function (event) {
+                    event.preventDefault(); // Prevent the form from submitting normally
+
+                    // Get form data
+                    var formData = $(this).serialize();
+
+                    // Perform an AJAX request to save or update the document
+                    $.ajax({
+                        type: "POST",
+                        url: /*[[@{/system/organization/info/save}]]*/,
+                        data: formData,
+                        success: function (response) {
+                            // Display a SweetAlert success message
+                            Swal.fire({
+                                title: 'Success',
+                                text: 'Record saved successfully!',
+                                icon: 'success',
+                                confirmButtonText: 'OK'
+                            }).then(function () {
+                                // Refresh the page after the user clicks OK in the alert
+                                location.reload();
+                            });
+                        },
+                        error: function (error) {
+                            // Handle error response here, e.g., display an error message
+                            // alert("Error saving document: " + error.responseText);
+                            Swal.fire({
+                                title: "Oops...",
+                                text: "Error saving Education Level: " + error.responseText,
+                                icon: "error",
+                                confirmButtonClass: "btn btn-sm btn-primary",
+                                buttonsStyling: !1,
+                                showCloseButton: !0,
+                                closeButtonHtml: "<i class='fa-light fa-xmark'></i>",
+                                customClass: {
+                                    closeButton: 'btn btn-sm btn-icon btn-danger',
+                                },
+                            })
+                        }
+                    });
+                });
+            });
+            /*]]>*/
+        });
+
+
+
+    </script>
+</th:block>
+</body>
+
+</html>

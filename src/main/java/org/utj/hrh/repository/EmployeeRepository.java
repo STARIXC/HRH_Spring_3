@@ -10,18 +10,22 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
-public interface EmployeeRepository extends JpaRepository<Employee, String> {
+public interface EmployeeRepository extends JpaRepository<Employee, Long> {
 
     @Query("SELECT COUNT(e) FROM Employee e WHERE FUNCTION('STR_TO_DATE',e.dateStarted, '%Y-%m-%d') BETWEEN :startDate AND :endDate")
     Long countByDateStartedBetween(@Param("startDate") LocalDate startOfMonth, @Param("endDate") LocalDate endOfMonth);
 
-     Optional<Employee> findEmployeeById(String  id) ;
+     Employee findByPersonPersonNumber(String  id) ;
     @Query("SELECT e from Employee e where e.person.personNumber =:emp_no")
     Employee getEmployeeByEmp_no(@Param("emp_no") String emp_no);
 
-    Long countById(String id);
-
-
+    Long countById(Long id);
+    
+    List<Employee> findByGender(String gender);
+//    List<StaffDTO> findByGender(String gender);
+    
+    @Query("SELECT e.phone, e.email, e.altPhone, e.altEmail, e.presentAddress, e.homeAddress FROM Employee e WHERE e.person.personNumber = :employeeId")
+    Object[] findEmployeeContactDetailsById(Long employeeId);
 
 
 }

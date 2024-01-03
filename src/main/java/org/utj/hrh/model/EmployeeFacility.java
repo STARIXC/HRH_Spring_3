@@ -4,7 +4,8 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
-@Table(name = "tbl_user_facility" , uniqueConstraints = @UniqueConstraint(columnNames = "emp_no")) // This annotation specifies the database table name
+//@Table(name = "tbl_user_facility" , uniqueConstraints = @UniqueConstraint(columnNames = "emp_no")) // This annotation specifies the database table name
+@Table(name = "tbl_user_facility") // This annotation specifies the database table name
 @Setter
 @Getter
 @AllArgsConstructor
@@ -20,10 +21,9 @@ public class EmployeeFacility {
     @ManyToOne
     @JoinColumn(name = "centre_sante_id", referencedColumnName = "centre_sante_id")
     private Facility facility;
-
-
+    
     @OneToOne
-    @JoinColumn(name = "emp_no",referencedColumnName = "emp_no")
+    @JoinColumn(name = "emp_number", referencedColumnName = "id")
     private Employee employee;
 
 

@@ -2,9 +2,9 @@ package org.utj.hrh.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.utj.hrh.model.CarderType;
+import org.utj.hrh.dto.LeavePolicyDetailsDTO;
+import org.utj.hrh.model.FinancialYear;
 import org.utj.hrh.model.LeavePolicy;
-import org.utj.hrh.repository.CarderTypeRepository;
 import org.utj.hrh.repository.LeavePolicyRepository;
 
 import java.util.List;
@@ -31,7 +31,7 @@ public class LeavePolicyService {
         leavePolicyRepository.save(leavePolicy);
     }
     //    get carder type
-    public LeavePolicy getPolicy(Integer id) throws EntityNotFoundException {
+    public LeavePolicy getPolicy(Long id) throws EntityNotFoundException {
         try{
             return leavePolicyRepository.findById(id).get();
         }catch (NoSuchElementException ex){
@@ -39,11 +39,35 @@ public class LeavePolicyService {
         }
 
     }
-    public void delete(Integer id) throws EntityNotFoundException{
+    public void delete(Long id) throws EntityNotFoundException{
         Long countById= leavePolicyRepository.countById(id);
         if (countById==null || countById==0){
             throw new EntityNotFoundException("could not find any Policy with ID :"+id);
         }
         leavePolicyRepository.deleteById(id);
+    }
+    
+    public List<LeavePolicy> getPoliciesForFinancialYear(Integer financialYearId) {
+        FinancialYear financialYear = new FinancialYear();
+        financialYear.setId(financialYearId);
+        return leavePolicyRepository.findLeavePoliciesByFinancialYear(financialYear);
+    }
+    
+    public LeavePolicyDetailsDTO getPolicyDetails(Long policyId) throws EntityNotFoundException {
+        LeavePolicy policy = leavePolicyRepository.findById(policyId)
+                .orElseThrow(() -> new EntityNotFoundException("Leave Policy not found"));
+        return convertToDTO(policy);
+    }
+    
+    private LeavePolicyDetailsDTO convertToDTO(LeavePolicy policy) {
+        // Conversion logic
+        LeavePolicyDetailsDTO dto = new LeavePolicyDetailsDTO();
+        // Populate fields from policy to dto
+        dto.setId(policy.getId());
+        dto.setDays(policy.getDays());
+        dto.setGender(policy.getGender());
+        dto.setFromDate(policy.getFinancialYear().getStart_date());
+        dto.setToDate(policy.getFinancialYear().getEnd_date());
+        return dto;
     }
 }

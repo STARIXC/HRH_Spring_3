@@ -13,7 +13,7 @@ import java.util.List;
 
 @Repository
 public interface CountyRepository extends JpaRepository<County,Integer> {
-    @Query("SELECT c from County c where c.active =:active")
-    List<County> findByActive(@Param("active") Integer active);
+    @Query("SELECT c from County c where c.isActive =:active")
+    List<County> findByActive(@Param("active") String active);
 //    Long countCountyByCountyID(Integer id);
 }

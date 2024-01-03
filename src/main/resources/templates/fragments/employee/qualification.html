@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div th:fragment="qualificationFragment">
+    <div aria-labelledby="qualification-tab" class="row g-3 tab-pane " id="qualification" role="tabpanel">
+        <div class="col-12">
+            <div class="panel">
+                <div class="panel-header">
+                    <h5>Academic Qualifications</h5>
+                    <div class="d-flex justify-content-end">
+                        <input class="btn btn-success btn-md " id="addEducationQualification"type="button" value="+ Add">
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <div class="row g-3 education_qualification_append_div">
+
+
+                    </div>
+
+                </div>
+            </div>
+            <div class="panel">
+                <div class="panel-body">
+
+                    <div class="row g-3">
+                        <div class="col-12">
+                            <table class="table rounded-table hidden md:table min-w-full divide-y divide-gray-200 ">
+                                <thead class="bg-gray-50 dark:bg-neutral-700">
+                                <tr>
+                                    <th scope="col">Level</th>
+                                    <th scope="col">Major <!----></th>
+                                    <th scope="col">Year <!----></th>
+                                    <th scope="col">JPA Score <!----></th>
+                                    <th scope="col">Action <!----></th>
+                                </tr>                </thead>
+                                <tbody id="educationTable">
+                                <tr th:each="academicQualification , itrStat : ${employeeDetails.academicDetails}">
+                                    <td th:text="${academicQualification.getQualificationName} ">Name</td>
+                                    <td th:text="${academicQualification.getMajor} ">Name</td>
+                                    <td th:text="${academicQualification.year} ">20</td>
+                                    <td th:text="${academicQualification.score} ">20</td>
+                                    <td>
+                                        <div class="btn-box">
+                                            <a class="btn btn-sm btn-icon btn-primary"   th:data-education-id="${academicQualification.id}" onclick="editEducation(this)"><i class="fa-light fa-edit"></i></a>
+                                            <a class="btn btn-sm btn-icon btn-danger deleteBtn" th:data-id="${academicQualification.id}" th:education="${academicQualification.id}"><i class="fa-light fa-trash-can"></i></a>
+                                        </div>
+                                    </td>
+                                </tr>
+                                </tbody>
+                                <!---->
+                            </table>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-12">
+            <div class="panel">
+                <div class="panel-header">
+                    <h5>Work Experience</h5>
+                    <div class=" d-flex justify-content-end">
+                        <input class=" btn btn-success appendBtnColor" id="addExperience" type="button" value=" + Add">
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <div class="row g-3">
+                        <div class="col-12">
+                            <div class="experience_append_div"></div>
+                        </div>
+                    </div>
+                    <div class="row g-3">
+                        <div class="col-12">
+                            <div class="panel ">
+                                <div class="panel-body">
+                                    <table class="table rounded-table hidden md:table min-w-full divide-y divide-gray-200 ">
+                                        <thead class="bg-gray-50 dark:bg-neutral-700">
+                                        <tr>
+                                            <th scope="col" >Period</th>
+                                            <th scope="col" >Department <!----></th>
+                                            <th scope="col">Designation <!----></th>
+
+                                            <th scope="col" >Employment Status <!----></th>
+                                            <th scope="col" > <!----></th>
+                                        </tr>
+                                        </thead>
+                                        <tbody class="bg-white divide-y divide-gray-200 " id="emp_hist">
+                                        <tr th:each="history : ${employeeDetails.employmentHistoryDTOS}">
+                                            <td th:text="${history.emprecordid}"></td>
+                                            <td th:text="${history.facilityId}"></td>
+                                            <td th:text="${history.employeePositionId}"></td>
+                                            <td><span>active</span></td>
+                                            <td><span>Actions</span></td>
+                                            <!-- Add other data cells as needed -->
+                                        </tr>
+                                        </tbody>
+                                        <!---->
+                                    </table>
+
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

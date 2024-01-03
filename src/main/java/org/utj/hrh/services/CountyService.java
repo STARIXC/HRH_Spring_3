@@ -2,9 +2,7 @@ package org.utj.hrh.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.utj.hrh.model.CarderType;
 import org.utj.hrh.model.County;
-import org.utj.hrh.repository.CarderTypeRepository;
 import org.utj.hrh.repository.CountyRepository;
 import org.utj.hrh.repository.SubCountyRepository;
 
@@ -25,12 +23,12 @@ public class CountyService {
         return countyRepository.findAll();
     }
     public List<County> getActive(){
-        Integer active=1;
+        String active = String.valueOf('1');
         return countyRepository.findByActive(active);
     }
 
     public void save(County county) {
-        boolean isUpdatingCounty = (county.getCounty_id() !=null);
+//        boolean isUpdatingCounty = (county.getCountyId() !=null);
 //        if (isUpdatingCarderType){
 //            CarderType existingCarder = carderTypeDao.findById(carderType.getId()).get();
 //            carderTypeDao.save(carderType);

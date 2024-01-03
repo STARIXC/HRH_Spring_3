@@ -13,25 +13,24 @@ import java.util.List;
 @AllArgsConstructor
 @ToString
 public class County {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "county_id")
-   private Integer county_id;
-
-	@Column(name = "county_name")
-    private String county_name;
-
-	@Column(name = "regionID")
-	private Integer regionID;
-
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "CountyID")
+	private Integer countyId;
+	
+	@Column(name = "county_name", nullable = false)
+	private String countyName;
+	
+	@Column(name = "RegionID")
+	private String regionId;
+	
 	@Column(name = "burden_cartegory")
-	private String  burden_cartegory;
-
-	@Column(name = "active")
-	private Integer active;
-//
-//
-//	@OneToMany(mappedBy = "county")
-//	private List<SubCounty> subCounties;
+	private String burdenCategory;
+	
+	@Column(name = "CountyMFL")
+	private String countyMFL;
+	
+	@Column(name = "isactive", columnDefinition = "varchar(45) default '1'")
+	private String isActive;
 
 }

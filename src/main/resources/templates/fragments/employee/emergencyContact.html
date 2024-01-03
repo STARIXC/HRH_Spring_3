@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div th:fragment="emergencyContactsFragment">
+    <div class="col-12">
+        <div class="panel">
+            <div class="panel-header">
+                <h5>Assigned Emergency Contacts</h5>
+                <div class="btn-box">
+                    <input class="btn btn-success" id="emergency-contact-add" type="button" value="Add Record">
+                </div>
+
+            </div>
+            <div class="panel-body">
+                <div class="row g-3">
+                    <div class="col-12">
+                        <div class="emergency_contact_append_div"></div>
+                    </div>
+                </div>
+                <div class="g-3">
+                    <table class="table table-dashed table-hover utj-dataTable all-emergency-table table-striped"
+                           id="allEmergencyTable">
+                        <thead class="bg-gray-50 dark:bg-neutral-700">
+                        <tr>
+                            <th class="sm-px-2 px-4 py-3 text-left text-xs font-medium text-gray-500  uppercase tracking-wider cursor-pointer"
+                                scope="col">Name></th>
+
+                            <th class=" py-3 text-left text-xs font-medium text-gray-500  uppercase tracking-wider"
+                                scope="col">Relationship
+                                <!----></th>
+
+                            <th class=" py-3 text-left text-xs font-medium text-gray-500  uppercase tracking-wider"
+                                scope="col">Home Telephone
+                                <!----></th>
+
+                            <th class=" py-3 text-left text-xs font-medium text-gray-500  uppercase tracking-wider"
+                                scope="col">Mobile
+                                <!----></th>
+
+                            <th class=" py-3 text-left text-xs font-medium text-gray-500  uppercase tracking-wider"
+                                scope="col">Work Telephone
+                                <!----></th>
+
+                            <th class=" py-3 text-left text-xs font-medium text-gray-500  uppercase tracking-wider"
+                                scope="col"><!---->
+                                <!----></th>
+
+                        </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200 " id="emp_dependents">
+                        <!---->
+                        <tr >
+<!--                        <tr th:each="emergencyContact_ , itrStat : ${employeeDetails.employeeEmergencyContacts}">-->
+                            <!--                        <td th:text="${itrStat.index + 1}"></td>-->
+                            <!--                        <td th:text="${emergencyContact_.name} ">Name</td>-->
+                            <!--                        <td th:text="${emergencyContact_.relationship} ">Name</td>-->
+                            <!--                        <td th:text="${emergencyContact_.homePhone} ">Name</td>-->
+                            <!--                        <td th:text="${emergencyContact_.mobilePhone} ">Name</td>-->
+                            <!--                        <td th:text="${emergencyContact_.officePhone} ">Name</td>-->
+                            <td>
+                                <div class="btn-box">
+
+                                    <!--                                <a class="btn btn-sm btn-icon btn-primary"   th:data-education-id="${educationRecord.id}" onclick="editEducation(this)"-->
+                                    <!--                                ><i class="fa-light fa-edit"></i></a>-->
+                                    <!--                                <a class="btn btn-sm btn-icon btn-danger deleteBtn" th:data-id="${educationRecord.id}"-->
+                                    <!--                                   th:education="${educationRecord.id}"><i class="fa-light fa-trash-can"></i></a>-->
+                                </div>
+                            </td>
+
+                        </tr>
+                        <tr class="hover:bg-gray-100 dark:hover:bg-dark-body hidden md:table-row">
+
+                        </tr>
+
+                        </tbody>
+                        <!---->
+                    </table>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row_emergency_contact" style="display: none;">
+
+        <div class="row g-3">
+            <div class="col-12">
+                <div class="panel">
+                    <div class="panel-header">
+                        <h5>Emergency Contact Information</h5>
+                    </div>
+                    <div class="panel-body g-3">
+                        <form id="emergencyContactForm" th:action="@{/system/employee/save/emergency/contact}" th:object="${newEmergencyContact}" method="post">
+                            <div class="row">
+                                <div class="col-xxl-4 col-lg-4 col-sm-6">
+                                    <label class="form-label">Contact Person Name</label>
+                                    <input class="form-control form-control-sm" placeholder="Name" th:field="*{name}"
+                                           type="text">
+                                </div>
+
+                                <div class="col-xxl-4 col-lg-4 col-sm-6">
+                                    <label class="form-label">Relation</label>
+                                    <input class="form-control form-control-sm" placeholder="Relation" th:field="*{relationship}"
+                                           type="text">
+                                </div>
+                                <div class="col-xxl-4 col-lg-4 col-sm-6">
+                                    <!-- Hidden field for employee_id -->
+<!--                                    <span class="admin-role" th:text="${employeeDetails.basicInfoDTO.id}">Graphic Designer</span>-->
+<!--                                    <input type="text" class="form-control form-control-sm" th:field="*{employeeId}" th:value="${employeeDetails.basicInfoDTO.id}" />-->
+
+                                </div>
+
+                                <div class="col-xxl-4 col-lg-4 col-sm-6">
+                                    <label class="form-label">Home Telephone</label>
+                                    <input class="form-control form-control-sm" placeholder="Relation" th:field="*{homePhone}"
+                                           type="text">
+                                </div>
+                                <div class="col-xxl-4 col-lg-4 col-sm-6">
+                                    <label class="form-label">Mobile</label>
+                                    <input class="form-control form-control-sm" placeholder="Relation" th:field="*{mobilePhone}"
+                                           type="text">
+                                </div>
+                                <div class="col-xxl-4 col-lg-4 col-sm-6">
+                                    <label class="form-label">Work Telephone</label>
+                                    <input class="form-control form-control-sm" placeholder="Relation" th:field="*{officePhone}"
+                                           type="text">
+                                </div>
+                            </div>
+                            <hr/>
+                            <div class="row g-3">
+                                <div class="col-xxl-8 col-lg-8 col-sm-6">* Required</div>
+                                <div class="col-xxl-4 col-lg-4 col-sm-6">
+                                    <div class="form-group d-flex justify-content-end">
+                                        <input class="btn btn-danger btn-md cancelEmergencyContact "  type="button" value="Cancel">
+                                        <input type="submit"  class="btn btn-info btn-md"  th:value="save" >
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <hr>
+    </div>
+</div>
+</body>
+</html>

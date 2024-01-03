@@ -4,7 +4,7 @@ package org.utj.hrh.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import org.utj.hrh.model.CarderCat;
+import org.utj.hrh.model.CarderCategory;
 import org.utj.hrh.repository.CarderCategoryRepository;
 
 import java.util.List;
@@ -12,13 +12,19 @@ import java.util.NoSuchElementException;
 
 @Service
 public class CarderCategoryService {
+  
+    private final  CarderCategoryRepository carderCategoryDAO;
+    
     @Autowired
-    private CarderCategoryRepository carderCategoryDAO;
-    public List<CarderCat> getAll(){
+    public CarderCategoryService(CarderCategoryRepository carderCategoryDAO) {
+        this.carderCategoryDAO = carderCategoryDAO;
+    }
+    
+    public List<CarderCategory> getAll(){
         return carderCategoryDAO.findAll();
     }
 
-    public void save(CarderCat carderCategory) {
+    public void save(CarderCategory carderCategory) {
         boolean isUpdatingCarderCategory = (carderCategory.getId() !=null);
 //        if (isUpdatingCarderType){
 //            CarderType existingCarder = carderTypeDao.findById(carderType.getId()).get();
@@ -29,7 +35,7 @@ public class CarderCategoryService {
         carderCategoryDAO.save(carderCategory);
     }
     //    get carder type
-    public CarderCat getCarderCategory(Integer id) throws CarderCategoryNotFoundException {
+    public CarderCategory getCarderCategory(Integer id) throws CarderCategoryNotFoundException {
         try{
             return carderCategoryDAO.findById(id).get();
         }catch (NoSuchElementException ex){

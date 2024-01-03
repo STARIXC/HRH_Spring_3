@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div th:fragment="salaryFragment">
+
+        <div class="row">
+            <div class="col-12">
+                <div class="panel">
+                    <div class="panel-header">
+                        <h5>Assigned Salary Components</h5>
+                    </div>
+                    <div class="panel-body">
+                        <div class="row g-3">
+                            <div class="col-md-4 col-sm-6 col-xs-12">
+                                <label class=" form-label"> Salary Component <span
+                                        class="required">*</span> </label>
+                                <input class="form-control form-control-md" id="salaryComponent"
+                                       name="salaryComponent" type="text"/>
+                            </div>
+                            <div class="col-md-4 col-sm-6 col-xs-12">
+                                <label class=" form-label"> Pay Grade <span
+                                        class="required">*</span> </label>
+                                <select class="form-select" id='ddlPayGrade' name='ddlPayGrade'></select>
+                            </div>
+                            <div class="col-md-4 col-sm-6 col-xs-12">
+                                <label class="form-label">Pay Frequency <span
+                                        class="required">*</span></label>
+                                <select class="form-select" id='dllFrequency' name='dllFrequency'></select>
+                            </div>
+                            <div class="col-md-4 col-sm-6 col-xs-12">
+                                <label class="form-label"> Currency<span class="required">*</span></label>
+                                <select class="form-select" id='ddlCurrency' name='ddlCurrency'></select>
+                            </div>
+                            <div class="col-md-4 col-sm-6 col-xs-12">
+                                <label class="form-label"> Amount <span class="required">*</span></label>
+                                <input class="form-control form-control-sm" id="payAmount" name="payAmount"
+                                       type="text"/>
+                            </div>
+
+                        </div>
+
+
+                    </div>
+                </div>
+                <form
+                        method="post"
+                        th:action="@{/system/employee/save/bankingDetails}"
+                        th:object="${employeeDetails.bankingDetails}">
+                <div class="panel">
+                    <div class="panel-header">
+                        <div class="col-md-12 col-sm-12 col-xs-12 form-check">
+                            <input class="form-check-input" id="show-banking" type="checkbox">
+                            <label class="form-check-label" for="show-banking">Include Direct Deposit Details</label>
+                        </div>
+                    </div>
+                    <div class="banking-options">
+                        <!--     BAnking Details Start     -->
+                        <div class="col-12">
+                            <div class="panel">
+                                <div class="panel-header">
+                                    <h5>Banking Account Details</h5>
+                                </div>
+                                <div class="panel-body">
+                                    <div class="row g-3">
+                                        <div class="col-xxl-6 col-lg-6 col-sm-6">
+                                            <label class="form-label">Bank Name</label>
+                                            <input class="form-control form-control-sm" th:field="*{bankName}"
+                                                   type="text"/>
+                                        </div>
+                                        <div class="col-xxl-6 col-lg-6 col-sm-6">
+                                            <label class="form-label">Bank Branch Name</label>
+                                            <input class="form-control form-control-sm" th:field="*{branch}"
+                                                   type="text"/>
+                                        </div>
+                                        <div class="col-xxl-6 col-lg-6 col-sm-6">
+                                            <label class="form-label">Bank Account Name</label>
+                                            <input class="form-control form-control-sm" th:field="*{accountName}"
+                                                   type="text"/>
+                                        </div>
+                                        <div class="col-xxl-6 col-lg-6 col-sm-6">
+                                            <label class="form-label">Bank Account Number</label>
+                                            <input class="form-control form-control-sm" th:field="*{accountNumber}"
+                                                   type="number"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+                <div class="row g-3">
+                    <div class="col-12 d-flex justify-content-end">
+                        <button class="btn btn-sm btn btn-success">Save</button>
+                    </div>
+                </div>
+                </form>
+            </div>
+        </div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en" layout:decorate="~{layouts/layout.html}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta content="IE=edge" http-equiv="X-UA-Compatible">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>HRMIS [[${pageTitle}]] | UTJ</title>
+</head>
+<body>
+<span layout:fragment="content">
+       <div class="dashboard-breadcrumb mb-25">
+            <h2>Leave Application</h2>
+
+<!--           <div class="btn-box d-flex flex-wrap gap-2">-->
+<!--               <a class="btn btn-sm btn-primary" th:href="@{/system/leave/entitlement/add}"><i-->
+<!--                       class="fa fa-plus-circle"></i> <span>Add New </span></a>   -->
+<!--           </div>-->
+        </div>
+
+  <!-- The Modal -->
+    <div class="row mb-25">
+   <div class="col-xxl-12 col-lg-12 col-sm-12">
+     <div class="panel">
+            <div class="panel-header">
+                        <h5>Leave List</h5>
+            </div>
+
+    <div class="panel-body">
+      <form class="row g-3">
+
+        <div class="col-md-3">
+          <label for="fromDate" class="form-label">From Date</label>
+          <input type="date" class="form-control" id="fromDate" name="fromDate" value="2023-10-01">
+        </div>
+
+        <div class="col-md-3">
+          <label for="toDate" class="form-label">To Date</label>
+          <input type="date" class="form-control" id="toDate" name="toDate" value="2024-09-30">
+        </div>
+
+        <div class="col-md-3">
+          <label for="employeeName" class="form-label">Employee Name</label>
+          <input type="text" class="form-control" id="employeeName" placeholder="Type for hints...">
+        </div>
+
+        <div class="col-md-3">
+          <label for="subUnit" class="form-label">Sub Unit</label>
+          <select id="subUnit" class="form-select">
+            <option selected>-- Select --</option>
+              <!-- Add more options here -->
+          </select>
+        </div>
+
+        <div class="col-md-3">
+          <label for="leaveStatus" class="form-label">Show Leave with Status*</label>
+          <select id="leaveStatus" class="form-select" required>
+            <option selected>Select</option>
+            <option value="pendingApproval">Pending Approval</option>
+              <!-- Add more options here -->
+          </select>
+        </div>
+
+        <div class="col-md-3">
+          <label for="leaveType" class="form-label">Leave Type</label>
+          <select id="leaveType" class="form-select">
+            <option selected>-- Select --</option>
+              <!-- Add more options here -->
+          </select>
+        </div>
+
+        <div class="col-md-3">
+          <div class="form-check form-switch mt-4">
+            <input class="form-check-input" type="checkbox" id="includePastEmployees">
+            <label class="form-check-label" for="includePastEmployees">Include Past Employees</label>
+          </div>
+        </div>
+
+        <div class="col-12">
+          <button type="reset" class="btn btn-secondary">Reset</button>
+          <button type="submit" class="btn btn-success">Search</button>
+        </div>
+      </form>
+    </div>
+  </div>
+   </div>
+ </div>
+    <div class="row">
+        <div class="col-xxl-12 col-lg-12 col-sm-12">
+                 <div class="panel">
+     <div class="panel-body">
+         <div class="table-responsive">
+    <table class="table  utj-dataTable all-leave-application-table" id="leaveApplicationTable">
+      <caption class="visually-hidden">Leave List Table</caption>
+      <thead>
+        <tr>
+          <th scope="col">Date</th>
+          <th scope="col">Employee Name</th>
+          <th scope="col">Leave Type</th>
+          <th scope="col">Leave Balance (Days)</th>
+          <th scope="col">Number of Days</th>
+          <th scope="col">Status</th>
+          <th scope="col">Comments</th>
+          <th scope="col">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Table rows will be added here -->
+      </tbody>
+    </table>
+       <div class="table-bottom-control"></div>
+  </div>
+     </div>
+     </div>
+     </div>
+     </div>
+
+</span>
+
+<th:block layout:fragment="script">
+    <script th:src="@{/assets/vendor/js/jquery-ui.min.js}"></script>
+    <script th:src="@{/assets/vendor/js/select2.min.js}"></script>
+    <script th:src="@{/assets/js/select2-init.js}"></script>
+    <script th:inline="javascript">
+
+        $(function () {
+
+            //------------------------------------------------------------------------------------------------------------------
+            // All Entitlements Table In CRM Module
+            //------------------------------------------------------------------------------------------------------------------
+            if ($('#leaveApplicationTable').length) {
+                const dataTable = $('#leaveApplicationTable').DataTable({
+                    scrollX: true,
+                    "columnDefs": [{
+                        "targets": 'no-sort',
+                        "orderable": false
+                    }],
+                });
+                $('#leaveApplicationTable_filter input').addClass('form-control').attr("placeholder", "Search...").addClass('form-control-sm');
+                $('#leaveApplicationTable_length').prependTo('#leaveApplicationTableLength').find('select').addClass('form-control form-control-sm px-3');
+                $('#leaveApplicationTable_filter').prependTo('#tableSearch');
+                $('#leaveApplicationTable_info, #leaveApplicationTable_paginate').prependTo('.table-bottom-control');
+
+
+                $('#leaveApplicationTable').on('draw.dt', function () {
+                    $('#leaveApplicationTable tr').on('click', function () {
+                        $(this).toggleClass('selected');
+                        $(this).siblings().removeClass('selected');
+                    });
+
+                });
+            }
+        });
+
+    </script>
+</th:block>
+</body>
+
+</html>

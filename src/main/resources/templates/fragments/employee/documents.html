@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div th:fragment="document-details">
+    <div class="col-12">
+        <div class="panel">
+            <div class="panel-header">
+                <h5>Documents</h5>
+            </div>
+            <div class="panel-body">
+                <div class="row g-3">
+                    <table class="table rounded-table hidden md:table min-w-full divide-y divide-gray-200">
+                        <thead>
+                        <tr>
+                            <th>SN#</th>
+                            <th>Document Name</th>
+                            <th>Document Type</th>
+                            <th class="action">&nbsp;</th>
+                        </tr>
+                        </thead>
+                        <tbody id="docTable">
+<!--                        <tr th:each="eDoc , itrStat : ${employee.documents}">-->
+<!--                            <td th:text="${itrStat.index + 1}"></td>-->
+<!--                            <td th:text="${eDoc.documentValue}"></td>-->
+<!--                            <td th:text="${eDoc.documentType.name}"></td>-->
+
+<!--                            <td>-->
+<!--                                <a class="btn btn-md btn-info" href="#"><i-->
+<!--                                        class="fa fa-download"></i> </a>-->
+<!--                                <a class="edit_doc btn btn-md btn-success ms-1"-->
+<!--                                   data-bs-placement="bottom"-->
+<!--                                   data-bs-toggle="tooltip" th:attr="href='javascript:void(0)'"-->
+<!--                                   title="Edit">-->
+<!--                                    <i class="fa fa-pen text-white"></i>-->
+<!--                                </a>-->
+<!--                                <a class="btn btn-md btn-danger ms-1" data-bs-placement="bottom"-->
+<!--                                   data-bs-toggle="tooltip"-->
+<!--                                   id="delete_leave_type" th:attr="href='javascript:void(0)'"-->
+<!--                                   th:data-id="${eDoc.id}" title="Delete">-->
+<!--                                    <i class="fa fa-trash text-white"></i></a>-->
+<!--                            </td>-->
+<!--                        </tr>-->
+
+                        </tbody>
+                    </table>
+                    <a class="btn btn-outline-primary btn-sm add_doc_record" data-bs-id=""
+                       data-template="employ-doc"
+                       data-title="Add Document"
+                       href="#"
+                       id="add_doc_record"><i class="fa fa-plus"></i> Add Record</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+</body>
+</html>

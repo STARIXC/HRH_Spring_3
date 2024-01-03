@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en" layout:decorate="~{layouts/layout.html}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta content="IE=edge" http-equiv="X-UA-Compatible">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>HRMIS [[${pageTitle}]] | UTJ</title>
+</head>
+<body>
+<span layout:fragment="content">
+       <div class="dashboard-breadcrumb mb-25">
+            <h2>Leave </h2>
+
+        </div>
+    <div class="row">
+   
+
+        <div class="col-xxl-12 col-lg-12 col-sm-12">
+                <div class="panel">
+                    <div class="panel-header">
+                        <h5>Apply Leave</h5>
+                    </div>
+                    <div class="panel-body">
+                        <form id="educationForm" method="post" th:action="@{/system/leave/save/application}" th:object="${leaveApplication}">
+                            <div class="row g-3">
+                              <div class="col-xxl-6 col-lg-6 col-sm-6">
+                                    <div class="mb-3">
+                                    <label for="leaveType" class="form-label">Leave Type*</label>
+                                    <select id="leaveType" class="form-select" required>
+                                        <option value="">-- Select --</option>
+                                        <!-- Add options here -->
+                                    </select>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label for="fromDate" class="form-label">From Date*</label>
+                                        <input type="date" class="form-control" id="fromDate" name="fromDate" required>
+                                    </div>
+
+                                    <div class="col-md-6 mb-3">
+                                        <label for="toDate" class="form-label">To Date*</label>
+                                        <input type="date" class="form-control" id="toDate" name="toDate" required>
+                                    </div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="comments" class="form-label">Comments</label>
+                                    <textarea class="form-control" id="comments" rows="3"></textarea>
+                                </div>
+                              </div>
+                                <div class="col-xxl-6 col-lg-6 col-sm-6">
+                                  <div class="mb-3">
+                                    <label for="leave-balance-text" class="form-label">Leave Balance</label>
+                                    <p class="utj-hrm-leave-balance-text" id="leave-balance-text" >0.00 Day(s)</p>
+                                  </div>
+
+                                </div>
+
+                            <hr/>
+
+                            <div class="row g-3">
+                                <div class="col-xxl-8 col-lg-8 col-sm-6">* Required</div>
+                                <div class="col-xxl-4 col-lg-4 col-sm-6">
+                                    <div class="form-group d-flex justify-content-end">
+                                        <input class="btn btn-danger btn-md deleteEducationQualification "  type="button" value="Cancel">
+                                        <input type="submit"  class="btn btn-info btn-md"  th:value="save" >
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+    </div>
+
+
+</span>
+
+<th:block layout:fragment="script">
+    <script th:src="@{/assets/vendor/js/jquery-ui.min.js}"></script>
+    <script th:src="@{/assets/vendor/js/select2.min.js}"></script>
+    <script th:src="@{/assets/js/select2-init.js}"></script>
+    <script th:inline="javascript">
+
+        $(function () {
+
+        });
+
+    </script>
+</th:block>
+</body>
+
+</html>

@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en" layout:decorate="~{layouts/layout.html}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta content="IE=edge" http-equiv="X-UA-Compatible">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>HRMIS [[${pageTitle}]] | UTJ</title>
+</head>
+<body>
+<span layout:fragment="content">
+    <div class="dashboard-breadcrumb mb-25">
+        <h4>Leave</h4>
+    </div>
+
+    <!-- The Modal -->
+    <div class="row mb-25">
+        <div class="col-xxl-12 col-lg-12 col-sm-12">
+     <div class="panel">
+         <div class="panel-header">
+             <h5>Leave Entitlement</h5>
+         </div>
+         <div class="panel-body">
+      <form class="row g-3">
+           <div class="col-md-3">
+          <label for="fromDate" class="form-label">From Date</label>
+          <input type="date" class="form-control" id="fromDate" name="fromDate" value="2023-10-01" required>
+        </div>
+
+        <div class="col-md-3">
+          <label for="toDate" class="form-label">To Date</label>
+          <input type="date" class="form-control" id="toDate" name="toDate" value="2024-09-30" required>
+        </div>
+
+        <div class="col-md-3">
+          <label for="leaveStatus" class="form-label">Show Leave with Status*</label>
+          <select id="leaveStatus" class="form-select" required>
+            <option value="">Select</option>
+            <option value="rejected">Rejected</option>
+            <option value="cancelled">Cancelled</option>
+            <option value="pending">Pending Approval</option>
+            <option value="scheduled">Scheduled</option>
+            <option value="taken">Taken</option>
+          </select>
+        </div>
+
+        <div class="col-md-3">
+          <label for="leaveType" class="form-label">Leave Type</label>
+          <select id="leaveType" class="form-select">
+            <option value="">-- Select --</option>
+              <!-- Add more options here -->
+          </select>
+        </div>
+          <div class="col-12">
+          <button type="reset" class="btn btn-secondary">Reset</button>
+          <button type="submit" class="btn btn-success">Search</button>
+        </div>
+      </form>
+    </div>
+     </div>
+        </div>
+ </div>
+    <div class="row">
+        <div class="col-xxl-12 col-lg-12 col-sm-12">
+                 <div class="panel">
+     <div class="panel-body">
+         <div class="table-responsive">
+           <table class="table  utj-dataTable my-leave-application-table" id="myLeaveApplicationTable">
+        <caption class="visually-hidden">No Records Found</caption>
+        <thead>
+          <tr>
+            <th scope="col">Date</th>
+            <th scope="col">Employee Name</th>
+            <th scope="col">Leave Type</th>
+            <th scope="col">Leave Balance (Days)</th>
+            <th scope="col">Number of Days</th>
+            <th scope="col">Status</th>
+            <th scope="col">Comments</th>
+            <th scope="col">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Table rows will be added here -->
+        </tbody>
+      </table>
+         </div>
+     </div>
+     </div>
+     </div>
+     </div>
+
+</span>
+
+<th:block layout:fragment="script">
+    <script th:src="@{/assets/vendor/js/jquery-ui.min.js}"></script>
+    <script th:src="@{/assets/vendor/js/select2.min.js}"></script>
+    <script th:src="@{/assets/js/select2-init.js}"></script>
+    <script th:inline="javascript">
+
+        $(function () {
+
+            //------------------------------------------------------------------------------------------------------------------
+            // All Entitlements Table In CRM Module
+            //------------------------------------------------------------------------------------------------------------------
+            if ($('#myLeaveApplicationTable').length) {
+                const dataTable = $('#myLeaveApplicationTable').DataTable({
+                    scrollX: true,
+                    "columnDefs": [{
+                        "targets": 'no-sort',
+                        "orderable": false
+                    }],
+                });
+                $('#myLeaveApplicationTable_filter input').addClass('form-control').attr("placeholder", "Search...").addClass('form-control-sm');
+                $('#myLeaveApplicationTable_length').prependTo('#myLeaveApplicationTableLength').find('select').addClass('form-control form-control-sm px-3');
+                $('#myLeaveApplicationTable_filter').prependTo('#tableSearch');
+                $('#myLeaveApplicationTable_info, #myLeaveApplicationTable_paginate').prependTo('.table-bottom-control');
+
+
+                $('#myLeaveApplicationTable').on('draw.dt', function () {
+                    $('#myLeaveApplicationTable tr').on('click', function () {
+                        $(this).toggleClass('selected');
+                        $(this).siblings().removeClass('selected');
+                    });
+
+                });
+            }
+        });
+
+    </script>
+</th:block>
+</body>
+
+</html>
