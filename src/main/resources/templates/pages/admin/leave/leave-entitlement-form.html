@@ -65,7 +65,6 @@
             <label class="form-label">Employee Name</label>
             <select class="form-select" id="employeeId" name="employeeId">
                 <option value="">-- Select Employee --</option>
-                <option th:each="employee : ${employees}" th:value="${employee.id}" th:text="${employee.firstName} ${employee.surname}"></option>
             </select>
         </div>
 
