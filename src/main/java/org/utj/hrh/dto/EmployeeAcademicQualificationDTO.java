@@ -8,10 +8,10 @@ import java.time.LocalDate;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class EmployeeEducationDTO {
+public class EmployeeAcademicQualificationDTO {
 	private Long id;
 	private Long employeeId; // Replacing the direct Employee reference
-	private Long educationId; // Replacing the direct Education reference
+	private Long education; // Replacing the direct Education reference
 	private String institute;
 	private String qualificationName;
 	private String major;

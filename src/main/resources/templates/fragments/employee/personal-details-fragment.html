@@ -8,8 +8,9 @@
 <div th:fragment="personal-details">
     <form
             method="post"
-            th:action="@{/system/employee/saveEmployee}"
-            th:object="${employeeDetails.basicInfoDTO}">
+            th:action="@{/system/employee/update-basic-info/{id}(id=${employeeDetails.basicInfoDTO.id})}"
+            th:object="${employeeDetails.basicInfoDTO}"
+    id="employeeBasicInfoForm">
         <div class="row">
             <div class="col-12">
                 <div class="panel">
@@ -21,15 +22,15 @@
 
                             <div class="col-xxl-3 col-lg-4 col-sm-6">
                                 <label class="form-label">Surname</label>
-                                <input class="form-control form-control-sm" id="txtSurname" maxlength="50" name="txtSurname" th:field="*{surname}" type="text" value=""/>
+                                <input class="form-control form-control-sm" id="txtSurname" maxlength="50"  th:field="*{surname}" type="text" value=""/>
                             </div>
                             <div class="col-xxl-3 col-lg-4 col-sm-6">
                                 <label class="form-label">First Name</label>
-                                <input class="form-control form-control-sm" th:field="*{firstName}" type="text">
+                                <input class="form-control form-control-sm" id="txtFirstName" th:field="*{firstName}" type="text">
                             </div>
                             <div class="col-xxl-3 col-lg-4 col-sm-6">
                                 <label class="form-label">Middle Name</label>
-                                <input class="form-control form-control-sm" id="txtFirstName" maxlength="50" name="txtFirstName" th:field="*{otherName}" type="text" value=""/>
+                                <input class="form-control form-control-sm" id="txtOtherName" maxlength="50"  th:field="*{otherName}" type="text" value=""/>
                             </div>
 
                             <div class="col-xxl-3 col-lg-4 col-sm-6">
@@ -38,11 +39,11 @@
                             </div>
                             <div class="col-xxl-3 col-lg-4 col-sm-6">
                                 <label class="form-label">National ID /Passport #</label>
-                                <input class="form-control form-control-sm" th:field="*{nationalId}" type="number">
+                                <input class="form-control form-control-sm" id="txtNationalId" th:field="*{nationalId}" type="number">
                             </div>
                             <div class="col-xxl-3 col-lg-4 col-sm-6">
                                 <label class="form-label">EmployeeNo / PFNo#</label>
-                                <input autocomplete="off" class="form-control form-control-sm" id="txtEmployeeNumber" maxlength="50" name="txtEmployeeNumber" th:field="*{personNumber}" type="text" value=""/>
+                                <input autocomplete="off" class="form-control form-control-sm" id="txtEmployeeNumber" maxlength="50" th:field="*{personNumber}" type="text" disabled/>
                             </div>
                         </div>
                     </div>
@@ -57,12 +58,12 @@
                         <div class="row g-3">
                             <div class="col-xxl-4 col-lg-6 col-sm-6">
                                 <label class="form-label">Date of Birth</label>
-                                <input class="form-control form-control-sm date-picker" placeholder="yyyy-mm-dd" readonly th:field="*{dob}" type="text">
+                                <input class="form-control form-control-sm date-picker" id="txtDob" placeholder="yyyy-mm-dd" readonly th:field="*{dob}" type="text">
                             </div>
 
                             <div class="col-xxl-4 col-lg-6 col-sm-6">
                                 <label class="form-label">Gender</label>
-                                <select class="form-select form-control-sm" data-placeholder="Gender" th:field="*{gender}">
+                                <select class="form-select form-control-sm" id="ddlGender" data-placeholder="Gender" th:field="*{gender}">
                                     <option value="">Gender</option>
                                     <option value="MALE">Male</option>
                                     <option value="FEMALE">Female</option>
@@ -71,18 +72,18 @@
 
                             <div class="col-xxl-4 col-lg-6 col-sm-6">
                                 <label class="form-label">Marital Status</label>
-                                <select class="form-select form-control-sm" data-placeholder="Marital Status" th:field="*{maritalStatus}">
+                                <select class="form-select form-control-sm" id="ddlMaritalStatus" data-placeholder="Marital Status" th:field="*{maritalStatus}">
                                     <option value="">Marital Status</option>
-                                    <option value="0">Married</option>
-                                    <option value="1">Unmarried</option>
-                                    <option value="1">Divorced</option>
+                                    <option value="Married">Married</option>
+                                    <option value="Unmarried">Unmarried</option>
+                                    <option value="Divorced">Divorced</option>
                                 </select>
                             </div>
 
                             <div class="col-xxl-4 col-lg-6 col-sm-6">
                                 <label class="form-label">Disability</label>
                                 <label class="radio-inline">
-                                    <input id="rbtnDisability_yes"  th:field="*{disability}" th:value="1" type="radio"/>
+                                    <input id="rbtnDisability_yes" name="rbtnDisability" th:field="*{disability}" th:value="1" type="radio"/>
                                     <label for="rbtnDisability_no">Yes</label>
                                 </label>
                                 <label class="radio-inline">

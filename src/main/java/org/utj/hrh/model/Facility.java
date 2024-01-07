@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Entity
 @Table(name = "subpartnera") // This annotation specifies the database table name
@@ -15,7 +14,7 @@ import java.util.List;
 @ToString
 public class Facility {
 	@Id
-	@Column(name = "sub_partnerid")
+	@Column(name = "sub_partner_id")
 	private Integer subPartnerId;
 	
 	@Column(name = "sub_partner_nom")

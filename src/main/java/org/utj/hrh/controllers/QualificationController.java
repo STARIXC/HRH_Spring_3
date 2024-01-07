@@ -1,14 +1,19 @@
 package org.utj.hrh.controllers;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import org.utj.hrh.dto.EmployeeAcademicQualificationDTO;
 import org.utj.hrh.model.EducationLevel;
 import org.utj.hrh.model.License;
-import org.utj.hrh.services.EducationService;
+import org.utj.hrh.services.EducationLevelService;
+import org.utj.hrh.services.EmployeeEducationQualificationService;
 import org.utj.hrh.services.EntityNotFoundException;
 import org.utj.hrh.services.LicenseService;
 
@@ -17,13 +22,15 @@ import java.util.List;
 @Controller
 @RequestMapping("/system/qualification")
 public class QualificationController {
-    private final EducationService educationService;
+    private static final Logger logger = LoggerFactory.getLogger(QualificationController.class);
+    private final EducationLevelService educationLevelService;
     private final LicenseService licenseService;
-
+    private final EmployeeEducationQualificationService service;
     @Autowired
-    public QualificationController(EducationService educationService, LicenseService licenseService) {
-        this.educationService = educationService;
+    public QualificationController(EducationLevelService educationLevelService, LicenseService licenseService, EmployeeEducationQualificationService service) {
+        this.educationLevelService = educationLevelService;
         this.licenseService = licenseService;
+        this.service = service;
     }
 
     @GetMapping("/education")
@@ -34,7 +41,7 @@ public class QualificationController {
             model.addAttribute("education", new EducationLevel());
         } else {
             // Retrieve the role from the database for editing
-            EducationLevel educationLevel = educationService.findEducationById(educationID);
+            EducationLevel educationLevel = educationLevelService.findEducationById(educationID);
             if (educationLevel == null) {
                 // Handle the case where the role with the specified ID doesn't exist
                 // You can redirect or display an error message here
@@ -45,7 +52,7 @@ public class QualificationController {
             }
         }
 
-        List<EducationLevel> e = educationService.getAll();
+        List<EducationLevel> e = educationLevelService.getAll();
         model.addAttribute("educations", e);
         model.addAttribute("pageTitle", "Education");
         return "pages/admin/qualification/education-qualification";
@@ -53,7 +60,7 @@ public class QualificationController {
 
     @PostMapping("/education/save")
     public String saveDesignation(EducationLevel educationLevel , RedirectAttributes redirectAttributes){
-        educationService.save(educationLevel);
+        educationLevelService.save(educationLevel);
         redirectAttributes.addFlashAttribute("message","Record added successfully");
         return "redirect:/system/qualification/education";
     }
@@ -62,13 +69,13 @@ public class QualificationController {
     @ResponseBody
     public EducationLevel getEducationById(@PathVariable Long educationId) throws EntityNotFoundException {
         // Use your service to retrieve the document type by its ID
-        EducationLevel educationLevel = educationService.findEducationById(educationId);
+        EducationLevel educationLevel = educationLevelService.findEducationById(educationId);
         return educationLevel;
     }
 
     @DeleteMapping("/education/delete/{id}")
     public String deleteDocument(@PathVariable Long id) throws EntityNotFoundException {
-        educationService.delete(id);
+        educationLevelService.delete(id);
         return "redirect:/system/qualification/education";
     }
 
@@ -118,6 +125,14 @@ public class QualificationController {
         licenseService.delete(id);
         return "redirect:/system/qualification/license";
     }
-
-
+    
+    @PostMapping("/employee/employee-education/save/{employeeId}")
+    @ResponseBody
+    public ResponseEntity<?> updateEducationQualificationInfo(@PathVariable Long employeeId,
+                                                              @RequestBody EmployeeAcademicQualificationDTO EmployeeAcademicQualificationDTO) throws EntityNotFoundException {
+        logger.info("Updating contact info for employee {}", EmployeeAcademicQualificationDTO);
+        
+        service.updateEducationQualificationInfo(employeeId, EmployeeAcademicQualificationDTO);
+        return ResponseEntity.ok("Employee contact info updated successfully");
+    }
 }

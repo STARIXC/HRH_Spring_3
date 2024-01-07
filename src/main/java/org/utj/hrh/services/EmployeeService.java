@@ -1,5 +1,6 @@
 package org.utj.hrh.services;
 
+import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,10 +8,8 @@ import org.springframework.stereotype.Service;
 import org.utj.hrh.dto.*;
 import org.utj.hrh.mapper.EmployeeDetailsMapper;
 import org.utj.hrh.model.*;
-import org.utj.hrh.repository.EmployeeFacilityRepository;
-import org.utj.hrh.repository.EmployeeRepository;
+import org.utj.hrh.repository.*;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -24,23 +23,31 @@ public class EmployeeService {
 	private final ModelMapper modelMapper;
 	private final EmployeeDetailsMapper employeeDetailsMapper;
 	private final SupervisorService supervisorService;
-	private final EducationService educationService;
+	private final EducationLevelService educationLevelService;
 	private final EmployeeStatusService employeeStatusService;
 	private final DesignationService designationService;
 	private final CarderCategoryService carderCategoryService;
 	private final CountyService countyService;
+	private final AddressRepository addressRepository;
+	private final PersonRepository personRepository;
+	private final PositionChangeRepository positionChangeRepository;
+	
 	@Autowired
-	public EmployeeService(EmployeeRepository employeeRepository, EmployeeFacilityRepository employeeFacilityRepository, ModelMapper modelMapper, EmployeeDetailsMapper employeeDetailsMapper, SupervisorService supervisorService, EducationService educationService, EmployeeStatusService employeeStatusService, DesignationService designationService, CarderCategoryService carderCategoryService, CountyService countyService) {
+	public EmployeeService(EmployeeRepository employeeRepository, EmployeeFacilityRepository employeeFacilityRepository, ModelMapper modelMapper, EmployeeDetailsMapper employeeDetailsMapper, SupervisorService supervisorService, EducationLevelService educationLevelService, EmployeeStatusService employeeStatusService, DesignationService designationService, CarderCategoryService carderCategoryService, CountyService countyService, AddressRepository addressRepository, PersonRepository personRepository, PositionChangeRepository positionChangeRepository) {
 		this.employeeRepository = employeeRepository;
 		this.employeeFacilityRepository = employeeFacilityRepository;
 		this.modelMapper = modelMapper;
 		this.employeeDetailsMapper = employeeDetailsMapper;
 		this.supervisorService = supervisorService;
-		this.educationService = educationService;
+		this.educationLevelService = educationLevelService;
 		this.employeeStatusService = employeeStatusService;
 		this.designationService = designationService;
 		this.carderCategoryService = carderCategoryService;
 		this.countyService = countyService;
+		this.addressRepository = addressRepository;
+		this.personRepository = personRepository;
+		
+		this.positionChangeRepository = positionChangeRepository;
 	}
 	
 	public List<StaffDTO> getAll() {
@@ -50,30 +57,7 @@ public class EmployeeService {
 				.collect(Collectors.toList());
 	}
 	
-	//    private StaffDTO convertEntityDTO(Employee employee){
-//        StaffDTO staffDTO = new StaffDTO();
-//        staffDTO.setId(employee.getId());
-//        staffDTO.setPersonNumber(employee.getPerson().getPersonNumber());
-//        staffDTO.setFirstName(employee.getFirstName());
-//        staffDTO.setSurname(employee.getSurname());
-//        staffDTO.setOtherName(employee.getOtherName());
-//        staffDTO.setGender(employee.getGender());
-//        staffDTO.setPhone(employee.getPhone());
-//        staffDTO.setEmail(employee.getEmail());
-//
-//        Designation position = employee.getPosition();
-//        if (position != null) {
-//            // Safe to call getPosition_title
-//            String title = position.getPosition_title();
-//            staffDTO.setPosition_title(title);
-//        } else {
-//            String title = "Not Defined";
-//            staffDTO.setPosition_title(title);
-//        }
-//
-//        return staffDTO;
-//
-//    }
+
 	private StaffDTO convertEntityDTO(Employee employee) {
         modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.LOOSE);
 		StaffDTO staffDTO = new StaffDTO();
@@ -88,10 +72,6 @@ public class EmployeeService {
 		employeeRepository.save(employee);
 	}
 
-//    public Employee getEmployee(String id) throws EmployeeNotFoundException {
-//        return employeeRepository.findByPersonPersonNumber(id)
-//                .orElseThrow(() -> new EmployeeNotFoundException("could not find any Employee with ID :"+id));
-//    }
 	
 	public void delete(Long id) throws EmployeeNotFoundException {
 		Long countById = employeeRepository.countById(id);
@@ -101,11 +81,9 @@ public class EmployeeService {
 		employeeRepository.deleteById(id);
 	}
 	
-	public EmployeeFacility getEmployeeFacilityByEmpNo(String empNo) throws EntityNotFoundException {
-		return employeeFacilityRepository.findByEmployee_Person_PersonNumber(empNo)
-				.orElseThrow(() -> new EntityNotFoundException("EmployeeFacility not found for person number: " + empNo));
-		
-	}
+	public Optional<EmployeeFacility> getEmployeeFacilityByEmpNo(Integer empNo) {
+		return employeeFacilityRepository.findActiveFacilityByEmployeeId(empNo);
+		}
 	
 	
 	public List<StaffDTO> getByGender(String gender) {
@@ -118,19 +96,7 @@ public class EmployeeService {
 		return employees.stream()
 				.map(this::convertToStaffDTO)
 				.collect(Collectors.toList());
-//		// Check if gender is null or empty
-//		if (gender == null || gender.trim().isEmpty()) {
-//			// Handle the case where gender is not provided
-//			// Could return an empty list or throw an exception
-//			return Collections.emptyList();
-//		}
-//
-//		// Convert gender to a consistent case format if needed
-//		// This is important if the database values are case-sensitive
-//		String genderFormatted = gender.trim().toLowerCase();
-//
-//		// Fetch and return the list of employees
-//		return employeeRepository.findByGender(genderFormatted);
+
 		
 	}
 	
@@ -147,14 +113,8 @@ public class EmployeeService {
 				.collect(Collectors.toList());
 	}
 	
-//	public EmployeeDetailsDTO getEmployeeDetails(Long id) {
-//
-//		Employee employee = employeeRepository.findById(id).get();
-//		//return UserMapper.mapToUserDto(user);
-//		return modelMapper.map(employee, EmployeeDetailsDTO.class);
-//
-//	}
-public EmployeeDetailsDTO getEmployeeDetails(Long id) {
+
+public EmployeeDetailsDTO getEmployeeDetails(Long id)  {
 	// Find the employee by ID
 	Optional<Employee> employeeOptional = employeeRepository.findById(id);
 	EmployeeDetailsDTO employeeDetailsDTO;
@@ -169,7 +129,7 @@ public EmployeeDetailsDTO getEmployeeDetails(Long id) {
 				.map(status -> convertToEmployeeStatusDTO(status)) // Conversion logic
 				.collect(Collectors.toList());
 //		fetch education Levels
-		List<EducationLevelDTO> educationLevelDTOS = educationService.getAll() // Fetching logic
+		List<EducationLevelDTO> educationLevelDTOS = educationLevelService.getAll() // Fetching logic
 				.stream()
 				.map(level -> convertToEducationLevelDTO(level)) // Conversion logic
 				.collect(Collectors.toList());
@@ -179,7 +139,7 @@ public EmployeeDetailsDTO getEmployeeDetails(Long id) {
 				.map(designation -> convertToDesignationDTO(designation)) // Conversion logic
 				.collect(Collectors.toList());
 		//		fetch Counties
-		List<CountyDTO> countyDTOS = countyService.getAll() // Fetching logic
+		List<CountyDTO> countyDTOS = countyService.getActive() // Fetching logic
 				.stream()
 				.map(county -> convertToCountyDTO(county)) // Conversion logic
 				.collect(Collectors.toList());	//		fetch Counties
@@ -187,12 +147,15 @@ public EmployeeDetailsDTO getEmployeeDetails(Long id) {
 				.stream()
 				.map(carderCategory -> convertToCarderCategoryDTO(carderCategory)) // Conversion logic
 				.collect(Collectors.toList());
+//		fetch emergency Records
+	
 		// Load and set unrelated lists
 		employeeDetailsDTO.setEmployeeStatuses(employeeStatuses);
 		employeeDetailsDTO.setEducationLevels(educationLevelDTOS);
 		employeeDetailsDTO.setDesignations(designationDTOS);
 		employeeDetailsDTO.setCounties(countyDTOS);
 		employeeDetailsDTO.setCategories(carderCategoryDTOS);
+
 		return employeeDetailsDTO;
 	} else {
 		// Handle the case where the employee is not found
@@ -200,6 +163,10 @@ public EmployeeDetailsDTO getEmployeeDetails(Long id) {
 		throw new RuntimeException("Employee not found with id: " + id);
 	}
 }
+	
+	private EmployeeEmergencyContactDTO convertToEmployeeEmergencyContactDTO(EmployeeEmergencyContact employeeEmergencyContact) {
+		return modelMapper.map(employeeEmergencyContact, EmployeeEmergencyContactDTO.class);
+	}
 	
 	private DesignationDTO convertToDesignationDTO(Designation designation) {
 		return modelMapper.map(designation, DesignationDTO.class);
@@ -239,5 +206,83 @@ public EmployeeDetailsDTO getEmployeeDetails(Long id) {
 	private StaffDTO convertToStaffDTO(Employee employee) {
 		return modelMapper.map(employee, StaffDTO.class);
 	}
+	public void updateContactInfo(Long employeeId, ContactInfoDTO contactInfoDTO) throws EntityNotFoundException {
+		
+		Employee employee = employeeRepository.findById(employeeId)
+				.orElseThrow(() -> new RuntimeException("Employee not found"));
+		// Save the address entities first
+		Address homeAddress = convertToAddressEntity(contactInfoDTO.getHomeAddress(), employee);
+		Address presentAddress = convertToAddressEntity(contactInfoDTO.getPresentAddress(), employee);
+		addressRepository.save(homeAddress);
+		addressRepository.save(presentAddress);
+		// Update employee contact information
+		employee.setPhone(contactInfoDTO.getPhone());
+		employee.setEmail(contactInfoDTO.getEmail());
+		employee.setAltPhone(contactInfoDTO.getAltPhone());
+		employee.setAltEmail(contactInfoDTO.getAltEmail());
+		employee.setPresentAddress(presentAddress);
+		employee.setHomeAddress(homeAddress);
+		
+		employeeRepository.save(employee);
+	}
 	
+	private Address convertToAddressEntity(AddressDTO addressDTO, Employee employee) throws EntityNotFoundException {
+		Address address;
+		if (addressDTO.getAddressId() != null) {
+			// Existing address, fetch it from the database
+			address = addressRepository.findById(addressDTO.getAddressId())
+					.orElseThrow(() -> new EntityNotFoundException("Address not found with id: " + addressDTO.getAddressId()));
+		} else {
+			// New address, create a new entity
+			address = new Address();
+		}
+		
+		// Set the address fields
+		address.setStreet(addressDTO.getStreet());
+		address.setPostalAddress(addressDTO.getPostalAddress());
+		address.setCityTown(addressDTO.getCityTown());
+		address.setPostalCode(addressDTO.getPostalCode());
+		address.setCountry(addressDTO.getCountry());
+		address.setEmployeeAddress(employee);
+		
+		return address;
+	}
+	
+	public void updateBasicInfo(Long employeeId, BasicInfoDTO basicInfoDTO) {
+		Employee employee = employeeRepository.findById(employeeId)
+				.orElseThrow(() -> new RuntimeException("Employee not found"));
+	
+		Person person = personRepository.findByPersonNumber(basicInfoDTO.getPersonNumber());
+		employee.setPerson(person);
+		employee.setFirstName(basicInfoDTO.getFirstName());
+		employee.setSurname(basicInfoDTO.getSurname());
+		employee.setOtherName(basicInfoDTO.getOtherName());
+		employee.setGender(basicInfoDTO.getGender());
+		employee.setDob(basicInfoDTO.getDob());
+		employee.setMaritalStatus(basicInfoDTO.getMaritalStatus());
+		employee.setNationality(basicInfoDTO.getNationality());
+		employee.setNationalId(basicInfoDTO.getNationalId());
+		employee.setDisability(basicInfoDTO.getDisability());
+		employee.setDisabilityExplain(basicInfoDTO.getDisabilityExplain());
+		
+		
+		employeeRepository.save(employee);
+	}
+	
+	public void updateStatutoryInfo(Long employeeId, StatutoryDetailsDTO statutoryDetailsDTO) {
+		Employee employee = employeeRepository.findById(employeeId)
+				.orElseThrow(() -> new RuntimeException("Employee not found"));
+
+	employee.setKraPin(statutoryDetailsDTO.getKraPin());
+	employee.setNssfNo(statutoryDetailsDTO.getNssfNo());
+	employee.setNhifNo(statutoryDetailsDTO.getNhifNo());
+	employee.setCertGoodConductNo(statutoryDetailsDTO.getCertGoodConductNo());
+	employee.setHelbClearanceNo(statutoryDetailsDTO.getHelbClearanceNo());
+	employee.setHelbBeneficiary(statutoryDetailsDTO.getHelbBeneficiary());
+	
+	employeeRepository.save(employee);
+	}
+
+
+
 }

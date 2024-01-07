@@ -17,7 +17,8 @@
     <form
             method="post"
             th:action="@{/system/employee/saveEmployee/contact}"
-            th:object="${employeeDetails.contactInfoDTO}">
+            th:object="${employeeDetails.contactInfoDTO}"
+    id="employeeContactForm">
         <div class="col-12">
             <div class="panel">
                 <div class="panel-header">
@@ -29,24 +30,24 @@
                         <!-- Permanent Address -->
                         <div class="col-xxl-3 col-lg-4 col-sm-6">
                             <label class="form-label">Postal Address</label>
-                            <input class="form-control input-width-xlarge" th:field="*{homeAddress.postalAddress}" type="text"/>
+                            <input class="form-control input-width-xlarge" id="homePostalAddressField" th:field="*{homeAddress.postalAddress}" type="text"/>
                         </div>
 
                         <div class="col-xxl-3 col-lg-4 col-sm-6">
                             <label class="form-label">City: </label>
-                            <input class="form-control input-width-xlarge" th:field="*{homeAddress.cityTown}" type="text"/>
+                            <input class="form-control input-width-xlarge" id="homeCityTownField" th:field="*{homeAddress.cityTown}" type="text"/>
                         </div>
                         <div class="col-xxl-3 col-lg-4 col-sm-6">
                             <label class="form-label">Postal Code:</label>
-                            <input class="form-control input-width-xlarge" th:field="*{homeAddress.postalCode}" type="text"/>
+                            <input class="form-control input-width-xlarge" id="homePostalCodeField" th:field="*{homeAddress.postalCode}" type="text"/>
                         </div>
                         <div class="col-xxl-3 col-lg-4 col-sm-6">
                             <label class="form-label">Country: </label>
-                            <input class="form-control input-width-xlarge" th:field="*{homeAddress.country}" type="text"/>
+                            <input class="form-control input-width-xlarge" id="homeCountryField" th:field="*{homeAddress.country}" type="text"/>
                         </div>
                         <div class="col-xxl-3 col-lg-4 col-sm-6">
                             <label class="form-label">Street</label>
-                            <input class="form-control input-width-xlarge" th:field="*{homeAddress.street}" type="text"/>
+                            <input class="form-control input-width-xlarge" id="homeStreetField" th:field="*{homeAddress.street}" type="text"/>
                         </div>
                     </div>
 
@@ -65,24 +66,24 @@
 
                         <div class="col-xxl-3 col-lg-4 col-sm-6">
                             <label class="form-label">Postal Address</label>
-                            <input class="form-control input-width-xlarge" th:field="*{presentAddress.postalAddress}" type="text"/>
+                            <input class="form-control input-width-xlarge"  id="presentPostalAddressField" th:field="*{presentAddress.postalAddress}" type="text"/>
                         </div>
 
                         <div class="col-xxl-3 col-lg-4 col-sm-6">
                             <label class="form-label">City: </label>
-                            <input class="form-control input-width-xlarge" th:field="*{presentAddress.cityTown}" type="text"/>
+                            <input class="form-control input-width-xlarge" id="presentCityTownField" th:field="*{presentAddress.cityTown}" type="text"/>
                         </div>
                         <div class="col-xxl-3 col-lg-4 col-sm-6">
                             <label class="form-label">Postal Code:</label>
-                            <input class="form-control input-width-xlarge" th:field="*{presentAddress.postalCode}" type="text"/>
+                            <input class="form-control input-width-xlarge" id="presentPostalCodeField" th:field="*{presentAddress.postalCode}" type="text"/>
                         </div>
                         <div class="col-xxl-3 col-lg-4 col-sm-6">
                             <label class="form-label">Country: </label>
-                            <input class="form-control input-width-xlarge" th:field="*{presentAddress.country}" type="text"/>
+                            <input class="form-control input-width-xlarge" id="presentCountryField" th:field="*{presentAddress.country}" type="text"/>
                         </div>
                         <div class="col-xxl-3 col-lg-4 col-sm-6">
                             <label class="form-label">Street</label>
-                            <input class="form-control input-width-xlarge" th:field="*{presentAddress.street}" type="text"/>
+                            <input class="form-control input-width-xlarge" id="presentStreetField" th:field="*{presentAddress.street}" type="text"/>
                         </div>
                     </div>
                 </div>
@@ -98,12 +99,12 @@
                     <div class="row g-3">
                         <div class="col-xxl-6 col-lg-6 col-sm-12">
                             <label class="form-label">Phone Number</label>
-                            <input autocomplete="off" class="form-control input-width-xlarge" th:field="*{phone}"  type="text" />
+                            <input autocomplete="off" class="form-control input-width-xlarge" id="phoneField" th:field="*{phone}"  type="text" />
                         </div>
 
                         <div class="col-xxl-6 col-lg-6 col-sm-12">
                             <label class="form-label"> Alternative Phone Number</label>
-                            <input autocomplete="off" class="form-control input-width-xlarge"  placeholder="Alternative Phone Number"  type="text" th:field="*{altPhone}"/>
+                            <input autocomplete="off" class="form-control input-width-xlarge"  placeholder="Alternative Phone Number"  type="text"  id="altPhoneField" th:field="*{altPhone}"/>
                         </div>
                     </div>
                 </div>
@@ -119,11 +120,11 @@
                     <div class="row g-3">
                         <div class="col-xxl-6 col-lg-6 col-sm-12">
                             <label class="form-label">Email</label>
-                            <input autocomplete="off" class="form-control input-width-xlarge" type="email" th:field="*{email}"/>
+                            <input autocomplete="off" class="form-control input-width-xlarge" id="emailField" type="email" th:field="*{email}"/>
                         </div>
                         <div class="col-xxl-6 col-lg-6 col-sm-12">
                             <label class="form-label">Alternative Email Address</label>
-                            <input autocomplete="off" class="form-control input-width-xlarge"  type="email" th:field="*{altEmail}"/>
+                            <input autocomplete="off" class="form-control input-width-xlarge"  id="altEmailField" type="email" th:field="*{altEmail}"/>
                         </div>
                     </div>
                 </div>

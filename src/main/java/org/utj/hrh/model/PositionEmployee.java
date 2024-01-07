@@ -17,7 +17,7 @@ public class PositionEmployee {
     private Long id;
 
     @OneToOne
-    @JoinColumn(name = "emp_number", referencedColumnName = "emp_no")
+    @JoinColumn(name = "emp_number", referencedColumnName = "id")
     private Employee employee;
 
     @ManyToOne

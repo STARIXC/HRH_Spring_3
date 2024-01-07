@@ -15,10 +15,11 @@ import java.math.BigDecimal;
 public class EmployeeEmergencyContact {
   
     @Id
-    @Column(name = "seq_number", precision = 2, scale = 0, columnDefinition = "decimal default 0")
-    private BigDecimal seqNo = BigDecimal.ZERO;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private Long id;
     
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    @ManyToOne
     @JoinColumn(name = "emp_number", referencedColumnName = "id")
     private Employee employeeContact;
     

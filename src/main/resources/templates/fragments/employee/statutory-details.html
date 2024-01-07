@@ -10,7 +10,8 @@
     <form
             method="post"
             th:action="@{/system/employee/saveEmployee}"
-            th:object="${employeeDetails.statutoryDetailsDTO}">
+            th:object="${employeeDetails.statutoryDetailsDTO}"
+    id="employeeStatutoryInfoForm">
     <div class="col-12">
         <div class="panel">
             <div class="panel-header">
@@ -20,28 +21,28 @@
                 <div class="row g-3">
                     <div class="col-xxl-3 col-lg-4 col-sm-6">
                         <label class="form-label"> KRA PIN</label>
-                        <input class="form-control form-control-sm"  maxlength="10"  type="text" th:field="*{kraPin}">
+                        <input class="form-control form-control-sm" id="txtKraPin" maxlength="10"  type="text" th:field="*{kraPin}">
                     </div>
                     <div class="col-xxl-3 col-lg-4 col-sm-6">
                         <label class="form-label">NSSF Number</label>
-                        <input class=" form-control form-control-sm txtNumber"  maxlength="15"  type="text" th:field="*{nssfNo}"/>
+                        <input class=" form-control form-control-sm txtNumber" id="txtNssfNo" maxlength="15"  type="text" th:field="*{nssfNo}"/>
                     </div>
                     <div class="col-xxl-3 col-lg-4 col-sm-6">
                         <label class="form-label">NHIF #</label>
-                        <input class=" form-control form-control-sm txtNumber"  maxlength="15"  type="text" th:field="*{nhifNo}"/>
+                        <input class=" form-control form-control-sm txtNumber" id="txtNhifNo" maxlength="15"  type="text" th:field="*{nhifNo}"/>
                     </div>
                     <div class="col-xxl-3 col-lg-4 col-sm-6">
                         <label class="form-label"> Certificate of Good Conduct No</label>
-                        <input class=" form-control form-control-sm txtGoodConduct" i maxlength="15"  type="text" th:field="*{certGoodConductNo}"/>
+                        <input class=" form-control form-control-sm txtGoodConduct" id="txtCertGoodConductNo" maxlength="15"  type="text" th:field="*{certGoodConductNo}"/>
                     </div>
                     <div class="col-xxl-3 col-lg-4 col-sm-6">
                         <label class="form-label">HELB Benefitiary</label>
                         <label class="radio-inline">
-                            <input checked="checked" th:field="*{helbBeneficiary}" th:value="1" type="radio"/>
+                            <input checked="checked" id="rbtHelbBeneficiaryYes" name="helbBeneficiary"  th:field="*{helbBeneficiary}" th:value="1" type="radio"/>
                             <label>Yes</label>
                         </label>
                         <label class="radio-inline">
-                            <input th:field="*{helbBeneficiary}"  th:value="0" type="radio"/>
+                            <input th:field="*{helbBeneficiary}" id="rbtHelbBeneficiaryNo" name="helbBeneficiary"  th:value="0" type="radio"/>
                             <label >No</label>
                         </label>
                     </div>
@@ -49,7 +50,7 @@
                         <label class="form-label"> HELB Clearance Certificate Number
                             <span class="required">*</span>
                         </label>
-                        <input class="form-control form-control-sm"  maxlength="200" type="text" th:field="*{helbClearanceNo}">
+                        <input class="form-control form-control-sm" id="txtHelbClearanceNo" maxlength="200" type="text" th:field="*{helbClearanceNo}">
                     </div>
                     <div class="col-12 d-flex justify-content-end">
                         <button class="btn btn-sm btn btn-success">Update Details</button>

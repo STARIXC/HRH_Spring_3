@@ -27,9 +27,12 @@
             </div>
                     </div>
                     <div class="panel-body">
-                    <form action="#" th:action="@{/system/leave/entitlement/save}" th:object="${leaveEntitlement}" method="post">
+                    <form action="#"
+                          th:action="@{/system/leave/entitlement/save}"
+                          th:object="${leaveEntitlement}"
+                          method="post" id="leaveEntitlementForm">
 
-    <div class="row g-3">
+    <div class="row g-3 mb-10">
         <!-- Employee Type Selection -->
         <div class="col-sm-4">
             <input type="radio" class="form-check-input" id="individual" name="employeeType" value="individual" onclick="toggleEmployeeSelect()">
@@ -41,7 +44,7 @@
         </div>
     </div>
 
-    <div class="row g-3">
+    <div class="row g-3 mb-10">
         <!-- Financial Year -->
         <div class="col-sm-6">
             <label class="form-label">Financial Year</label>
@@ -63,7 +66,7 @@
         <!-- Individual Employee Selection -->
         <div class="col-sm-6" id="individualSelect" style="display:none;">
             <label class="form-label">Employee Name</label>
-            <select class="form-select" id="employeeId" name="employeeId">
+            <select class="form-select" id="employeeId" name="employeeId" th:field="*{employeeLeaveEntitlement}">
                 <option value="">-- Select Employee --</option>
             </select>
         </div>
@@ -100,43 +103,42 @@
 
 <th:block layout:fragment="script">
     <script th:src="@{/assets/vendor/js/jquery-ui.min.js}"></script>
+    <script th:src="@{/assets/vendor/js/sweetalert2.all.min.js}"></script>
+    <script th:src="@{/assets/js/sweet-alert-init.js}"></script>
     <script th:src="@{/assets/vendor/js/select2.min.js}"></script>
     <script th:src="@{/assets/js/select2-init.js}"></script>
     <script th:inline="javascript">
+        // Functions related to Employee Selection based on Radio Buttons
+        toggleEmployeeSelect();
         function toggleEmployeeSelect() {
+            var leavePolicySelect = document.getElementById('leavePolicySelect');
+
             if (document.getElementById('individual').checked) {
                 document.getElementById('individualSelect').style.display = 'block';
             } else if (document.getElementById('all').checked) {
                 document.getElementById('individualSelect').style.display = 'none';
-                // Clear the selection
                 document.getElementById('employeeId').value = '';
+                // leavePolicySelect.removeAttribute('onchange');
             }
-            // const individualSelect = document.getElementById("individualSelect");
-            // const selectedValue = document.querySelector('input[name="employeeType"]:checked').value;
-            // individualSelect.style.display = (selectedValue === 'individual') ? 'block' : 'none';
         }
 
+        // Functions to handle Financial Year Change and updating Leave Policies
         /*<![CDATA[*/
         function onFinancialYearChange() {
             const selectedYear = $('#financialYearSelect').val();
-            // Define a JavaScript variable to hold the URL
             let fetchUrl = /*[[@{/system/leave/policy/getPoliciesForYear}]]*/;
             let url = fetchUrl + '?year=' + selectedYear;
             $.ajax({
                 url: url,
                 type: 'GET',
-                   success: function(response) {
-
-                       const leavePolicySelect = $('#leavePolicySelect');
-                       leavePolicySelect.empty();
-                    leavePolicySelect.append($('<option>', {
-                        value: '',
-                        text : 'Select Policy'
-                    }));
+                success: function(response) {
+                    const leavePolicySelect = $('#leavePolicySelect');
+                    leavePolicySelect.empty();
+                    leavePolicySelect.append($('<option>', { value: '', text: 'Select Policy' }));
                     $.each(response, function(index, policy) {
                         leavePolicySelect.append($('<option>', {
                             value: policy.id,
-                            text : policy.leaveType.leaveType
+                            text: policy.leaveType.leaveType
                         }));
                     });
                 },
@@ -146,120 +148,192 @@
             });
         }
         /*]]>*/
+
+        // Functions to handle Leave Policy Change and updating related fields
         function onLeavePolicyChange() {
             var policyId = $("#leavePolicySelect").val();
+            var isAllSelected = document.getElementById('all').checked;
 
             $.ajax({
-                url: '/hrh/system/leave/policy/details/' + policyId, // Update with the correct URL
+                url: '/hrh/system/leave/policy/details/' + policyId,
                 type: 'GET',
                 success: function(response) {
                     $("#noOfDays").val(response.days);
-                    $("#period").val(response.fromDate+' to '+response.toDate);
+                    $("#period").val(response.fromDate + ' to ' + response.toDate);
                     $("#fromDate").val(response.fromDate);
                     $("#toDate").val(response.toDate);
-                    filterEmployeesByGender(response.gender);
+
+                    // Only filter employees by gender if 'all' is not selected
+                    if (!isAllSelected) {
+                        filterEmployeesByGender(response.gender);
+                    }
                 },
                 error: function(error) {
                     console.error('Error fetching policy details:', error);
-                    // Handle any errors
                 }
             });
         }
 
+
+        // Function to filter Employees by Gender
         function filterEmployeesByGender(gender) {
             $.ajax({
-                url: '/hrh/system/leave/policy/filtered-employees/' + gender, // Update with the correct URL
+                url: '/hrh/system/leave/policy/filtered-employees/' + gender,
                 type: 'GET',
                 success: function(response) {
                     updateEmployeeDropdown(response);
                 },
                 error: function(error) {
                     console.error('Error fetching filtered employees:', error);
-                    // Handle any errors
                 }
             });
         }
 
+        // Function to update Employee Dropdown
         function updateEmployeeDropdown(employees) {
             var employeeSelect = $('#employeeId');
-            employeeSelect.empty(); // Remove current options
+            employeeSelect.empty();
 
             if (employees.length === 0) {
                 employeeSelect.append('<option value="">No employees available</option>');
             } else {
                 employeeSelect.append('<option value="">-- Select Employee --</option>');
                 employees.forEach(function(employee) {
-                    employeeSelect.append('<option value="' + employee.id + '">' + employee.surname +' '+ employee.firstName+ '</option>');
+                    employeeSelect.append('<option value="' + employee.id + '">' + employee.surname + ' ' + employee.firstName + '</option>');
                 });
             }
         }
-        function updateFormFields(policyDetails) {
-            // Assuming policyDetails object contains fields like period, numberOfDays, etc.
-            // Update form fields accordingly
 
-            $("#numberOfDaysInput").val(policyDetails.numberOfDays);
-            // Add more fields as needed
-        }
-
-        /*<![CDATA[*/
-        function onLeavePolicyChange_() {
-            const selectedPolicy = $('#leavePolicySelect').val();
-            let fetchUrl = /*[[@{/system/leave/policy/getEmployeesForPolicy}]]*/;
-            let url = fetchUrl + '?policy=' + selectedPolicy;
-            $.ajax({
-                url: url,
-                type: 'GET',
-                    success: function(response) {
-                    var employeeSelect = $('#employeeSelect');
-                    employeeSelect.empty();
-                    employeeSelect.append($('<option>', {
-                        value: '',
-                        text : 'Select Employee'
-                    }));
-                    $.each(response, function(index, employee) {
-                        employeeSelect.append($('<option>', {
-                            value: employee.id,
-                            text : employee.surname + ' ' + employee.firstName
-                        }));
-                    });
-                },
-                error: function(xhr, status, error) {
-                    console.error("Error fetching employees: " + error);
-                }
-            });
-        }
-        /*]]>*/
-
+        // DataTables Initialization for Leave Entitlements Table
         $(function () {
-
-            //------------------------------------------------------------------------------------------------------------------
-            // All Entitlements Table In CRM Module
-            //------------------------------------------------------------------------------------------------------------------
             if ($('#leaveEntitlementsTable').length) {
                 const dataTable = $('#leaveEntitlementsTable').DataTable({
                     scrollX: true,
-                    "columnDefs": [{
-                        "targets": 'no-sort',
-                        "orderable": false
-                    }],
+                    "columnDefs": [{ "targets": 'no-sort', "orderable": false }]
                 });
+
+                // DataTables Customizations
                 $('#leaveEntitlementsTable_filter input').addClass('form-control').attr("placeholder", "Search...").addClass('form-control-sm');
                 $('#leaveEntitlementsTable_length').prependTo('#leaveEntitlementsTableLength').find('select').addClass('form-control form-control-sm px-3');
                 $('#leaveEntitlementsTable_filter').prependTo('#tableSearch');
                 $('#leaveEntitlementsTable_info, #leaveEntitlementsTable_paginate').prependTo('.table-bottom-control');
-
 
                 $('#leaveEntitlementsTable').on('draw.dt', function () {
                     $('#leaveEntitlementsTable tr').on('click', function () {
                         $(this).toggleClass('selected');
                         $(this).siblings().removeClass('selected');
                     });
-
                 });
             }
         });
-
     </script>
+    <script th:inline="javascript">
+        $(document).ready(function() {
+            $('#leaveEntitlementForm').on('submit', function(e) {
+                e.preventDefault(); // Prevent default form submission
+
+                var formData = new FormData(this); // Collect form data
+
+                // Show SweetAlert for processing
+                Swal.fire({
+                    title: 'Processing...',
+                    text: 'Please wait while we save the data.',
+                    icon: 'info',
+                    allowOutsideClick: false,
+                    showConfirmButton: false,
+                    willOpen: () => {
+                        Swal.showLoading();
+                    }
+                });
+
+                $.ajax({
+                    url: '/hrh/system/leave/entitlement/save', // Your endpoint
+                    type: 'POST',
+                    data: formData,
+                    contentType: false, // Required for FormData
+                    processData: false, // Required for FormData
+                    success: function(response) {
+                        // Display success message using SweetAlert
+                        Swal.fire({
+                            title: 'Success',
+                            text: 'Record saved successfully!',
+                            icon: 'success',
+                            confirmButtonText: 'OK'
+                        }).then(function () {
+                            // Refresh the page after the user clicks OK in the alert
+                            location.reload();
+                        });
+                    },
+                    error: function(xhr, status, error) {
+                        // Display error message using SweetAlert
+                        Swal.fire({
+                            title: "Oops...",
+                            text: "Error saving Education Level: " + error.responseText,
+                            icon: "error",
+                            confirmButtonClass: "btn btn-sm btn-primary",
+                            buttonsStyling: !1,
+                            showCloseButton: !0,
+                            closeButtonHtml: "<i class='fa-light fa-xmark'></i>",
+                            customClass: {
+                                closeButton: 'btn btn-sm btn-icon btn-danger',
+                            },
+                        })
+                    }
+                });
+            });
+        });
+    </script>
+
+    <!--    <script th:inline="javascript">-->
+<!--        $(document).ready(function() {-->
+<!--            $('#leaveEntitlementForm').on('submit', function(e) {-->
+<!--                e.preventDefault(); // Prevent default form submission-->
+
+<!--                var formData = new FormData(this); // Collect form data-->
+
+<!--                // If you have additional data manipulation or need to convert it to JSON, do it here-->
+<!--                // For example, for a JSON request, use: var formData = $(this).serialize();-->
+
+<!--                $.ajax({-->
+<!--                    url: '/hrh/system/leave/entitlement/save', // Your endpoint-->
+<!--                    type: 'POST',-->
+<!--                    data: formData,-->
+<!--                    contentType: false, // Required for FormData-->
+<!--                    processData: false, // Required for FormData-->
+<!--                    success: function(response) {-->
+<!--                        // Display success message using SweetAlert-->
+<!--                        // Display a SweetAlert success message-->
+<!--                        Swal.fire({-->
+<!--                            title: 'Success',-->
+<!--                            text: 'Record saved successfully!',-->
+<!--                            icon: 'success',-->
+<!--                            confirmButtonText: 'OK'-->
+<!--                        }).then(function () {-->
+<!--                            // Refresh the page after the user clicks OK in the alert-->
+<!--                            location.reload();-->
+<!--                        });-->
+
+<!--                    },-->
+<!--                    error: function(xhr, status, error) {-->
+<!--                        // Display error message using SweetAlert-->
+<!--                        Swal.fire({-->
+<!--                            title: "Oops...",-->
+<!--                            text: "Error saving Education Level: " + error.responseText,-->
+<!--                            icon: "error",-->
+<!--                            confirmButtonClass: "btn btn-sm btn-primary",-->
+<!--                            buttonsStyling: !1,-->
+<!--                            showCloseButton: !0,-->
+<!--                            closeButtonHtml: "<i class='fa-light fa-xmark'></i>",-->
+<!--                            customClass: {-->
+<!--                                closeButton: 'btn btn-sm btn-icon btn-danger',-->
+<!--                            },-->
+<!--                        })-->
+<!--                    }-->
+<!--                });-->
+<!--            });-->
+<!--        });-->
+<!--    </script>-->
+
 </th:block>
 </body>
 

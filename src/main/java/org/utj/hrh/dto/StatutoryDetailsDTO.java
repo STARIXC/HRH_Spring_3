@@ -6,7 +6,6 @@ import lombok.NoArgsConstructor;
 
 @Data
 public class StatutoryDetailsDTO {
-	private String nationality;
 	private String kraPin;
 	private String nssfNo;
 	private String nhifNo;

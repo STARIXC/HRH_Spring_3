@@ -47,7 +47,6 @@ public class LeavePolicy {
     @JoinColumn(name = "leave_id", referencedColumnName = "leave_type_id")
     private LeaveType leaveType;
 
-
     @Column(name = "created_at")
     private LocalDateTime created_at;
     @Column(name = "updated_at")

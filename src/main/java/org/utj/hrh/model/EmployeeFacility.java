@@ -4,32 +4,24 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
-//@Table(name = "tbl_user_facility" , uniqueConstraints = @UniqueConstraint(columnNames = "emp_no")) // This annotation specifies the database table name
-@Table(name = "tbl_user_facility") // This annotation specifies the database table name
-@Setter
-@Getter
-@AllArgsConstructor
-@ToString(exclude = {"employee","facility"})
+@Table(name = "employee_facility")
+@Data
 public class EmployeeFacility {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
-    private boolean isActive;  // Indicates the current active facility
-
+    
+    @Column(name = "is_active")
+    private boolean isActive;
 
     @ManyToOne
-    @JoinColumn(name = "centre_sante_id", referencedColumnName = "centre_sante_id")
+    @JoinColumn(name = "facility_id", referencedColumnName = "sub_partner_id")
     private Facility facility;
-    
     @OneToOne
-    @JoinColumn(name = "emp_number", referencedColumnName = "id")
-    private Employee employee;
+    @JoinColumn(name = "emp_number", referencedColumnName = "id") // Ensure 'id' matches the column name in Employee table
+    private Employee activeEmployeeFacility;
 
 
-    public EmployeeFacility() {
-        // Set the default active status to true when creating a new record
-        this.isActive = true;
-    }
 
 }

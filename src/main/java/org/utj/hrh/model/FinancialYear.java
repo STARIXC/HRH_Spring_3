@@ -7,6 +7,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.*;
 
+import java.time.LocalDate;
+
 /**
  * @author UTJ
  */
@@ -20,19 +22,19 @@ import lombok.*;
 public class FinancialYear {
     @Id
     @Column(name = "id")
-    Integer id;
+    private Integer id;
     @Column(name = "name")
     private String name;
     @Column(name = "year")
     private String year;
     @Column(name = "start_date")
-    private String start_date;
+    private LocalDate startDate;
     @Column(name = "end_date")
-    private String end_date;
+    private LocalDate endDate;
     @Column(name = "contract_period")
-    private String contract_period;
+    private Integer contractPeriod;
     @Column(name = "contract_no_months")
-    private String contract_no_months;
+    private String contractNoMonths;
     @Column(name = "status")
     private Integer status;
 

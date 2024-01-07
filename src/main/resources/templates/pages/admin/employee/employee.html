@@ -8,7 +8,7 @@
 	<title>HRMIS Employees | UTJ</title>
 </head>
 <body>
-<span layout:fragment="content">
+<div layout:fragment="content">
    <div class="dashboard-breadcrumb mb-25">
              <div class="btn-box">
                 <a class="btn btn-sm btn-primary" th:href="@{/system/employee/all}">Employee List</a>
@@ -16,250 +16,198 @@
                 <a class="btn btn-sm btn-primary" th:href="@{/system/employee/reports}">Reports</a>
             </div>
    </div>
-      <div class="panel">
-<div class="panel-body">
-           <input type="hidden"  th:value="${employeeDetails.basicInfoDTO.id}" id="sharedEmployeeId"  />
-    <div class="row">
-        <div class="col-xxl-3 col-lg-3 col-sm-12 ">
-            <div class="panel">
-                <div class="profile-edit-tab">
+    <div class="panel">
+        <div class="panel-body">
+           <input id="sharedEmployeeId" th:value="${employeeDetails.basicInfoDTO.id}" type="hidden"/>
+            <div class="row">
+                <div class="col-xxl-3 col-lg-3 col-sm-12 ">
+                    <div class="panel">
+                        <!--head profile start-->
+                        <div class="profile-edit-tab">
                     <div class="admin-profile">
-                  <span class="admin-name"
+                        <span class="admin-name"
                         th:text="${employeeDetails.basicInfoDTO.firstName + ' ' + (employeeDetails.basicInfoDTO.otherName != null and employeeDetails.basicInfoDTO.otherName != '' ? employeeDetails.basicInfoDTO.otherName + ' ' : '') + employeeDetails.basicInfoDTO.surname}">Mitchell C. Shay</span>
-                                                    <div class="image-wrap">
-                                                        <div class="part-img rounded-circle overflow-hidden">
-                                                            <img alt="admin"
-                                                                 th:src="@{../../../assets/images/admin.png}">
-                                                        </div>
-                                                        <button class="image-change"><i class="fa-light fa-camera"></i></button>
-                                                    </div>
-	                    <!--                                                    <span class="admin-role" th:text="${employee.position.position_title}">Graphic Designer</span>-->
-
-                                                </div>
+                        <div class="image-wrap">
+                            <div class="part-img rounded-circle overflow-hidden">
+                                <img alt="admin" th:src="@{../../../assets/images/admin.png}">
+                            </div>
+                            <button class="image-change"><i class="fa-light fa-camera"></i></button>
+                        </div>
+	                   </div>
                 </div>
-                <div class="panel-body">
-                    <nav class="btn-box  nav-tabs nav-fill d-flex flex-column justify-content-start" id="myTab"
+                        <!--body profile start-->
+                        <div class="panel-body">
+                            <!--tab navigations-->
+                            <nav class="btn-box  nav-tabs nav-fill d-flex flex-column justify-content-start" id="myTab"
                          role="tablist">
-                        <a aria-controls="basic" aria-selected="true" class="  btn-sm btn-outline-primary mb-2" data-bs-toggle="tab" href="#basic" id="basic-tab" role="tab" th:classappend="${activeTab == 'basic'} ? 'active' : ''">
+                        <a aria-controls="basic" aria-selected="true" class="  btn-sm btn-outline-primary mb-2"
+                           data-bs-toggle="tab" href="#basic" id="basic-tab" role="tab"
+                           th:classappend="${activeTab == 'basic'} ? 'active' : ''">
                             <span class="font-weight-bold small text-uppercase">Personal Details</span>
                         </a>
-                          <a aria-controls="statutory" aria-selected="false" class=" btn-sm btn-outline-primary mb-2" data-bs-toggle="tab" href="#statutory" id="statutory-tab" role="tab">
+                          <a aria-controls="statutory" aria-selected="false" class=" btn-sm btn-outline-primary mb-2"
+                             data-bs-toggle="tab" href="#statutory" id="statutory-tab" role="tab">
                             <span class="font-weight-bold small text-uppercase">Statutory Details</span>
                         </a>
-                        <a aria-controls="contact" aria-selected="false" class=" btn-sm btn-outline-primary mb-2" data-bs-toggle="tab" href="#contact" id="contact-tab" role="tab">
+                        <a aria-controls="contact" aria-selected="false" class=" btn-sm btn-outline-primary mb-2"
+                           data-bs-toggle="tab" href="#contact" id="contact-tab" role="tab">
                             <span class="font-weight-bold small text-uppercase">Contact Details</span>
                         </a>
-                        <a aria-controls="eContact" aria-selected="false" class=" btn-sm btn-outline-primary mb-2" data-bs-toggle="tab" href="#eContact" id="eContact-tab" role="tab">
+                        <a aria-controls="eContact" aria-selected="false" class=" btn-sm btn-outline-primary mb-2"
+                           data-bs-toggle="tab" href="#eContact" id="eContact-tab" role="tab">
                             <span class="font-weight-bold small text-uppercase">Emergency Contacts</span>
                         </a>
-                        <a aria-controls="dependents" aria-selected="false" class=" btn-sm btn-outline-primary mb-2" data-bs-toggle="tab" href="#dependents" id="dependents-tab" role="tab">
+                        <a aria-controls="dependents" aria-selected="false" class=" btn-sm btn-outline-primary mb-2"
+                           data-bs-toggle="tab" href="#dependents" id="dependents-tab" role="tab">
                             <span class="font-weight-bold small text-uppercase">Dependents</span>
                         </a>
-                        <a aria-controls="work" aria-selected="false" class=" btn-sm btn-outline-primary mb-2" data-bs-toggle="tab" href="#work" id="work-tab" role="tab">
+                        <a aria-controls="work" aria-selected="false" class=" btn-sm btn-outline-primary mb-2"
+                           data-bs-toggle="tab" href="#work" id="work-tab" role="tab">
                             <span class="font-weight-bold small text-uppercase">Job</span>
                         </a>
-                        <a aria-controls="salary" aria-selected="false" class=" btn-sm btn-outline-primary mb-2" data-bs-toggle="tab" href="#salary" id="salary-tab" role="tab">
+                        <a aria-controls="salary" aria-selected="false" class=" btn-sm btn-outline-primary mb-2"
+                           data-bs-toggle="tab" href="#salary" id="salary-tab" role="tab">
                             <span class="font-weight-bold small text-uppercase">Salary</span>
                         </a>
-                        <a aria-controls="docs" aria-selected="false" class=" btn-sm btn-outline-primary mb-2" data-bs-toggle="tab" href="#docs" id="docs-tab" role="tab">
+                        <a aria-controls="docs" aria-selected="false" class=" btn-sm btn-outline-primary mb-2"
+                           data-bs-toggle="tab" href="#docs" id="docs-tab" role="tab">
                             <span class="font-weight-bold small text-uppercase">Documents</span>
                         </a>
-                        <a aria-controls="qualification" aria-selected="false" class=" btn-sm btn-outline-primary mb-2" data-bs-toggle="tab" href="#qualification" id="qualification-tab" role="tab">
+                        <a aria-controls="qualification" aria-selected="false" class=" btn-sm btn-outline-primary mb-2"
+                           data-bs-toggle="tab" href="#qualification" id="qualification-tab" role="tab">
                             <span class="font-weight-bold small text-uppercase">Qualification</span>
                         </a>
-                        <a aria-controls="reportingTo" aria-selected="false" class=" btn-sm btn-outline-primary mb-2" data-bs-toggle="tab" href="#reportingTo" id="reportingTo-tab" role="tab">
+                        <a aria-controls="reportingTo" aria-selected="false" class=" btn-sm btn-outline-primary mb-2"
+                           data-bs-toggle="tab" href="#reportingTo" id="reportingTo-tab" role="tab">
                             <span class="font-weight-bold small text-uppercase">Report-To</span>
-                        </a> </nav>
-                </div>
-            </div>
-        </div>
-        <div class="col-xxl-9 col-lg-9 col-sm-12 border-start">
-            <div class="tab-content " id="tabContent">
-                <div aria-labelledby="basic-tab" class="row g-3 tab-pane show active" id="basic" role="tabpanel" >
-                    <span th:replace="~{fragments/employee/personal-details-fragment :: personal-details}"></span>
-                    <!--Personal Details Go Here-->
-
-                </div>
-                <div aria-labelledby="contact-tab" class="row g-3 tab-pane " id="contact" role="tabpanel"  >
-                    <span th:replace="~{fragments/employee/contact-details-fragment :: contact-details}"></span>
-                </div>
-                <div aria-labelledby="statutory-tab" class="row g-3 tab-pane " id="statutory" role="tabpanel"  >
-                    <!--contact tab content goes here-->
-                    <span th:replace="~{fragments/employee/statutory-details :: statutoryDetails}"></span>
-                </div>
-                <div aria-labelledby="eContact-tab" class="row g-3 tab-pane " id="eContact" role="tabpanel">
-                    <!--Emergency Contact Details Go Here-->
-                  <span th:replace="~{fragments/employee/emergencyContact :: emergencyContactsFragment}"></span>
-                </div>
-                <div aria-labelledby="dependents-tab" class="row g-3 tab-pane " id="dependents" role="tabpanel">
-<!--                    <span th:replace="~{fragments/employee/dependants :: dependantsFragment}"></span>-->
-                </div>
-                <div aria-labelledby="work-tab" class="row g-3 tab-pane " id="work" role="tabpanel">
-                   <span th:replace="~{fragments/employee/work :: workFragment}"></span>
-                    <!--work Details Go Here-->
-                </div>
-                <div aria-labelledby="salary-tab" class="row g-3 tab-pane " id="salary" role="tabpanel">
-                    <span th:replace="~{fragments/employee/salary :: salaryFragment}"></span>
-                    <!--Salary Details Go Here-->
-                </div>
-                <div aria-labelledby="note-tab" class="row g-3 tab-pane" id="note" role="tabpanel">
-                    <!--Notes Details Go Here-->
-<!--                    <span th:replace="~{fragments/employee/note :: noteFragment}"></span>-->
-                </div>
-                <div aria-labelledby="qualification-tab" class="row g-3 tab-pane " id="qualification" role="tabpanel">
-                    <span th:replace="~{fragments/employee/qualification :: qualificationFragment}"></span>
-                </div>
-                <div aria-labelledby="docs-tab" class="row g-3 tab-pane" id="docs" role="tabpanel">
-<!--                    <span th:replace="~{fragments/employee/documents :: document-details}"></span>-->
-                </div>
-
-                 <div aria-labelledby="reportingTo-tab" class="row g-3 tab-pane" id="reportingTo" role="tabpanel">
-<!--                    <span th:replace="~{fragments/employee/report-to :: reportTo}"></span>-->
-                </div>
-                <div aria-labelledby="training-tab" class="row g-3 tab-pane" id="training" role="tabpanel"></div>
-                <div aria-labelledby="payslip-tab" class="row g-3 tab-pane fade  rounded bg-white p-5" id="payslip" role="tabpanel"></div>
-        </div>
-
-        </div>
-       </div>
-
-
-
-    <div class="row_element2" style="display: none;">
-    <input name="employeeExperience_cid[]" type="hidden">
-    <div class="row g-3">
-        <div class="col-xxl-3 col-lg-4 col-sm-6">
-            <label class="form-label" for="organization_name">Organization Name<span class="validateRq">*</span></label>
-            <input class="form-control organization_name" id="organization_name" name="organization_name[]" placeholder="Organization Name"
-                   type="text">
-        </div>
-        <div class="col-xxl-3 col-lg-4 col-sm-6">
-            <label class="form-label" for="designation">Designation<span class="validateRq">*</span></label>
-            <input class="form-control designation" id="designation" name="designation[]" placeholder="Designation"
-                   type="text">
-        </div>
-        <div class="col-xxl-3 col-lg-4 col-sm-6">
-            <label class="form-label" for="from_date">From Date</label>
-            <div class="input-group">
-                <span class="input-group-text"><i class="fa fa-calendar"></i></span>
-                <input class="form-control date-picker" id="from_date" name="from_date[]" placeholder="From Date"
-                       type="text"/>
-            </div>
-        </div>
-        <div class="col-xxl-3 col-lg-4 col-sm-6">
-            <label class="form-label" for="to_date">To Date</label>
-      <div class="input-group">
-                <span class="input-group-text"><i class="fa fa-calendar"></i></span>
-                <input class="form-control dateField form-control-sm date-picker" id="to_date" name="to_date[]" placeholder="To Date"
-                       type="text">
-             </div>
-        </div>
-        <div class="col-xxl-3 col-lg-4 col-sm-6">
-            <label for="responsibility">Responsibility<span class="validateRq">*</span></label>
-            <textarea class="form-control responsibility form-control-sm" cols="30" id="responsibility"
-                      name="responsibility[]"
-                      placeholder="Responsibility" rows="2"></textarea>
-        </div>
-        <div class="col-xxl-3 col-lg-4 col-sm-6">
-            <label for="skills">Skill<span class="validateRq">*</span></label>
-            <textarea class="form-control skill form-control-sm " cols="30" id="skills" name="skill[]"
-                      placeholder="Skills" rows="2"></textarea>
-        </div>
-        <div class="col-xxl-3 col-lg-4 col-sm-6"></div>
-        <div class="col-xxl-3 col-lg-4 col-sm-6">
-            <div class="form-group">
-                <input class="form-control btn btn-danger deleteExperience appendBtnColor" style="margin-top: 17px"
-                       type="button" value="Delete">
-            </div>
-        </div>
-    </div>
-    <hr>
-</div>
- <div class="academic_qualification" style="display: none;">
-                        <form id="educationForm"
-                              method="post"
-                              th:action="@{/system/employee/employee-education/save/qualification}"
-                              th:object="${newAcademicRecord}">
-
-                            <div class="row g-3">
-                                <!--                                        <input type="text" name="employee_id" id="employee_id" hidden th:field="*{academicQualification.person.personNumber}" th:value="${employee.person.personNumber}" >-->
-                                <!-- Hidden field for employee ID -->
-
-                                <div class="col-xxl-3 col-lg-4 col-sm-6">
-                                    <label class="form-label" >Level<span class="validateRq">*</span></label>
-                                    <select class="form-select level form-control-sm" th:field="*{educationId}" >
-                                        <option value="">--- Select ---</option>
-                                        <option th:each="level : ${employeeDetails.educationLevels}" th:value="${level.id}" th:text="${level.name}">Diploma</option>
-                                    </select>
-                                </div>
-                                <div class="col-xxl-3 col-lg-4 col-sm-6">
-                                    <label class="form-label" >Institute<span class="validateRq">*</span></label>
-                                    <input class="form-control board_university form-control-sm"  placeholder="Board / Institution Name" type="text" th:field="*{institute}">
-                                </div>
-                                <div class="col-xxl-3 col-lg-4 col-sm-6">
-                                    <label class="form-label" >Major/Specialization<span class="validateRq">*</span></label>
-                                    <input class="form-control degree required"  placeholder="Example: B.Sc. Engr.(Bachelor of Science in Engineering)" type="text" th:field="*{major}">
-                                </div>
-                                <div class="col-xxl-3 col-lg-4 col-sm-6">
-                                    <label class="form-label" >Year of Completion</label>
-                                    <div class="input-group">
-                                        <span class="  form-group-addon input-group-text"><i class="fa fa-calendar"></i></span>
-                                        <input class="form-control yearPicker required"  placeholder="Completion Year" type="text" th:field="*{year}"/>
-                                    </div>
-                                </div>
-
-                                <div class="col-xxl-3 col-lg-4 col-sm-6">
-                                    <label class="form-label" >GPA/ CGPA</label>
-                                    <input class="form-control score" placeholder="Example: 5.00,4.63" type="text" th:field="*{score}">
-                                </div>
-                                <div class="col-xxl-3 col-lg-4 col-sm-6">
-                                    <label class="form-label">Start Date</label>
-                                    <input class="form-control form-control-sm date-picker" placeholder="yyyy-mm-dd" readonly th:field="*{startDate}" type="text">
-
-                                </div>
-                                <div class="col-xxl-3 col-lg-4 col-sm-6">
-                                    <label class="form-label" >End Date</label>
-                                    <input class="form-control form-control-sm date-picker" placeholder="yyyy-mm-dd"
-                                           readonly th:field="*{endDate}" type="text">
-                                </div>
-                            </div>
-                            <hr/>
-                            <div class="row g-3">
-                                <div class="col-xxl-8 col-lg-8 col-sm-6">* Required</div>
-                                <div class="col-xxl-4 col-lg-4 col-sm-6">
-                                    <div class="form-group d-flex justify-content-end">
-                                        <input class="btn btn-danger btn-md deleteEducationQualification "  type="button" value="Cancel">
-                                        <input type="submit"  class="btn btn-info btn-md"  th:value="save" >
-                                    </div>
-                                </div>
-                            </div>
-                        </form>
+                        </a>
+                    </nav>
+                        </div>
+                        <!--NAvigation ends-->
                     </div>
+                </div>
+                <div class="col-xxl-9 col-lg-9 col-sm-12 border-start">
+                    <div class="tab-content " id="tabContent">
+                        <div aria-labelledby="basic-tab" class="row g-3 tab-pane show active" id="basic" role="tabpanel">
+                            <span th:replace="~{fragments/employee/personal-details-fragment :: personal-details}"></span>
+                            <!--Personal Details Go Here-->
+                        </div>
+                        <div aria-labelledby="contact-tab" class="row g-3 tab-pane " id="contact" role="tabpanel">
+                            <span th:replace="~{fragments/employee/contact-details-fragment :: contact-details}"></span>
+                        </div>
+                        <div aria-labelledby="statutory-tab" class="row g-3 tab-pane " id="statutory" role="tabpanel">
+                            <!--contact tab content goes here-->
+                            <span th:replace="~{fragments/employee/statutory-details :: statutoryDetails}"></span>
+                        </div>
+                        <div aria-labelledby="eContact-tab" class="row g-3 tab-pane " id="eContact" role="tabpanel">
+                            <!--Emergency Contact Details Go Here-->
+                            <span th:replace="~{fragments/employee/emergencyContact :: emergencyContactsFragment}"></span>
+                        </div>
+                        <div aria-labelledby="dependents-tab" class="row g-3 tab-pane " id="dependents" role="tabpanel">
+                            <span th:replace="~{fragments/employee/dependants :: dependantsFragment}"></span>
+                        </div>
+                        <div aria-labelledby="work-tab" class="row g-3 tab-pane " id="work" role="tabpanel">
+                            <span th:replace="~{fragments/employee/work :: workFragment}"></span>
+                            <!--work Details Go Here-->
+                        </div>
+                        <div aria-labelledby="salary-tab" class="row g-3 tab-pane " id="salary" role="tabpanel">
+                            <span th:replace="~{fragments/employee/salary :: salaryFragment}"></span>
+                            <!--Salary Details Go Here-->
+                        </div>
+                        <div aria-labelledby="note-tab" class="row g-3 tab-pane" id="note" role="tabpanel">
+                            <!--Notes Details Go Here-->
+                            <span th:replace="~{fragments/employee/note :: noteFragment}"></span>
+                        </div>
+                        <div aria-labelledby="qualification-tab" class="row g-3 tab-pane " id="qualification" role="tabpanel">
+                            <span th:replace="~{fragments/employee/qualification :: qualificationFragment}"></span>
+                        </div>
+                        <div aria-labelledby="docs-tab" class="row g-3 tab-pane" id="docs" role="tabpanel">
+                            <span th:replace="~{fragments/employee/documents :: document-details}"></span>
+                        </div>
 
-
-     </div>
+                        <div aria-labelledby="reportingTo-tab" class="row g-3 tab-pane" id="reportingTo" role="tabpanel">
+                            <span th:replace="~{fragments/employee/report-to :: reportTo}"></span>
+                        </div>
+                        <div aria-labelledby="training-tab" class="row g-3 tab-pane" id="training" role="tabpanel"></div>
+                        <div aria-labelledby="payslip-tab" class="row g-3 tab-pane fade  rounded bg-white p-5" id="payslip" role="tabpanel"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-      </div>
-
-</span>
+    <span th:replace="~{fragments/hidden-forms :: hiddenFormsFragment}"></span>
+</div>
 <th:block layout:fragment="script">
 	<!--    <script th:src="@{/assets/vendor/js/jquery.uploader.min.js}"></script>-->
-    <script th:src="@{/assets/vendor/js/moment.min.js}"></script>
+	<script th:src="@{/assets/vendor/js/moment.min.js}"></script>
 	<script th:src="@{/assets/vendor/js/jquery-ui.min.js}"></script>
-    <script th:src="@{/assets/vendor/js/sweetalert2.all.min.js}"></script>
+	<script th:src="@{/assets/vendor/js/sweetalert2.all.min.js}"></script>
 	<script th:src="@{/assets/vendor/js/select2.min.js}"></script>
 	<script th:src="@{/assets/js/select2-init.js}"></script>
-
-
 	<script th:inline="javascript">
+		function editEmergencyRecord(element) {
+			var recordId = $(element).data('record-id'); // Get the record ID from the data attribute
 
-		/*<![CDATA[*/
-		$(document).ready(function () {
+			// AJAX call to get the data for this specific record
+			$.ajax({
+				url: '/hrh/system/employee/emergencyContact/find/' + recordId, // Update this URL to the path of your API
+				type: 'GET',
+				success: function (data) {
+					// Assuming 'data' is the response object containing the emergency contact details
+					populateForm(data);
+				},
+				error: function (xhr, status, error) {
+					console.error("Error occurred: " + error);
+					// Handle errors here, such as displaying a message to the user
+				}
+			});
+		}
+        function editDependantRecord(element) {
+            var recordId = $(element).data('record-id'); // Get the record ID from the data attribute
+
+            // AJAX call to get the data for this specific record
+            $.ajax({
+                url: '/hrh/system/employee/employee-dependant/find/' + recordId, // Update this URL to the path of your API
+                type: 'GET',
+                success: function (data) {
+                    // Assuming 'data' is the response object containing the emergency contact details
+                    populateDependantForm(data);
+                    $('#dependantModal').show();
+
+                },
+                error: function (xhr, status, error) {
+                    console.error("Error occurred: " + error);
+                    // Handle errors here, such as displaying a message to the user
+                }
+            });
+        }
+		function populateForm(data) {
+			$('#txtEmId').val(data.id);
+			$('#txtName').val(data.name);
+			$('#relationshipInput').val(data.relationship);
+			$('#txtHomePhone').val(data.homePhone);
+			$('#txtMobilePhone').val(data.mobilePhone);
+			$('#txtOfficePhone').val(data.officePhone);
+		}
+		function populateDependantForm(data) {
+            $('#txtDependantRecordId').val(data.id);
+            $('#txtDependantName').val(data.name);
+            $('#txtDependantRelationship').val(data.relationship),
+            $('#txtDOB').val(data.dateOfBirth)
+
+		}
+        function reloadPageAndSetActiveTab(tabId) {
+            // Save the active tab in localStorage to remember it after the page reloads
+            localStorage.setItem('activeTab', tabId);
+
+            // Reload the page
+            location.reload();
+        }
 			// Hide the additional form inputs by default
-			$('.contract-options').hide();
-			$('.banking-options').hide();
 
-			// Show/hide the additional form inputs when the checkbox is selected/deselected
+			// $('.contract-options').hide();
+			$('.banking-options').hide();
+            $('#academic_qualification').hide();
 			// Show/hide the additional form inputs when the checkbox is selected/deselected
 			$('#show-more').change(function () {
 				if (this.checked) {
@@ -277,52 +225,35 @@
 			});
 			// Add event listener for selecting paneler category
 			$("#ddlCounty").change(function () {
-				// Fetch standardized panelers based on selected paneler category
-				let countyId = $(this).val();
-
-				// Define a JavaScript variable to hold the URL
-				let fetchSubCountyUrl = /*[[@{/system/subCounty/list/{countyId}}]]*/;
-                // let fetchSubcountyUrl = /*[[@{/system/facility/list/{id}}]]*/;
-				let url = fetchSubCountyUrl.replace("{countyId}", countyId); // Replace {id} with the actual value
-
+                let countyId = $(this).val();
 				$.ajax({
 					type: "GET",
-					url: url, // Use Thymeleaf URL expression
+					url: '/hrh/system/subCounty/list/' + countyId, // Use Thymeleaf URL expression
 					success: function (response) {
 						// Update the subCounty  select options
-                        const selectElement = $("#ddlSubCounty");
-                        selectElement.empty(); // Clear existing options
+						const selectElement = $("#ddlSubCounty");
+						selectElement.empty(); // Clear existing options
 						selectElement.append('<option value="" selected>Choose...</option>'); // Add default option
 						console.log(eval(response));
 						// Add options for standardized panelers
 						for (let i = 0; i < response.length; i++) {
-                            console.log(response[i]);
+							console.log(response[i]);
 							selectElement.append('<option value="' + response[i].districtId + '">' + response[i].districtName + '</option>');
 						}
 					},
 					error: function (error) {
 						// Handle error response here
-                        console.log("Error fetching : " + error.responseText);
+						console.log("Error fetching : " + error.responseText);
 					}
 				});
 			});
-
-
-			// Add event listener for selecting paneler category
 			$("#ddlSubCounty").change(function () {
-				// Fetch standardized panelers based on selected paneler category
 				let subCountyId = $(this).val();
-
-				// Define a JavaScript variable to hold the URL
-				let fetchSubcountyUrl = /*[[@{/system/facility/list/{id}}]]*/;
-
-				let url = fetchSubcountyUrl.replace("{id}", subCountyId); // Replace {id} with the actual value
-
 				$.ajax({
 					type: "GET",
-					url: url, // Use Thymeleaf URL expression
+					url: '/hrh/system/facility/list/' + subCountyId,
 					success: function (response) {
-						// Update the standardized paneler select options
+                        // Update the subCounty  select options
 						let selectElement = $("#ddlFacility");
 						selectElement.empty(); // Clear existing options
 						selectElement.append('<option value="" selected>Choose...</option>'); // Add default option
@@ -334,25 +265,19 @@
 					},
 					error: function (error) {
 						// Handle error response here
-                        console.log("Error fetching : " + error.responseText);
+						console.log("Error fetching : " + error.responseText);
 					}
 				});
 
 			});
-
 			// Add event listener for selecting paneler category
 			$("#ddlEmployeeType").change(function () {
 				// Fetch standardized panelers based on selected paneler category
 				let employeeType = $(this).val();
 
-				// Define a JavaScript variable to hold the URL
-				let fetchStandardCarder = /*[[@{/system/standard_carder/list/{id}}]]*/;
-
-				let url = fetchStandardCarder.replace("{id}", employeeType); // Replace {id} with the actual value
-
 				$.ajax({
 					type: "GET",
-					url: url, // Use Thymeleaf URL expression
+					url: '/hrh/system/standard_carder/list/'+employeeType, // Use Thymeleaf URL expression
 					success: function (response) {
 						// Update the standardized paneler select options
 						let selectElement = $("#ddlCadreCategory");
@@ -366,150 +291,470 @@
 					},
 					error: function (error) {
 						// Handle error response here
-                        console.log("Error fetching : " + error.responseText);
+						console.log("Error fetching : " + error.responseText);
 					}
 				});
 
 			});
-
-
 			// Add event listener for selecting paneler category
 			$("#ddlCadreCategory").change(function () {
-				// Fetch standardized panelers based on selected paneler category
-				let panelerCategory = $(this).val();
-
-				// Define a JavaScript variable to hold the URL
-				let fetchCarderCategory = /*[[@{/system/designation/list/{id}}]]*/;
-
-				let url = fetchCarderCategory.replace("{id}", panelerCategory); // Replace {id} with the actual value
-
+				let carderCategory = $(this).val();
 				$.ajax({
 					type: "GET",
-					url: url, // Use Thymeleaf URL expression
+					url: '/hrh/system/designation/list/'+carderCategory,
 					success: function (response) {
-						// Update the standardized paneler select options
+						// Update the standardized carder select options
 						let selectElement = $("#ddlPos");
 						selectElement.empty(); // Clear existing options
 						selectElement.append('<option value="" selected>Choose...</option>'); // Add default option
 						console.log(eval(response));
-						// Add options for standardized panelers
+						// Add options for standardized carder
 						for (let i = 0; i < response.length; i++) {
 							selectElement.append('<option value="' + response[i].id + '">' + response[i].position_title + '</option>');
 						}
 					},
 					error: function (error) {
 						// Handle error response here
-                        console.log("Error fetching : " + error.responseText);
+						console.log("Error fetching : " + error.responseText);
 					}
 				});
 
 			});
-
-
 			$('#emergency-contact-add').click(function () {
 				$('.emergency_contact_append_div').append(
 					'<div class="emergency_contact_row_element">' + $('.row_emergency_contact').html() +
 					'</div>');
-                $(this).prop('disabled', true);
+				$(this).prop('disabled', true);
 			});
-
 			$('#addEducationQualification').click(function () {
-				$('.education_qualification_append_div').append(
+                // Show the academic qualification section temporarily
+                $('#academic_qualification').show();
+               		$('.education_qualification_append_div').append(
 					'<div class="education_qualification_row_element">' + $('.academic_qualification').html() +
 					'</div>');
-                $(this).prop('disabled', true);
+                // Hide the academic qualification section again
+                $('#academic_qualification').hide();
+				$(this).prop('disabled', true);
 			});
-
 			$('#addExperience').click(function () {
 				$('.experience_append_div').append('<div class="experience_row_element">' + $(
 					'.row_element2').html() + '</div>');
-                $(this).prop('disabled', true);
+				$(this).prop('disabled', true);
 			});
-
-            $(document).on("click", ".deleteEducationQualification", function () {
-                // Remove the education qualification element
-                $(this).parents('.education_qualification_row_element').remove();
-                // Enable the add button
-                $('#addEducationQualification').prop('disabled', false);
-            });
-
-
-            $(document).on("click", ".deleteExperience", function () {
+			$(document).on("click", ".deleteEducationQualification", function () {
+				// Remove the education qualification element
+				$(this).parents('.education_qualification_row_element').remove();
+				// Enable the add button
+				$('#addEducationQualification').prop('disabled', false);
+			});
+			$(document).on("click", ".deleteExperience", function () {
 				$(this).parents('.experience_row_element').remove();
-                // Enable the add button
-                $('#addExperience').prop('disabled', false);
+				// Enable the add button
+				$('#addExperience').prop('disabled', false);
 
 			});
-            $(document).on("click", ".cancelEmergencyContact", function () {
+			$(document).on("click", ".cancelEmergencyContact", function () {
 				$(this).parents('.experience_row_element').remove();
-                // Enable the add button
-                $('#addExperience').prop('disabled', false);
+				// Enable the add button
+				$('#addExperience').prop('disabled', false);
 
 			});
-
-		});
-		/*]]>*/
-        /*<![CDATA[*/
-
-            $(document).ready(function() {
-                va
-
-            $('#educationForm').submit( function(e) {
-                e.preventDefault(); // Prevents the default form submission
-                // Get the employee ID
+        $(document).ready(function () {
+            $('#employeeContactForm').on('submit', function (e) {
                 const employeeId = $('#sharedEmployeeId').val();
-                const formData = $(this).serialize()+'&employeeId=' + encodeURIComponent(employeeId); // Serialize form data
-               console.log(formData);
-                $.ajax({
-                    url: '/system/employee/employee-education/save/qualification', // Your endpoint
-                    type: 'POST',
-                    data: formData, // Convert form data to JSON
-                    success: function(response) {
-                        // Handle success (e.g., display a message, clear the form, etc.)
-                        alert('Education record saved successfully');
+                e.preventDefault(); // Prevent default form submission
+
+                // Create a JavaScript object for the form data
+                var formData = {
+                    phone: $('#phoneField').val(), // Use the actual IDs of your form fields
+                    email: $('#emailField').val(),
+                    altPhone: $('#altPhoneField').val(),
+                    altEmail: $('#altEmailField').val(),
+                    presentAddress: {
+                        postalAddress: $('#presentPostalAddressField').val(),
+                        cityTown: $('#presentCityTownField').val(),
+                        postalCode: $('#presentPostalCodeField').val(),
+                        country: $('#presentCountryField').val(),
+                        street: $('#presentStreetField').val()
                     },
-                    error: function(xhr, status, error) {
-                        // Handle errors
-                        console.error('Error saving record:', error);
+                    homeAddress: {
+                        postalAddress: $('#homePostalAddressField').val(),
+                        cityTown: $('#homeCityTownField').val(),
+                        postalCode: $('#homePostalCodeField').val(),
+                        country: $('#homeCountryField').val(),
+                        street: $('#homeStreetField').val()
+                    }
+                };
+
+
+                // Convert the formData object to a JSON string
+                var jsonData = JSON.stringify(formData);
+                // Show a loading message
+                Swal.fire({
+                    title: 'Processing...',
+                    text: 'Please wait while we save the employee details.',
+                    icon: 'info',
+                    allowOutsideClick: false,
+                    showConfirmButton: false,
+                    willOpen: () => {
+                        Swal.showLoading()
+                    }
+                });
+
+                $.ajax({
+                    url: '/hrh/system/employee/update-contact-info/' + employeeId, // Replace with your actual endpoint
+                    type: 'POST',
+                    data: jsonData,
+                    contentType: 'application/json', // Set the content type to JSON
+                    success: function (response) {
+                        // Close the loading message
+                        Swal.close();
+
+                        // Show success message
+                        Swal.fire({
+                            title: 'Success',
+                            text: 'Employee saved successfully!',
+                            icon: 'success',
+                            confirmButtonText: 'OK'
+                        });
+                    },
+                    error: function (xhr, status, error) {
+                        // Close the loading message
+                        Swal.close();
+
+                        // Show error message
+                        Swal.fire({
+                            title: 'Error',
+                            text: 'Error saving employee: ' + error,
+                            icon: 'error',
+                            confirmButtonText: 'OK'
+                        });
                     }
                 });
             });
-                $('#emergencyContactForm').submit(function(e) {
-                    e.preventDefault(); // Prevents the default form submission
+            $('#employeeBasicInfoForm').on('submit', function (e) {
+                const employeeId = $('#sharedEmployeeId').val();
+                e.preventDefault(); // Prevent default form submission
 
-                    const employeeId = $('#sharedEmployeeId').val();
-                    const formData = $(this).serialize() + '&employeeId=' + encodeURIComponent(employeeId);
+                // Create a JavaScript object for the form data
+                var formData = {
+                    surname: $('#txtSurname').val(),
+                    firstName: $('#txtFirstName').val(),
+                    otherName: $('#txtOtherName').val(),
+                    nationality: $('#nationality').val(),
+                    nationalId: $('#txtNationalId').val(),
+                    personNumber: $('#txtEmployeeNumber').val(),
+                    dob: $('#txtDob').val(),
+                    gender: $('#ddlGender').val(),
+                    maritalStatus: $('#ddlMaritalStatus').val(),
+                    disability: $('input[name="rbtnDisability"]:checked').val(),
+                    disabilityExplain: $('#txtDisabilityExplain').val()
+                };
 
-                    $.ajax({
-                        url: '/system/employee/save/emergency/contact', // Your endpoint
-                        type: 'POST',
-                        contentType: 'application/x-www-form-urlencoded; charset=UTF-8', // Ensure correct content type
-                        data: formData,
-                        success: function(response) {
-                            // Assuming response is a JSON object
-                            if(response.success) {
-                                // Display a success message
-                                alert('Record saved successfully: ' + response.message);
-                                // Optionally, clear the form or take other actions
-                            } else {
-                                // Display an error message from the server
-                                alert('Error saving record: ' + response.message);
-                            }
-                        },
-                        error: function(xhr, status, error) {
-                            // Handle errors
-                            console.error('Error saving record:', error);
-                            alert('Failed to save record: ' + error);
-                        }
-                    });
+
+                // Convert the formData object to a JSON string
+                var jsonData = JSON.stringify(formData);
+                // Show a loading message
+                Swal.fire({
+                    title: 'Processing...',
+                    text: 'Please wait while we save the employee details.',
+                    icon: 'info',
+                    allowOutsideClick: false,
+                    showConfirmButton: false,
+                    willOpen: () => {
+                        Swal.showLoading()
+                    }
                 });
 
+                $.ajax({
+                    url: '/hrh/system/employee/update-basic-info/' + employeeId, // Replace with your actual endpoint
+                    type: 'POST',
+                    data: jsonData,
+                    contentType: 'application/json', // Set the content type to JSON
+                    success: function (response) {
+                        // Close the loading message
+                        Swal.close();
+
+                        // Show success message
+                        Swal.fire({
+                            title: 'Success',
+                            text: 'Employee saved successfully!',
+                            icon: 'success',
+                            confirmButtonText: 'OK'
+                        });
+                    },
+                    error: function (xhr, status, error) {
+                        // Close the loading message
+                        Swal.close();
+
+                        // Show error message
+                        Swal.fire({
+                            title: 'Error',
+                            text: 'Error saving employee: ' + error,
+                            icon: 'error',
+                            confirmButtonText: 'OK'
+                        });
+                    }
+                });
             });
+            $('#employeeStatutoryInfoForm').on('submit', function (e) {
+                const employeeId = $('#sharedEmployeeId').val();
+                e.preventDefault(); // Prevent default form submission
+
+                // Create a JavaScript object for the form data
+                var formData = {
+                    kraPin: $('#txtKraPin').val(),
+                    nssfNo: $('#txtNssfNo').val(),
+                    nhifNo: $('#txtNhifNo').val(),
+                    certGoodConductNo: $('#txtCertGoodConductNo').val(),
+                    helbClearanceNo: $('#txtHelbClearanceNo').val(),
+                    helbBeneficiary: $('input[name="rbtnDisability"]:checked').val()
+                };
+                // Convert the formData object to a JSON string
+                var jsonData = JSON.stringify(formData);
+                // Show a loading message
+                Swal.fire({
+                    title: 'Processing...',
+                    text: 'Please wait while we save the employee details.',
+                    icon: 'info',
+                    allowOutsideClick: false,
+                    showConfirmButton: false,
+                    willOpen: () => {
+                        Swal.showLoading()
+                    }
+                });
+
+                $.ajax({
+                    url: '/hrh/system/employee/update-statutory-info/' + employeeId, // Replace with your actual endpoint
+                    type: 'POST',
+                    data: jsonData,
+                    contentType: 'application/json', // Set the content type to JSON
+                    success: function (response) {
+                        // Close the loading message
+                        Swal.close();
+
+                        // Show success message
+                        Swal.fire({
+                            title: 'Success',
+                            text: 'Employee saved successfully!',
+                            icon: 'success',
+                            confirmButtonText: 'OK'
+                        });
+                    },
+                    error: function (xhr, status, error) {
+                        // Close the loading message
+                        Swal.close();
+
+                        // Show error message
+                        Swal.fire({
+                            title: 'Error',
+                            text: 'Error saving employee: ' + error,
+                            icon: 'error',
+                            confirmButtonText: 'OK'
+                        });
+                    }
+                });
+            });
+            $('#employeeEmergencyContactForm').on('submit', function (e) {
+                const employeeId = $('#sharedEmployeeId').val();
+                e.preventDefault(); // Prevent default form submission
+
+                // Create a JavaScript object for the form data
+                var formData = {
+                    id: $('#txtEmId').val(),
+                    name: $('#txtName').val(),
+                    employeeId: employeeId,
+                    relationship: $('#txtRelationship').val(),
+                    homePhone: $('#txtHomePhone').val(),
+                    mobilePhone: $('#txtMobilePhone').val(),
+                    officePhone: $('#txtOfficePhone').val()
+                };
+                // Convert the formData object to a JSON string
+                var jsonData = JSON.stringify(formData);
+                // Show a loading message
+                Swal.fire({
+                    title: 'Processing...',
+                    text: 'Please wait while we save the employee details.',
+                    icon: 'info',
+                    allowOutsideClick: false,
+                    showConfirmButton: false,
+                    willOpen: () => {
+                        Swal.showLoading()
+                    }
+                });
+
+                $.ajax({
+                    url: '/hrh/system/employee/update-emergency-contact-info/' + employeeId, // Replace with your actual endpoint
+                    type: 'POST',
+                    data: jsonData,
+                    contentType: 'application/json', // Set the content type to JSON
+                    success: function (response) {
+                        // Close the loading message
+                        Swal.close();
+
+                        // Show success message
+                        Swal.fire({
+                            title: 'Success',
+                            text: 'Employee saved successfully!',
+                            icon: 'success',
+                            confirmButtonText: 'OK'
+                        });
+                    },
+                    error: function (xhr, status, error) {
+                        // Close the loading message
+                        Swal.close();
+
+                        // Show error message
+                        Swal.fire({
+                            title: 'Error',
+                            text: 'Error saving employee: ' + error,
+                            icon: 'error',
+                            confirmButtonText: 'OK'
+                        });
+                    }
+                });
+            });
+            $("#submitAcademicQualificationForm").click(function (e) {
+                e.preventDefault(); // Prevent default form submission
+                 console.log('Form submitted');
+                const employeeId = $('#sharedEmployeeId').val();
+
+                // Create a JavaScript object for the form data
+                var formData = {
+                    id: $('#txtRecordId').val(),
+                    education: $('#ddlEducationId').val(),
+                    institute: $('#txtInstitute').val(),
+                    major: $('#txtMajor').val(),
+                    year: $('#txtYear').val(),
+                    score: $('#txtScore').val(),
+                    startDate: $('#txtStartDate').val(),
+                    endDate: $('#txtEndDate').val()
+                };
 
 
-        /*]]>*/
+                // Convert the formData object to a JSON string
+                var jsonData = JSON.stringify(formData);
+                // Show a loading message
+                Swal.fire({
+                    title: 'Processing...',
+                    text: 'Please wait while we save the employee details.',
+                    icon: 'info',
+                    allowOutsideClick: false,
+                    showConfirmButton: false,
+                    willOpen: () => {
+                        Swal.showLoading()
+                    }
+                });
+
+                $.ajax({
+                    url: '/hrh/system/qualification/employee/employee-education/save/' + employeeId,
+                    type: 'POST',
+                    data: jsonData,
+                    contentType: 'application/json', // Set the content type to JSON
+                    success: function (response) {
+                        // Close the loading message
+                        Swal.close();
+
+                        // Show success message
+                        Swal.fire({
+                            title: 'Success',
+                            text: 'Employee saved successfully!',
+                            icon: 'success',
+                            confirmButtonText: 'OK'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                // Set the active tab to the desired tab ID
+                                var activeTabId = 'qualification'; // Change this to your desired tab ID
+                                // Call the function to reload the page and set the active tab
+                                reloadPageAndSetActiveTab(activeTabId);
+                            }
+                        });
+                    },
+                    error: function (xhr, status, error) {
+                        // Close the loading message
+                        Swal.close();
+
+                        // Show error message
+                        Swal.fire({
+                            title: 'Error',
+                            text: 'Error saving employee: ' + error,
+                            icon: 'error',
+                            confirmButtonText: 'OK'
+                        });
+                    }
+                });
+            });
+            $("#submitDependantForm").click(function (e) {
+                e.preventDefault(); // Prevent default form submission
+                 console.log('Form submitted');
+                const employeeId = $('#sharedEmployeeId').val();
+
+                // Create a JavaScript object for the form data
+                var formData = {
+                    id: $('#txtDependantRecordId').val(),
+                    name: $('#txtDependantName').val(),
+                    relationship: $('#txtDependantRelationship').val(),
+                    dateOfBirth: $('#txtDOB').val()
+                };
+
+
+                // Convert the formData object to a JSON string
+                var jsonData = JSON.stringify(formData);
+                // Show a loading message
+                Swal.fire({
+                    title: 'Processing...',
+                    text: 'Please wait while we save the employee details.',
+                    icon: 'info',
+                    allowOutsideClick: false,
+                    showConfirmButton: false,
+                    willOpen: () => {
+                        Swal.showLoading()
+                    }
+                });
+
+                $.ajax({
+                    url: '/hrh/system/employee/employee-dependant/update-dependant-info/' + employeeId,
+                    type: 'POST',
+                    data: jsonData,
+                    contentType: 'application/json', // Set the content type to JSON
+                    success: function (response) {
+                        // Close the loading message
+                        Swal.close();
+
+                        // Show success message
+                        Swal.fire({
+                            title: 'Success',
+                            text: 'Employee saved successfully!',
+                            icon: 'success',
+                            confirmButtonText: 'OK'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                // Set the active tab to the desired tab ID
+                                var activeTabId = 'dependents'; // Change this to your desired tab ID
+                                // Call the function to reload the page and set the active tab
+                                reloadPageAndSetActiveTab(activeTabId);
+                            }
+                        });
+                    },
+                    error: function (xhr, status, error) {
+                        // Close the loading message
+                        Swal.close();
+
+                        // Show error message
+                        Swal.fire({
+                            title: 'Error',
+                            text: 'Error saving employee: ' + error,
+                            icon: 'error',
+                            confirmButtonText: 'OK'
+                        });
+                    }
+                });
+            });
+        });
+
 
 	</script>
+
 
 </th:block>
 </body>

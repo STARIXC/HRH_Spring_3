@@ -13,11 +13,11 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface EmpEmergencyContactRepository extends JpaRepository<EmployeeEmergencyContact, BigDecimal> {
-  Long countBySeqNo(BigDecimal id);
+public interface EmpEmergencyContactRepository extends JpaRepository<EmployeeEmergencyContact, Long> {
+  Long countById(Long id);
+
+//  @Query("SELECT e FROM Employee e LEFT JOIN FETCH e.employeeContacts WHERE e.person.personNumber = :emp_no")
+//  Optional<Employee> findByEmpNoWithContacts(@Param("emp_no") String empNo);
   
-  // Find econtacts by person number
-//  List<EmployeeEmergencyContact> findByEmployeeContact_Person_PersonNumber(String personNumber);
-  @Query("SELECT e FROM Employee e LEFT JOIN FETCH e.employeeContacts WHERE e.person.personNumber = :emp_no")
-  Optional<Employee> findByEmpNoWithContacts(@Param("emp_no") String empNo);
+  List<EmployeeEmergencyContact> findByEmployeeContact(Employee employee);
 }

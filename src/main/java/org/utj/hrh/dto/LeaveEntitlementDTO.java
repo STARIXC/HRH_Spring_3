@@ -20,5 +20,7 @@ public class LeaveEntitlementDTO {
 	private LocalDate creditedDate;
 	private Long createdBy;
 	private String note;
+	private String employeeFullName;
+	private String leaveTypeName;
 
 }

@@ -51,11 +51,11 @@ public class Termination {
     private String status;
 
     @ManyToOne
-    @JoinColumn(name = "terminate_to", referencedColumnName = "emp_no", insertable = false, updatable = false)
+    @JoinColumn(name = "employeeId", referencedColumnName = "id")
     private Employee terminateToEmployee;
 
     @ManyToOne
-    @JoinColumn(name = "terminate_by", referencedColumnName = "userid", insertable = false, updatable = false)
+    @JoinColumn(name = "terminate_by", referencedColumnName = "userid")
     private User terminateByEmployee;
     
 }

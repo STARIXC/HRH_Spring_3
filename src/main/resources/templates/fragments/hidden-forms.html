@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div th:fragment="hiddenFormsFragment">
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="myModalLabel">Add Academic Qualification</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- Form goes here -->
+                    <form id="employeeAcademicQualificationForm"
+                          method="post"
+                          th:action="@{/system/employee/employee-education/save/qualification}"
+                          th:object="${employeeDetails.academicDetailsDTO}">
+
+                        <div class="row g-3">
+                            <input type="text" name="txtRecordId" id="txtRecordId" hidden th:field="*{id}"  >
+                            <!-- Hidden field for employee ID -->
+
+                            <div class="col-xxl-3 col-lg-4 col-sm-6">
+                                <label class="form-label">Education Level<span class="validateRq">*</span></label>
+                                <select class="form-select level form-control-sm" id="ddlEducationId"
+                                        th:field="*{education}">
+                                    <option value="">--- Select ---</option>
+                                    <option th:each="level : ${employeeDetails.educationLevels}"
+                                            th:text="${level.name}" th:value="${level.id}">Diploma</option>
+                                </select>
+                            </div>
+                            <div class="col-xxl-3 col-lg-4 col-sm-6">
+                                <label class="form-label">Institute<span class="validateRq">*</span></label>
+                                <input class="form-control board_university form-control-sm" id="txtInstitute"
+                                       placeholder="Board / Institution Name" th:field="*{institute}" type="text">
+                            </div>
+                            <div class="col-xxl-3 col-lg-4 col-sm-6">
+                                <label class="form-label">Major/Specialization<span
+                                        class="validateRq">*</span></label>
+                                <input class="form-control degree required" id="txtMajor"
+                                       placeholder="Example: B.Sc. Engr.(Bachelor of Science in Engineering)"
+                                       th:field="*{major}" type="text">
+                            </div>
+                            <div class="col-xxl-3 col-lg-4 col-sm-6">
+                                <label class="form-label">Year of Completion</label>
+                                <div class="input-group">
+                                    <span class="  form-group-addon input-group-text"><i class="fa fa-calendar"></i></span>
+                                    <input class="form-control yearPicker required" id="txtYear"
+                                           placeholder="Completion Year" th:field="*{year}" type="text"/>
+                                </div>
+                            </div>
+
+                            <div class="col-xxl-3 col-lg-4 col-sm-6">
+                                <label class="form-label">GPA/ CGPA</label>
+                                <input class="form-control score" id="txtScore" placeholder="Example: 5.00,4.63"
+                                       th:field="*{score}" type="text">
+                            </div>
+                            <div class="col-xxl-3 col-lg-4 col-sm-6">
+                                <label class="form-label">Start Date</label>
+                                <input class="form-control form-control-sm date-picker" id="txtStartDate"
+                                       placeholder="yyyy-mm-dd" th:field="*{startDate}" type="text">
+
+                            </div>
+                            <div class="col-xxl-3 col-lg-4 col-sm-6">
+                                <label class="form-label">End Date</label>
+                                <input class="form-control form-control-sm date-picker" id="txtEndDate"
+                                       placeholder="yyyy-mm-dd"
+                                       th:field="*{endDate}" type="text">
+                            </div>
+                        </div>
+                        <hr/>
+                        <div class="row g-3">
+                            <div class="col-xxl-12 col-lg-12 col-sm-12">* Required</div>
+
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="submitAcademicQualificationForm">Submit</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="dependantModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-bs-backdrop="static">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="dependantModalLabel">Add Dependant</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- Form goes here -->
+                    <form id="employeeDependantForm"
+                          method="post"
+                          th:action="@{/system/employee/employee-education/save/qualification}"
+                          th:object="${employeeDetails.dependantDTO}">
+
+                        <div class="row g-3">
+                            <input type="text" name="txtRecordId" id="txtDependantRecordId" hidden th:field="*{id}"  >
+                            <!-- Hidden field for employee ID -->
+                            <div class="col-xxl-12 col-lg-12 col-sm-12">
+                                <label class="form-label">Name of Dependant<span
+                                        class="validateRq">*</span></label>
+                                <input class="form-control degree required" id="txtDependantName"
+                                       placeholder="Example: Surname First Name"
+                                       th:field="*{name}" type="text">
+                            </div>
+                            <div class="col-xxl-12 col-lg-12 col-sm-12">
+                                <label class="form-label">Relationship<span class="validateRq">*</span></label>
+                                <input class="form-control  form-control-sm" id="txtDependantRelationship"
+                                       placeholder="Board / Institution Name" th:field="*{relationship}" type="text">
+                            </div>
+
+
+                            <div class="col-xxl-12 col-lg-12 col-sm-12">
+                                <label class="form-label">Date of Birth</label>
+                                <input class="form-control form-control-sm date-picker" id="txtDOB"
+                                       placeholder="yyyy-mm-dd" th:field="*{dateOfBirth}" type="text">
+
+                            </div>
+
+                        </div>
+                        <hr/>
+                        <div class="row g-3">
+                            <div class="col-xxl-12 col-lg-12 col-sm-12">* Required</div>
+
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="submitDependantForm">Submit</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row_element2" style="display: none;">
+        <div class="row g-3">
+            <div class="col-xxl-3 col-lg-4 col-sm-6">
+                <label class="form-label" for="organization_name">Organization Name<span class="validateRq">*</span></label>
+                <input class="form-control organization_name" id="organization_name" name="organization_name[]" placeholder="Organization Name" type="text">
+            </div>
+            <div class="col-xxl-3 col-lg-4 col-sm-6">
+                <label class="form-label" for="designation">Designation<span class="validateRq">*</span></label>
+                <input class="form-control designation" id="designation" name="designation[]" placeholder="Designation" type="text">
+            </div>
+            <div class="col-xxl-3 col-lg-4 col-sm-6">
+                <label class="form-label" for="from_date">From Date</label>
+                <div class="input-group">
+                    <span class="input-group-text"><i class="fa fa-calendar"></i></span>
+                    <input class="form-control date-picker" id="from_date" name="from_date[]" placeholder="From Date" type="text"/>
+                </div>
+            </div>
+            <div class="col-xxl-3 col-lg-4 col-sm-6">
+                <label class="form-label" for="to_date">To Date</label>
+                <div class="input-group">
+                    <span class="input-group-text"><i class="fa fa-calendar"></i></span>
+                    <input class="form-control dateField form-control-sm date-picker" id="to_date" name="to_date[]" placeholder="To Date" type="text">
+                </div>
+            </div>
+            <div class="col-xxl-3 col-lg-4 col-sm-6">
+                <label for="responsibility">Responsibility<span class="validateRq">*</span></label>
+                <textarea class="form-control responsibility form-control-sm" cols="30" id="responsibility" name="responsibility[]" placeholder="Responsibility" rows="2"></textarea>
+            </div>
+            <div class="col-xxl-3 col-lg-4 col-sm-6">
+                <label for="skills">Skill<span class="validateRq">*</span></label>
+                <textarea class="form-control skill form-control-sm " cols="30" id="skills" name="skill[]" placeholder="Skills" rows="2"></textarea>
+            </div>
+            <div class="col-xxl-3 col-lg-4 col-sm-6"></div>
+            <div class="col-xxl-3 col-lg-4 col-sm-6">
+                <div class="form-group">
+                    <input class="form-control btn btn-danger deleteExperience appendBtnColor mt-2"  type="button" value="Delete">
+                </div>
+            </div>
+        </div>
+        <hr>
+    </div>
+    <div class="academic_qualification" id="academic_qualification">
+
+    </div>
+    <div class="row_emergency_contact" style="display: none;">
+
+        <div class="row g-3">
+
+
+        </div>
+        <hr>
+    </div>
+</div>
+</body>
+</html>

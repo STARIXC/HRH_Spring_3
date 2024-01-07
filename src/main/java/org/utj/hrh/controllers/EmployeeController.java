@@ -19,7 +19,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.YearMonth;
 import java.util.List;
-import java.util.Optional;
 
 @Controller
 public class EmployeeController {
@@ -36,13 +35,13 @@ public class EmployeeController {
 	private final DesignationService designationService;
 	private final BCryptPasswordEncoder passwordEncoder;
 	private final PersonRepository personRepository;
-	private final EducationService educationService;
+	private final EducationLevelService educationLevelService;
 	private final EmpEmergencyContactService empEmergencyContactService;
-	private final EmployeeEducationService employeeEducationService;
+	private final EmployeeEducationQualificationService employeeEducationQualificationService;
 	private final LeavePolicyService leavePolicyService;
 	
 	@Autowired
-	public EmployeeController(RoleService roleService, UserService userService, EmployeeRepository employeeRepository, EmployeeStatusService employeeStatusService, EmployeeService employeeService, CarderCategoryService carderCategoryService, CountyService countyService, DesignationService designationService, BCryptPasswordEncoder passwordEncoder, PersonRepository personRepository, EducationService educationService, EmpEmergencyContactService empEmergencyContactService, EmployeeEducationService employeeEducationService, LeavePolicyService leavePolicyService) {
+	public EmployeeController(RoleService roleService, UserService userService, EmployeeRepository employeeRepository, EmployeeStatusService employeeStatusService, EmployeeService employeeService, CarderCategoryService carderCategoryService, CountyService countyService, DesignationService designationService, BCryptPasswordEncoder passwordEncoder, PersonRepository personRepository, EducationLevelService educationLevelService, EmpEmergencyContactService empEmergencyContactService, EmployeeEducationQualificationService employeeEducationQualificationService, LeavePolicyService leavePolicyService) {
 		this.roleService = roleService;
 		this.userService = userService;
 		this.employeeRepository = employeeRepository;
@@ -53,9 +52,9 @@ public class EmployeeController {
 		this.designationService = designationService;
 		this.passwordEncoder = passwordEncoder;
 		this.personRepository = personRepository;
-		this.educationService = educationService;
+		this.educationLevelService = educationLevelService;
 		this.empEmergencyContactService = empEmergencyContactService;
-		this.employeeEducationService = employeeEducationService;
+		this.employeeEducationQualificationService = employeeEducationQualificationService;
 		this.leavePolicyService = leavePolicyService;
 	}
 	
@@ -80,25 +79,6 @@ public class EmployeeController {
 		}
 	}
 	
-	//    public String getAllEmployees(Model model) {
-//        try {
-//
-//            model.addAttribute("pageTitle", "STAFF");
-//            model.addAttribute("httpStatus", HttpStatus.OK);
-//            List<StaffDTO> employeeDTOs = employeeService.getAll();
-//            model.addAttribute("employees", employeeDTOs);
-////            System.out.println(employeeDTOs);
-//            return "pages/admin/employee/employees";
-//        } catch (NullPointerException e) {
-//            // Log the error message and stack trace
-//            logger.error("An error occurred while fetching employees.", e);
-//            // Handle the exception, e.g., return an error page or message
-//            model.addAttribute("error", "An error occurred while fetching employees.");
-//            model.addAttribute("httpStatus", HttpStatus.INTERNAL_SERVER_ERROR);
-//            return "/error/error-500"; // Create an error page view
-//        }
-//    }
-	// Mapping for displaying the add new product form
 	@GetMapping("system/employee/form")
 	public String showAddNewForm(Model model) {
 		// Create operation, set the create flag
@@ -115,31 +95,7 @@ public class EmployeeController {
 		return "pages/admin/employee/add-employee"; // This corresponds to the Thymeleaf template
 	}
 	
-	@GetMapping("system/employee/{id}/edit")
-	public String showEditForm(@PathVariable String id, Model model) {
-		// Edit operation, load data and set an edit flag
-		model.addAttribute("editMode", true);
-		Employee employee_ = employeeRepository.getEmployeeByEmp_no(id);
-		model.addAttribute("employee", employee_);
-		List<EmployeeStatus> employeeStatuses = employeeStatusService.getAll();
-		model.addAttribute("employeeStatuses", employeeStatuses);
-//        List<CarderType> types = carderTypeService.getAll();
-//        model.addAttribute("carder_types", types);
-		List<County> counties = countyService.getActive();
-		model.addAttribute("counties", counties);
-		List<Designation> designations = designationService.getAll();
-		model.addAttribute("designations", designations);
-		List<CarderCategory> categories = carderCategoryService.getAll();
-		model.addAttribute("categories", categories);
-		// Load and pass the data to populate the form fields
-		return "pages/admin/employee/edit-employee"; // This corresponds to the Thymeleaf template
-	}
-	
-	// Add other CRUD operations for employees
-	@GetMapping("employee/list-all")
-	public List<Employee> listAllEmployees() {
-		return employeeRepository.findAll();
-	}
+
 	
 	@GetMapping("/count/started-between")
 	public Long getCountOfEmployeesStartedBetween() {
@@ -148,64 +104,19 @@ public class EmployeeController {
 		LocalDate endDate = currentMonth.atEndOfMonth();
 		return employeeRepository.countByDateStartedBetween(startDate, endDate);
 	}
-	
-	@GetMapping("/employees/{id}")
-	public ResponseEntity<Employee> getEmployee(@PathVariable("id") Long id) {
-		Optional<Employee> employee = employeeRepository.findById(id);
-		if (!employee.isPresent()) {
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-		}
-		return new ResponseEntity<>(employee.get(), HttpStatus.OK);
-	}
-	
+
 	@GetMapping("system/employee/{emp_no}/view")
-	public String viewEmployee(@PathVariable(name = "emp_no") Long emp_no, Model model)  {
+	public String viewEmployee(@PathVariable(name = "emp_no") Long emp_no, Model model) throws EntityNotFoundException {
 		EmployeeDetailsDTO employeeDetails = employeeService.getEmployeeDetails(emp_no);
 		logger.info("Employee found: {}", employeeDetails);
-		
-		model.addAttribute("newEmergencyContact", new EmployeeEmergencyContactDTO());
-		model.addAttribute("newAcademicRecord", new EmployeeEducationDTO());
-				model.addAttribute("employeeDetails", employeeDetails);
-				model.addAttribute("id", emp_no);
+		model.addAttribute("employeeDetails", employeeDetails);
+		model.addAttribute("id", emp_no);
 		model.addAttribute("activeTab", "basic");
 		model.addAttribute("pageTitle", "View :: Employee Profile");
 		
 		return "pages/admin/employee/employee";
 	}
-	
-	
-	//    @GetMapping("system/employee/view/{emp_no}")
-//    public String viewEmployee(@PathVariable(name="emp_no") String emp_no, Model model) throws EmployeeNotFoundException, EntityNotFoundException {
-//        Employee employee = employeeService.getEmployee(emp_no);
-//        model.addAttribute("employee", employee);
-//        logger.info("Employee found: {}", employee);
-////        Optional<Supervisor> activeSupervisor = employeeService.getActiveSupervisorForEmployee(emp_no);
-//        List<EmployeeEducation> academicDetails = employeeEducationService.findAcademicQualificationsByPersonNumber(emp_no);
-//        Optional<Employee> employeeEmergencyContacts = empEmergencyContactService.findByEmergencyContact_Person_PersonNumber(emp_no);
-//        model.addAttribute("academicDetails", academicDetails);
-//        EmployeeEducation employeeEducation = new EmployeeEducation();
-//        employeeEducation.setAcademicQualification(employee);
-//        model.addAttribute("employeeEducation", employeeEducation);
-//        List<EmployeeStatus> employeeStatuses=employeeStatusService.getAll();
-//        model.addAttribute("employeeStatuses",employeeStatuses);
-//        EmployeeEmergencyContact employeeEmergencyContact = new EmployeeEmergencyContact();
-//
-//        logger.info("EMPLOYEE EMERGENCY CONTACT: {}", employeeEmergencyContact);
-//        model.addAttribute("empEmergencyContact",employeeEmergencyContact);
-//        model.addAttribute("employeeEmergencyContacts",employeeEmergencyContacts);
-//        List<EducationLevel> educationLevel = educationService.getAll();
-//        model.addAttribute("educationLevel",educationLevel);
-//        List<County> counties = countyService.getActive();
-//        model.addAttribute("counties",counties);
-//        List<Designation> designations = designationService.getAll();
-//        model.addAttribute("designations",designations);
-//        List<CarderCategory> categories = carderCategoryService.getAll();
-//        model.addAttribute("categories",categories);
-//        model.addAttribute("activeTab", "basic");
-//            model.addAttribute("pageTitle","View ::  Employee Profile");
-//        return "pages/admin/employee/employee";
-//
-//    }
+
 	@PostMapping("/system/employee/basic/saveEmployee")
 	public String saveBasic(@ModelAttribute Employee employee, Model model) throws EntityNotFoundException {
 		Employee saveEmployee = new Employee();
@@ -368,59 +279,47 @@ public class EmployeeController {
 		return "redirect:/system/employee/view/" + savedPersonNumber;
 		
 	}
+	@PostMapping("/system/employee/update-basic-info/{employeeId}")
+	@ResponseBody
+	public ResponseEntity<?> updateBasicInfo(@PathVariable Long employeeId,
+	                                           @RequestBody BasicInfoDTO basicInfoDTO) throws EntityNotFoundException {
+		logger.info("Updating contact info for employee {}", basicInfoDTO);
+		// Additional debug logging
+		logger.info("First Name: {}", basicInfoDTO.getFirstName());
+		employeeService.updateBasicInfo(employeeId, basicInfoDTO);
+		return ResponseEntity.ok("Employee contact info updated successfully");
+	}
 	
-	//    @GetMapping("/system/leave/policy/getEmployeesForPolicy")
-//    public ResponseEntity<List<Employee>> getByPolicy(@RequestParam("policy") Integer policyId) {
-//        LeavePolicy leavePolicy = null;
-//        try {
-//            leavePolicy = leavePolicyService.getPolicy(policyId);
-//            System.out.println(leavePolicy.toString());
-//        } catch (EntityNotFoundException e) {
-//            throw new RuntimeException(e);
-//        }
-//
-//        // Check if the leave policy exists
-//        if (leavePolicy == null) {
-//            return ResponseEntity.notFound().build();
-//        }
-//
-//        // Get gender from the policy
-//        String gender = leavePolicy.getGender();
-//        System.out.println("Gender: " + gender);
-//        // Determine the list of employees based on gender
-//        List<Employee> employeeList;
-//        if (gender == null || "-1".equals(gender)) {
-//            // If gender is null or "-1", get all employees
-//            employeeList = employeeService.getAll();
-//            System.out.println("All Employees: " + employeeList.toString());
-//        } else {
-//            // Get employees by specific gender
-//            employeeList = employeeService.getByGender(gender.toUpperCase());
-//            System.out.println("Specific Employees: " + employeeList.toString());
-//        }
-//
-//        // Return the list of employees (empty list if no employees are found)
-//        return ResponseEntity.ok(employeeList);
-//    }
-//	@GetMapping("/system/leave/policy/getEmployeesForPolicy")
-//	public ResponseEntity<List<Employee>> getByPolicy(@RequestParam("policy") Long policyId) {
-//		LeavePolicy leavePolicy;
-//		try {
-//			leavePolicy = leavePolicyService.getPolicy(policyId);
-//			logger.info("Leave Policy: {}", leavePolicy);
-//		} catch (EntityNotFoundException e) {
-//			logger.error("Leave policy not found for ID: {}", policyId, e);
-//			return ResponseEntity.notFound().build();
-//		}
-//
-//		List<StaffDTO> employeeList = employeeService.getEmployeesByPolicy(leavePolicy);
-//
-//		if (employeeList.isEmpty()) {
-//			logger.info("No employees found for policy ID: {}", policyId);
-//			return ResponseEntity.notFound().build();
-//		}
-//
-//		logger.info("Retrieved employees for policy ID: {}", policyId);
-//		return ResponseEntity.ok(employeeList);
-//	}
+	@PostMapping("/system/employee/update-statutory-info/{employeeId}")
+	@ResponseBody
+	public ResponseEntity<?> updateStatutoryInfo(@PathVariable Long employeeId,
+	                                         @RequestBody StatutoryDetailsDTO statutoryDetailsDTO) throws EntityNotFoundException {
+		logger.info("Updating statutory info for employee {}", statutoryDetailsDTO);
+		// Additional debug logging
+		employeeService.updateStatutoryInfo(employeeId, statutoryDetailsDTO);
+		return ResponseEntity.ok("Employee statutory info updated successfully");
+	}
+@PostMapping("/system/employee/update-contact-info/{employeeId}")
+@ResponseBody
+public ResponseEntity<?> updateContactInfo(@PathVariable Long employeeId,
+                                           @RequestBody ContactInfoDTO contactInfoDTO) throws EntityNotFoundException {
+	logger.info("Updating contact info for employee {}", contactInfoDTO);
+	// Additional debug logging
+	logger.info("Phone: {}", contactInfoDTO.getPhone());
+	logger.info("Email: {}", contactInfoDTO.getEmail());
+	logger.info("Present Address: {}", contactInfoDTO.getPresentAddress());
+	logger.info("Home Address: {}", contactInfoDTO.getHomeAddress());
+	employeeService.updateContactInfo(employeeId, contactInfoDTO);
+	return ResponseEntity.ok("Employee contact info updated successfully");
+}
+@PostMapping("/system/employee/update-emergency-contact-info/{employeeId}")
+@ResponseBody
+public ResponseEntity<?> updateEmergencyContactInfo(@PathVariable Long employeeId,
+                                           @RequestBody EmployeeEmergencyContactDTO empEmergencyContact) throws EntityNotFoundException {
+	logger.info("Updating contact info for employee {}", empEmergencyContact);
+	
+	empEmergencyContactService.updateEmergencyContactInfo(employeeId, empEmergencyContact);
+	return ResponseEntity.ok("Employee contact info updated successfully");
+}
+
 }

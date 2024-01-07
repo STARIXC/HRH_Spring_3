@@ -19,7 +19,7 @@ public class PositionChangeHistory {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "employee_id", referencedColumnName = "emp_no")
+    @JoinColumn(name = "employee_id", referencedColumnName = "id")
     private Employee employee;
 
     @ManyToOne

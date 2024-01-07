@@ -50,10 +50,7 @@
                                 </label>
                                 <select class="form-select" id='ddlFacility' name='ddlFacility'></select>
                             </div>
-                            <div class="col-md-4 col-sm-6 col-xs-12">
-                                <label class="form-label"> Reporting To <span class="required">*</span></label>
-                                <select class="form-select" id='ddlSupervisor' name='ddlSupervisor'></select>
-                            </div>
+
                         </div>
 
 
@@ -62,10 +59,11 @@
 
                 <div class="panel">
                     <div class="panel-header">
-                        <div class="col-md-12 col-sm-12 col-xs-12 form-check">
-                            <input class="form-check-input" id="show-more" type="checkbox">
-                            <label class="form-check-label" for="show-more">Include Employment Contract Details</label>
-                        </div>
+                        <h5>Current Active Contract Details</h5>
+<!--                        <div class="col-md-12 col-sm-12 col-xs-12 form-check">-->
+<!--                            <input class="form-check-input" id="show-more" type="checkbox">-->
+<!--                            <label class="form-check-label" for="show-more">Include Employment Contract Details</label>-->
+<!--                        </div>-->
                     </div>
                     <div class="contract-options">
                         <div class="panel-body  row g-3 ">
@@ -77,15 +75,15 @@
                             </div>
                             <div class="col-md-4 col-sm-6 col-xs-12">
                                 <label class="form-label"
-                                       for="contractStartDate">Contract Start Date </label>
+                                       for="StartDate">Start Date </label>
                                 <input autocomplete="off" class="form-control datepicker input-width-xlarge"
-                                       id="contractStartDate" name="contractStartDate"
+                                       id="StartDate" name="StartDate"
                                        placeholder="Hire date" type="text">
                             </div>
                             <div class="col-md-4 col-sm-6 col-xs-12">
-                                <label class="form-label" for="contractEndDate">Contract End Date </label>
+                                <label class="form-label" for="EndDate">End Date </label>
                                 <input autocomplete="off" class="form-control datepicker input-width-xlarge"
-                                       id="contractEndDate" name="contractEndDate" placeholder="Hire date"
+                                       id="EndDate" name="EndDate" placeholder="Hire date"
                                        type="text">
                             </div>
                             <input class="form-control  input-width-xlarge" id="contract_period"

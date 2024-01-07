@@ -11,8 +11,9 @@ public class ContactInfoDTO {
 	private String email;
 	private String altPhone;
 	private String altEmail;
-	private AddressDTO presentAddress; // Assuming AddressDTO is a simplified version of the Address entity
-	private AddressDTO homeAddress; // Similarly, for home address
+	private AddressDTO presentAddress;
+	private AddressDTO homeAddress;
+	private Long employeeId;
 	
 	
 }

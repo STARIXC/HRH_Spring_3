@@ -49,13 +49,19 @@
                             <tbody>
                                 <tr th:each="leaveEntitlement , itrStat : ${leaveEntitlementList}">
                                     <td th:text="${itrStat.index + 1}"></td>
-                                    <td th:text="${leaveEntitlement.employee.person.name} ">Name</td>
-                                      <td th:text="${leaveEntitlement.leavePolicy.leaveType.leaveType} ">20</td>
-                                      <td th:text="${leaveEntitlement.leavePolicy.f_year.start_date} ">20</td>
-                                      <td th:text="${leaveEntitlement.leavePolicy.f_year.end_date} ">20</td>
-                                      <td th:text="${leaveEntitlement.entitlement} ">20</td>
-                                      <td th:text="${leaveEntitlement.used} ">20</td>
-                                      <td><span th:text="${leaveEntitlement.entitlement - leaveEntitlement.used}">[Available Leave]</span> days </td>
+                                    <td th:text="${leaveEntitlement.employeeFullName}">[Employee Name]</td>
+                                    <td th:text="${leaveEntitlement.leaveTypeName}">[Leave Type]</td>
+                                    <td th:text="${leaveEntitlement.fromDate} ">20</td>
+                                    <td th:text="${leaveEntitlement.toDate} ">20</td>
+                                    <td th:text="${leaveEntitlement.noDays} ">20</td>
+                                    <td th:text="${leaveEntitlement.daysUsed} ">20</td>
+                                    <td>
+                                        <span
+                                                th:text="${leaveEntitlement.noDays != null ? leaveEntitlement.noDays : 0} - ${leaveEntitlement.daysUsed != null ? leaveEntitlement.daysUsed : 0}">
+                                            [Available Leave]    </span> days
+                                    </td>
+
+                                    <!--                                      <td><span th:text="${leaveEntitlement.noDays - leaveEntitlement.daysUsed}">[Available Leave]</span> days </td>-->
 
                                     <td>
                                         <div class="utj-dropdown dropdown d-inline-block">

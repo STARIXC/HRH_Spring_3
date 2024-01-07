@@ -9,11 +9,11 @@ import org.utj.hrh.repository.EducationRepository;
 import java.util.List;
 
 @Service
-public class EducationService {
+public class EducationLevelService {
     private final EducationRepository educationRepository;
 
     @Autowired
-    public EducationService( EducationRepository educationRepository) {
+    public EducationLevelService(EducationRepository educationRepository) {
         this.educationRepository = educationRepository;
 
     }

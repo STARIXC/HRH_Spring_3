@@ -31,7 +31,7 @@ public class SubCounty {
     @JoinColumn(name = "CountyID")
     private County county;
     
-    @Column(name = "DistrictNom") // Specify the desired column name here
+    @Column(name = "district_nom") // Specify the desired column name here
     private String districtName;
     
     @Column(name = "active", columnDefinition = "int default 1")

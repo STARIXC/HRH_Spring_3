@@ -66,8 +66,8 @@ public class LeavePolicyService {
         dto.setId(policy.getId());
         dto.setDays(policy.getDays());
         dto.setGender(policy.getGender());
-        dto.setFromDate(policy.getFinancialYear().getStart_date());
-        dto.setToDate(policy.getFinancialYear().getEnd_date());
+        dto.setFromDate(policy.getFinancialYear().getStartDate());
+        dto.setToDate(policy.getFinancialYear().getEndDate());
         return dto;
     }
 }

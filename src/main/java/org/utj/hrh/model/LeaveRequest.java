@@ -28,11 +28,11 @@ public class LeaveRequest {
     private Date applicationDate;
 
     @ManyToOne
-    @JoinColumn(name = "employee_id", referencedColumnName = "emp_no", insertable = false, updatable = false)
+    @JoinColumn(name = "employee_id", referencedColumnName = "id", insertable = false, updatable = false)
     private Employee employee;
 
 
     @ManyToOne
-    @JoinColumn(name = "leave_id", referencedColumnName = "leave_type_id", insertable = false, updatable = false)
-    private LeaveType leaveType;
+    @JoinColumn(name = "leave_id", referencedColumnName = "id", insertable = false, updatable = false)
+    private LeavePolicy leaveType;
 }

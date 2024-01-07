@@ -25,7 +25,7 @@ public class Document {
     private String docID;
     
     @ManyToOne
-    @JoinColumn(name = "emp_number", referencedColumnName = "emp_no")
+    @JoinColumn(name = "emp_number", referencedColumnName = "id")
     private Employee documentOwner;
     
     @Column(name = "document_value")

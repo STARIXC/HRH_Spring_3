@@ -112,10 +112,7 @@ public class Employee {
     private LocalDateTime updated_at;
 
     private boolean hasLoginAccess;
-    
-    @OneToOne(mappedBy = "employee")
-    private EmployeeFacility employeeFacility;
-    
+   
     @OneToMany(mappedBy = "academicQualification")
     @ToString.Exclude
     private List<EmployeeEducation> educationList;
@@ -142,10 +139,17 @@ public class Employee {
 //
     @OneToMany(mappedBy = "employeeContact")
     @ToString.Exclude
-    private List<EmployeeEmergencyContact> employeeContacts;
+    private List<EmployeeEmergencyContact> employeeEmergencyContacts;
     
     @OneToMany(mappedBy = "employeeLeaveEntitlement")
     @ToString.Exclude
     private List<LeaveEntitlement> leaveEntitlements;
+    
+    @OneToMany(mappedBy = "employeeDependant")
+    @ToString.Exclude
+    private List<Dependant> employeeDependants;
+    
+    @OneToOne(mappedBy = "activeEmployeeFacility", cascade = CascadeType.ALL)
+    private EmployeeFacility currentFacility;
     
 }
