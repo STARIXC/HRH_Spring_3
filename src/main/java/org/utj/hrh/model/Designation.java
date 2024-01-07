@@ -27,12 +27,16 @@ public class Designation {
     @JsonIgnore
     @JoinColumn(name = "carder_category_id")
     private CarderCategory carderCategory;
+    
     @Column(name = "position_title")
     private String position_title;
+    
     @Column(name = "basic_pay")
     private Integer basic_pay;
+    
     @Column(name = "created_at")
     private LocalDateTime created_at;
+    
     @Column(name = "updated_at")
     private LocalDateTime updated_at;
  

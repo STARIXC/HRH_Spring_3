@@ -2,8 +2,8 @@ package org.utj.hrh.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.utj.hrh.model.Employee;
-import org.utj.hrh.model.EmployeeFacility;
+import org.utj.hrh.dto.FacilityDTO;
+import org.utj.hrh.model.*;
 import org.utj.hrh.repository.EmployeeFacilityRepository;
 @Service
 public class EmployeeFacilityService {
@@ -20,4 +20,7 @@ public class EmployeeFacilityService {
 		return employeeFacilityRepository.findByActiveEmployeeFacilityAndIsActive(employee, true)
 				.orElse(null); // Return null or handle it as per your business logic
 	}
+	
+	
+	
 }

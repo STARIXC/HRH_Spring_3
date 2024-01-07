@@ -41,7 +41,7 @@ public class FacilityController {
 }
 
     @GetMapping("/list/{id}")
-    public ResponseEntity<?> getAllBySubcounty(@PathVariable Integer id) {
+    public ResponseEntity<?> getAllBySubCounty(@PathVariable Integer id) {
     Integer active =1;
         List<FacilityDTO> facilityDTOS = facilityService.getAllBySubCounty(id);
 logger.info("facilities: {}", facilityDTOS);

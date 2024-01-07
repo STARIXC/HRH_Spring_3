@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.utj.hrh.dto.SubCountyDTO;
+import org.utj.hrh.model.LeavePolicy;
 import org.utj.hrh.model.SubCounty;
 import org.utj.hrh.repository.SubCountyRepository;
 import org.utj.hrh.services.CountyNotFoundException;
@@ -34,31 +35,18 @@ public class SubCountyController {
         this.subCountyService = subCountyService;
         this.countyService = countyService;
     }
-//        @GetMapping("/list/{countyId}")
-//    public ResponseEntity<?> getSubCountyById(@PathVariable Integer countyId) throws EntityNotFoundException {
-//
-//        List<SubCounty> subCounties = subCountyService.getAllByCountyAndActive(countyId);
-//        logger.info("subCounties: {}", subCounties);
-//        if (subCounties.isEmpty()) {
-//            // Return a 404 Not Found response when no data is found
-//            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-//        }
-//        // Return the data as JSON in the response body
-//        return new ResponseEntity<>(subCounties, HttpStatus.OK);
-//    }
-@GetMapping("/list/{countyId}")
-public ResponseEntity<?> getSubCountyById(@PathVariable Integer countyId) throws EntityNotFoundException {
-    List<SubCountyDTO> subCountyDTOs = subCountyService.getAllByCountyAndActive(countyId);
-    logger.info("subCountyDTOs: {}", subCountyDTOs);
+
+    @GetMapping("/list/{countyId}")
+    @ResponseBody
+    public ResponseEntity<List<SubCountyDTO>> getActiveSubCountiesByCounty(@PathVariable Integer countyId) {
+        List<SubCountyDTO> activeSubCounties = subCountyService.getAllByCountyAndActive(countyId);
     
-    if (subCountyDTOs.isEmpty()) {
-        // Return a 404 Not Found response when no data is found
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        if(activeSubCounties.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+    
+        return ResponseEntity.ok(activeSubCounties);
     }
     
-    // Return the data as JSON in the response body
-    return new ResponseEntity<>(subCountyDTOs, HttpStatus.OK);
-}
-
-
+    
 }

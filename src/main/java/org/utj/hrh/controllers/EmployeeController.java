@@ -321,5 +321,14 @@ public ResponseEntity<?> updateEmergencyContactInfo(@PathVariable Long employeeI
 	empEmergencyContactService.updateEmergencyContactInfo(employeeId, empEmergencyContact);
 	return ResponseEntity.ok("Employee contact info updated successfully");
 }
+	@PostMapping("/system/employee/employment/update-job-info/{employeeId}")
+	@ResponseBody
+	public ResponseEntity<?> updateJobInfo(@PathVariable Long employeeId,
+	                                                    @RequestBody EmployeeHistoryPositionFacilityDTO employeeHistoryPositionFacilityDTO) throws EntityNotFoundException, DesignationNotFoundException {
+		logger.info("Updating contact info for employee {}", employeeHistoryPositionFacilityDTO);
+		
+		employeeService.updateJobInfo(employeeId, employeeHistoryPositionFacilityDTO);
+		return ResponseEntity.ok("Employee contact info updated successfully");
+	}
 
 }

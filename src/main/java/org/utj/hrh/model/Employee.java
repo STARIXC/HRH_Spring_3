@@ -121,7 +121,7 @@ public class Employee {
     @ToString.Exclude
     private List<Document> documents;
 
-    @OneToMany(mappedBy = "employeeHistory")
+    @OneToMany(mappedBy = "employeeHistoryRecord")
     @ToString.Exclude
     private List<EmploymentHistory> employmentHistory;
 

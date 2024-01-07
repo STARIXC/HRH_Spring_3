@@ -17,13 +17,13 @@ import java.util.Date;
 @ToString
 public class EmployeeLicense  {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    
     @ManyToOne
     @JoinColumn(name = "license_id", referencedColumnName = "id")
     private License license;
 
-//    @Id
-//    @Column(name = "emp_number")
-//    private Long empNumber;
 
     @Column(name = "license_no", length = 50, nullable = true)
     private String licenseNo;

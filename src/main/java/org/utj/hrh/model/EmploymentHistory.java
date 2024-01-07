@@ -57,6 +57,6 @@ public class EmploymentHistory {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "employee_id",referencedColumnName = "id")
     @ToString.Exclude
-    private Employee employeeHistory;
+    private Employee employeeHistoryRecord;
 
 }

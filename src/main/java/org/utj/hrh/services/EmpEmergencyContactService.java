@@ -3,6 +3,7 @@ package org.utj.hrh.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.utj.hrh.dto.EmployeeEmergencyContactDTO;
+import org.utj.hrh.dto.EmployeeHistoryPositionFacilityDTO;
 import org.utj.hrh.model.Employee;
 import org.utj.hrh.model.EmployeeEmergencyContact;
 import org.utj.hrh.repository.EmpEmergencyContactRepository;
@@ -93,4 +94,7 @@ public class EmpEmergencyContactService {
         dto.setOfficePhone(entity.getOfficePhone());
         return dto;
     }
+	
+	public void updateJobInfo(Long employeeId, EmployeeHistoryPositionFacilityDTO employeeHistoryPositionFacilityDTO) {
+	}
 }

@@ -1,5 +1,6 @@
 package org.utj.hrh.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -32,5 +33,8 @@ public class County {
 	
 	@Column(name = "isactive", columnDefinition = "varchar(45) default '1'")
 	private String isActive;
-
+	
+	
+	@OneToMany(mappedBy = "county", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<SubCounty> subCounties ;
 }

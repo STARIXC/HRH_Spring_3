@@ -7,6 +7,7 @@ import org.utj.hrh.model.SubCounty;
 import org.utj.hrh.repository.SubCountyRepository;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class SubCountyService {
@@ -25,16 +26,17 @@ public class SubCountyService {
         return subCountyRepository.findByActive(active);
     }
 
-//    public List<SubCounty> getAllByCounty(County county,Integer active_) {
-//
-//        return subCountyRepository.findByCountyAndActive(county ,active_);
-//    }
-//    public List<SubCounty> getAllByCountyAndActive(Integer county_id) {
-//
-//        return subCountyRepository.fetchDataFromDataSource(county_id);
-//    }
 public List<SubCountyDTO> getAllByCountyAndActive(Integer countyId) {
-    return subCountyRepository.fetchDataFromDataSource(countyId);
+    List<SubCounty> subCounties = subCountyRepository.findByCountyCountyIdAndActive(countyId, 1);
+    
+    return subCounties.stream().map(subCounty -> {
+        SubCountyDTO dto = new SubCountyDTO();
+        dto.setDistrictId(subCounty.getDistrictId());
+        dto.setDistrictName(subCounty.getDistrictName());
+        dto.setCountyId(subCounty.getCounty().getCountyId());
+        return dto;
+    }).collect(Collectors.toList());
+
 }
 
 }

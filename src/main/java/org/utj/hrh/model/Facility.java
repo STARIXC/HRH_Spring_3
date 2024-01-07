@@ -1,5 +1,6 @@
 package org.utj.hrh.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -20,8 +21,9 @@ public class Facility {
 	@Column(name = "sub_partner_nom")
 	private String subPartnerName;
 	
-	@OneToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "districtid")
+	@JsonBackReference
 	private SubCounty subCounty;
 	
 	@Column(name = "centre_sante_id")

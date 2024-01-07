@@ -8,4 +8,5 @@ import lombok.NoArgsConstructor;
 public class DesignationDTO {
 	private Integer id;
 	private String position_title;
+	private Integer carderId;
 }

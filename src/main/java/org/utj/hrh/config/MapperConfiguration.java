@@ -3,11 +3,14 @@ package org.utj.hrh.config;
 import org.modelmapper.Converter;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.PropertyMap;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.utj.hrh.dto.*;
 import org.utj.hrh.model.*;
+import org.utj.hrh.services.DesignationService;
 import org.utj.hrh.services.EmployeeFacilityService;
+import org.utj.hrh.services.EmploymentHistoryService;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
@@ -16,11 +19,30 @@ import java.util.stream.Collectors;
 
 @Configuration
 public class MapperConfiguration {
-	
+	private EmployeeFacilityService employeeFacilityService;
+	private DesignationService designationService;
+	private EmploymentHistoryService employmentHistoryService;
+	@Autowired
+	public MapperConfiguration(EmployeeFacilityService employeeFacilityService, DesignationService designationService, EmploymentHistoryService employmentHistoryService) {
+		this.employeeFacilityService = employeeFacilityService;
+		this.designationService = designationService;
+		this.employmentHistoryService = employmentHistoryService;
+	}
 	@Bean
 	public ModelMapper modelMapper() {
 		ModelMapper modelMapper = new ModelMapper();
-		
+		// Create Employment REcord to ID converter
+		Converter<EmploymentHistory, String> employmentHistoryToIDConverter = context -> {
+			EmploymentHistory source = context.getSource();
+			if (source != null) {
+				String financialYear = source.getFinancialYear().toString() != null ? String.valueOf(source.getFinancialYear().getId()) : "";
+				String employeePosition = source.getEmployeePosition().toString() != null ? String.valueOf(source.getEmployeePosition().getId()) : "";
+				String employeeFacility = source.getFacility().toString() != null ? String.valueOf(source.getFacility().getCentreSanteId()) : "";
+				String employeeId = source.getEmployeeHistoryRecord().toString() != null ? String.valueOf(source.getEmployeeHistoryRecord().getPerson().getPersonNumber()) : "";
+				return financialYear + employeePosition + employeeFacility + employeeId;
+			}
+			return null;
+		};
 		// User to Long converter
 		Converter<User, Long> userToLongConverter = context -> {
 			User source = context.getSource();
@@ -48,7 +70,7 @@ public class MapperConfiguration {
 			}
 			return null;
 		};
-		
+	
 		// Custom Type Map for LeaveEntitlement to LeaveEntitlementDTO
 		modelMapper.typeMap(LeaveEntitlement.class, LeaveEntitlementDTO.class)
 				.addMappings(mapper -> {
@@ -59,9 +81,14 @@ public class MapperConfiguration {
 					mapper.using(leavePolicyToLongConverter).map(LeaveEntitlement::getLeavePolicy, LeaveEntitlementDTO::setLeavePolicy);
 					// Add other field mappings here
 				});
+		modelMapper.addConverter(employmentHistoryToIDConverter);
 		modelMapper.addMappings(new EmployeeToEmployeeDetailsDTO());
 		modelMapper.addConverter(userToLongConverter);
 		modelMapper.addConverter(employeeToLongConverter);
+		modelMapper.addConverter(employeeToActiveFacilityDTOConverter());
+		modelMapper.addConverter(employeeToActiveDesignationDTOConverter());
+		modelMapper.addConverter(employeeToActiveEmploymentHistoryDTOConverter());
+		
 		return modelMapper;
 	}
 	
@@ -76,9 +103,12 @@ public class MapperConfiguration {
 			using(employeeToEmployeeAcademicQualificationDTOConverter).map(source, destination.getAcademicDetails());
 			using(employeeToEmployeeEmergencyContactListDTOConverter).map(source, destination.getEmployeeEmergencyContactDTOS());
 			using(employeeToEmployeeDependantsDTOConverter).map(source, destination.getEmployeeDependants());
-			using(employeeToEmployeeFacilityDTOConverter).map(source, destination.getEmployeeFacilityDTO());
+			using(employeeToActiveFacilityDTOConverter()).map(source, destination.getActiveFacilityDTO());
+			using(employeeToActiveDesignationDTOConverter()).map(source, destination.getActiveDesignationDTO());
+			using(employeeToActiveEmploymentHistoryDTOConverter()).map(source, destination.getActiveEmploymentHistoryDTO());
+			using(employeeToPositionHistoryDTOConverter).map(source, destination.getActiveEmployeeHistoryPositionFacilityDTO());
 			
-
+			
 		}
 	}
 	
@@ -99,36 +129,45 @@ public class MapperConfiguration {
 		basicInfoDTO.setDisabilityExplain(source.getDisabilityExplain());
 		return basicInfoDTO;
 	};
-	private final Converter<Employee, EmployeeFacilityDTO> employeeToEmployeeFacilityDTOConverter = context -> {
+	private final Converter<Employee, EmployeeHistoryPositionFacilityDTO> employeeToPositionHistoryDTOConverter = context -> {
 		Employee source = context.getSource();
-		EmployeeFacilityDTO employeeFacilityDTO = new EmployeeFacilityDTO();
-//		EmployeeFacilityService employeeFacilityService;
-//		// Logic to find the active facility for the employee
-//		// This might involve a service call or a custom query
-//		EmployeeFacility activeFacility = employeeFacilityService.findActiveFacilityForEmployee(source);
-//
-//		if (activeFacility != null && activeFacility.getFacility() != null) {
-//			Facility subPartner = activeFacility.getFacility();
-//			employeeFacilityDTO.setSubPartnerId(subPartner.getSubPartnerId());
-//			employeeFacilityDTO.setSubPartnerName(subPartner.getSubPartnerName());
-//
-//			// Assuming Facility has a reference to SubCounty
-//			SubCounty district = subPartner.getSubCounty();
-//			if (district != null) {
-//				employeeFacilityDTO.setDistrictId(district.getDistrictId());
-//				employeeFacilityDTO.setDistrictName(district.getDistrictName());
-//
-//				// Assuming SubCounty has a reference to County
-//				County county = district.getCounty();
-//				if (county != null) {
-//					employeeFacilityDTO.setCountyId(county.getCountyId());
-//					employeeFacilityDTO.setCountyName(county.getCountyName());
-//				}
-//			}
-//		}
-		return employeeFacilityDTO;
+		EmployeeFacility employeeFacility = employeeFacilityService.findActiveFacilityForEmployee(source);
+		EmploymentHistory employmentHistory = employmentHistoryService.findActiveEmploymentHistoryForEmployee(source);
+		Designation designation = designationService.findActiveDesignationForEmployee(source.getPosition().getId());
+		
+		EmployeeHistoryPositionFacilityDTO dto = new EmployeeHistoryPositionFacilityDTO();
+		
+		if (employeeFacility != null && employeeFacility.getFacility() != null) {
+			dto.setFacilityId(employeeFacility.getFacility().getSubPartnerId());
+		}
+		
+		if (employmentHistory != null) {
+			dto.setDateStarted(employmentHistory.getDateStarted());
+			dto.setDateEnded(employmentHistory.getDateEnded());
+			dto.setFinancialYearId(employmentHistory.getFinancialYear().getId());
+			dto.setMonthsWorked(employmentHistory.getMonthsWorked());
+			dto.setContractEndDate(employmentHistory.getFinancialYear().getEndDate());
+			dto.setContractStartDate(employmentHistory.getFinancialYear().getStartDate());
+			dto.setContractPeriod(employmentHistory.getFinancialYear().getContractPeriod());
+			dto.setCurrentContract(employmentHistory.getFinancialYear().getName());
+			dto.setExpectedMonths(employmentHistory.getExpectedMonths());
+			String empRecordId = employmentHistory.getEmprecordid();
+			dto.setEmprecordid(empRecordId);
+		} else {
+			// Handle the case when employmentHistory is null
+			// For example, set default values or leave fields empty
+		}
+		
+		if (designation != null) {
+			dto.setDesignationId(designation.getId());
+		}
+		
+		dto.setEmployeeId(source.getId());
+		
+		
+		return dto;
 	};
-
+	
 	private final Converter<Employee, StatutoryDetailsDTO> employeeToStatutoryDetailsDTOConverter = context -> {
 		Employee source = context.getSource();
 		StatutoryDetailsDTO statutoryDetailsDTO = new StatutoryDetailsDTO();
@@ -163,6 +202,7 @@ public class MapperConfiguration {
 		contactInfoDTO.setHomeAddress(mapAddressToDTO(source.getHomeAddress()));
 		return contactInfoDTO;
 	};
+
 
 	// Implement the mapAddressToDTO method if you need to map addresses
 	private AddressDTO mapAddressToDTO(Address address) {
@@ -221,8 +261,7 @@ public class MapperConfiguration {
 			dto.setMonthsWorked(null); // or appropriate default value
 		}
 		dto.setIsActive(employmentHistory.getIsActive());
-		dto.setCreatedAt(employmentHistory.getCreatedAt());
-		dto.setUpdatedAt(employmentHistory.getUpdatedAt());
+	
 		return dto;
 	}
 	private final Converter<Employee, List<EmployeeAcademicQualificationDTO>> employeeToEmployeeAcademicQualificationDTOConverter = context -> {
@@ -318,6 +357,54 @@ public class MapperConfiguration {
 		
 		return dto;
 	}
+	private final Converter<Employee, FacilityDTO> employeeToActiveFacilityDTOConverter() {
+		return context -> {
+			Employee source = context.getSource();
+			EmployeeFacility employeeFacility = employeeFacilityService.findActiveFacilityForEmployee(source);
+			if (employeeFacility != null && employeeFacility.getFacility() != null) {
+				FacilityDTO facilityDTO = new FacilityDTO();
+				facilityDTO.setSubPartnerId(employeeFacility.getFacility().getSubPartnerId());
+				facilityDTO.setSubPartnerName(employeeFacility.getFacility().getSubPartnerName());
+				// Map countyId and subCountyId
+				SubCounty subCounty = employeeFacility.getFacility().getSubCounty();
+				if (subCounty != null) {
+					facilityDTO.setDistrictId(subCounty.getDistrictId());
+					facilityDTO.setDistrictName(subCounty.getDistrictName());
+					County county = subCounty.getCounty();
+					if (county != null) {
+						facilityDTO.setCountyId(county.getCountyId());
+						facilityDTO.setCountyName(county.getCountyName());
+					}
+				}
+				return facilityDTO;
+			}
+			return null;
+		};
+	}
+	private final Converter<Employee, DesignationDTO> employeeToActiveDesignationDTOConverter() {
+		return context -> {
+			Employee source = context.getSource();
+					Designation employeeDesignation = designationService.findActiveDesignationForEmployee(source.getPosition().getId());
+				if (employeeDesignation != null && employeeDesignation.getCarderCategory() != null) {
+					DesignationDTO designationDTO = new DesignationDTO();
+					designationDTO.setId(employeeDesignation.getId());
+					designationDTO.setPosition_title(employeeDesignation.getPosition_title());
+					designationDTO.setCarderId(employeeDesignation.getCarderCategory().getId());
+					return designationDTO;
+					
+				}
+			return null;
+		};
+	}
+	private Converter<Employee, EmploymentHistoryDTO> employeeToActiveEmploymentHistoryDTOConverter() {
+		return context -> {
+			Employee source = context.getSource();
+			EmploymentHistory employmentHistory = employmentHistoryService.findActiveEmploymentHistoryForEmployee(source);
+			if (employmentHistory != null) {
+				return mapEmploymentHistoryToDTO(employmentHistory);
+			}
+			return null;
+		};
+	}
 	
-
 }

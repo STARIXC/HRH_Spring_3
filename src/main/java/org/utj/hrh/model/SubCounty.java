@@ -4,6 +4,7 @@
  */
 package org.utj.hrh.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -36,5 +37,8 @@ public class SubCounty {
     
     @Column(name = "active", columnDefinition = "int default 1")
     private Integer active;
+    
+    @OneToMany(mappedBy = "subCounty", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Facility> facilities;
 }
 

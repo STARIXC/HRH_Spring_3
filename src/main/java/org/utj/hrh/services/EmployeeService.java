@@ -10,6 +10,8 @@ import org.utj.hrh.mapper.EmployeeDetailsMapper;
 import org.utj.hrh.model.*;
 import org.utj.hrh.repository.*;
 
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -31,9 +33,11 @@ public class EmployeeService {
 	private final AddressRepository addressRepository;
 	private final PersonRepository personRepository;
 	private final PositionChangeRepository positionChangeRepository;
-	
+	private final FinancialYearService financialYearService;
+	private final EmploymentHistoryRepository employmentHistoryRepository;
+	private final FacilityService facilityService;
 	@Autowired
-	public EmployeeService(EmployeeRepository employeeRepository, EmployeeFacilityRepository employeeFacilityRepository, ModelMapper modelMapper, EmployeeDetailsMapper employeeDetailsMapper, SupervisorService supervisorService, EducationLevelService educationLevelService, EmployeeStatusService employeeStatusService, DesignationService designationService, CarderCategoryService carderCategoryService, CountyService countyService, AddressRepository addressRepository, PersonRepository personRepository, PositionChangeRepository positionChangeRepository) {
+	public EmployeeService(EmployeeRepository employeeRepository, EmployeeFacilityRepository employeeFacilityRepository, ModelMapper modelMapper, EmployeeDetailsMapper employeeDetailsMapper, SupervisorService supervisorService, EducationLevelService educationLevelService, EmployeeStatusService employeeStatusService, DesignationService designationService, CarderCategoryService carderCategoryService, CountyService countyService, AddressRepository addressRepository, PersonRepository personRepository, PositionChangeRepository positionChangeRepository, FinancialYearService financialYearService, EmploymentHistoryRepository employmentHistoryRepository, FacilityService facilityService) {
 		this.employeeRepository = employeeRepository;
 		this.employeeFacilityRepository = employeeFacilityRepository;
 		this.modelMapper = modelMapper;
@@ -48,6 +52,9 @@ public class EmployeeService {
 		this.personRepository = personRepository;
 		
 		this.positionChangeRepository = positionChangeRepository;
+		this.financialYearService = financialYearService;
+		this.employmentHistoryRepository = employmentHistoryRepository;
+		this.facilityService = facilityService;
 	}
 	
 	public List<StaffDTO> getAll() {
@@ -99,6 +106,16 @@ public class EmployeeService {
 
 		
 	}
+	public List<FinancialYearDTO> getFinancialYears() {
+		
+		return financialYearService.getAllFY()
+				.stream().
+				map(this::convertFYEntityDTO)
+				.collect(Collectors.toList());
+	
+
+		
+	}
 	
 	public List<StaffDTO> getEmployeesByPolicy(LeavePolicy policy) {
 		String gender = policy.getGender();
@@ -147,6 +164,11 @@ public EmployeeDetailsDTO getEmployeeDetails(Long id)  {
 				.stream()
 				.map(carderCategory -> convertToCarderCategoryDTO(carderCategory)) // Conversion logic
 				.collect(Collectors.toList());
+		List<FinancialYearDTO> financialYearDTOS = financialYearService.getAllFY() // Fetching logic
+				.stream()
+				.map(financialYear -> convertFYEntityDTO(financialYear)) // Conversion logic
+				.collect(Collectors.toList());
+		
 //		fetch emergency Records
 	
 		// Load and set unrelated lists
@@ -155,6 +177,7 @@ public EmployeeDetailsDTO getEmployeeDetails(Long id)  {
 		employeeDetailsDTO.setDesignations(designationDTOS);
 		employeeDetailsDTO.setCounties(countyDTOS);
 		employeeDetailsDTO.setCategories(carderCategoryDTOS);
+		employeeDetailsDTO.setFinancialYearDTOS(financialYearDTOS);
 
 		return employeeDetailsDTO;
 	} else {
@@ -182,7 +205,11 @@ public EmployeeDetailsDTO getEmployeeDetails(Long id)  {
 	
 	private CountyDTO  convertToCountyDTO(County county) {
 		return modelMapper.map(county, CountyDTO.class);
-	}private CarderCategoryDTO  convertToCarderCategoryDTO(CarderCategory carderCategory) {
+	}
+	private FinancialYearDTO  convertFYEntityDTO(FinancialYear financialYear) {
+		return modelMapper.map(financialYear, FinancialYearDTO.class);
+	}
+	private CarderCategoryDTO  convertToCarderCategoryDTO(CarderCategory carderCategory) {
 		return modelMapper.map(carderCategory, CarderCategoryDTO.class);
 	}
 	
@@ -282,7 +309,82 @@ public EmployeeDetailsDTO getEmployeeDetails(Long id)  {
 	
 	employeeRepository.save(employee);
 	}
-
-
-
+	
+	@Transactional
+	public void updateJobInfo(Long employeeId, EmployeeHistoryPositionFacilityDTO employeeHistoryPositionFacilityDTO) throws EntityNotFoundException, DesignationNotFoundException {
+		Employee employee = employeeRepository.findById(employeeId)
+				.orElseThrow(() -> new RuntimeException("Employee not found"));
+		EmploymentHistory employmentHistory= convertHistoryToEntity(employeeHistoryPositionFacilityDTO ,employee);
+		employmentHistoryRepository.save(employmentHistory);
+		employee.setPosition(employmentHistory.getEmployeePosition());
+		employeeRepository.save(employee);
+		EmployeeFacility employeeFacility = convertEmployeeFacilityToEntity(employeeHistoryPositionFacilityDTO, employee);
+		employeeFacilityRepository.save(employeeFacility);
+	}
+	
+	private EmployeeFacility convertEmployeeFacilityToEntity(EmployeeHistoryPositionFacilityDTO employeeHistoryPositionFacilityDTO, Employee employee) throws DesignationNotFoundException, EntityNotFoundException {
+		EmployeeFacility employeeFacility;
+		Designation designation= designationService.getDesignation(employeeHistoryPositionFacilityDTO.getDesignationId());
+		Facility facility = facilityService.getFacilityById(employeeHistoryPositionFacilityDTO.getFacilityId());
+		if (employeeHistoryPositionFacilityDTO.getEmpFacilityId() != null) {
+			employeeFacility = employeeFacilityRepository.findById(employeeHistoryPositionFacilityDTO.getEmpFacilityId())
+						.orElseThrow(() -> new EntityNotFoundException("Record not found with id: " + employeeHistoryPositionFacilityDTO.getEmployeeId()));
+		}else{
+			employeeFacility= new EmployeeFacility();
+		}
+		employeeFacility.setFacility(facility);
+		employeeFacility.setActiveEmployeeFacility(employee);
+		employeeFacility.setActive(true);
+		return employeeFacility;
+	}
+	
+	private EmploymentHistory convertHistoryToEntity(EmployeeHistoryPositionFacilityDTO employeeHistoryPositionFacilityDTO, Employee employee) throws EntityNotFoundException, DesignationNotFoundException {
+	EmploymentHistory employmentHistory;
+		Designation designation= designationService.getDesignation(employeeHistoryPositionFacilityDTO.getDesignationId());
+		FinancialYear financialYear = financialYearService.getFinancialYear(employeeHistoryPositionFacilityDTO.getFinancialYearId());
+		Facility facility = facilityService.getFacilityById(employeeHistoryPositionFacilityDTO.getFacilityId());
+//		if (employeeHistoryPositionFacilityDTO.getEmprecordid() != null) {
+//			// Existing address, fetch it from the database
+//			employmentHistory = employmentHistoryRepository.findByEmprecordid(employeeHistoryPositionFacilityDTO.getEmprecordid())
+//						.orElseThrow(() -> new EntityNotFoundException("Record not found with id: " ));
+//
+//		} else {
+//			// New address, create a new entity
+//			employmentHistory = new EmploymentHistory();
+//			String recordId =financialYear.getYear()+ facility.getCentreSanteId()+employee.getPerson().getPersonNumber()+financialYear.getId()+designation.getId();
+//			employmentHistory.setEmprecordid(recordId);
+//		}
+		employmentHistory = new EmploymentHistory();
+		String recordId =financialYear.getYear()+ facility.getCentreSanteId()+employee.getPerson().getPersonNumber()+financialYear.getId()+designation.getId();
+		employmentHistory.setEmprecordid(recordId);
+		employmentHistory.setEmployeeHistoryRecord(employee);
+		employmentHistory.setEmployeePosition(designation);
+		if (financialYear != null) {
+			employmentHistory.setFinancialYear(financialYear);
+			employmentHistory.setDateStarted(employeeHistoryPositionFacilityDTO.getDateStarted());
+			LocalDate contractEndDate = financialYear.getEndDate();
+			LocalDate contractStartDate = financialYear.getStartDate();
+			LocalDate startDate = employeeHistoryPositionFacilityDTO.getDateStarted();
+			employmentHistory.setDateStarted(startDate);
+			if (contractStartDate.isBefore(startDate)) {
+				long expectedMonths = ChronoUnit.MONTHS.between(startDate, contractEndDate);
+				employmentHistory.setExpectedMonths((int) expectedMonths);
+			}else{
+				long expectedMonths = ChronoUnit.MONTHS.between(contractStartDate, contractEndDate);
+				employmentHistory.setExpectedMonths((int) expectedMonths);
+			}
+			LocalDate endDate = employeeHistoryPositionFacilityDTO.getDateEnded();
+			employmentHistory.setDateEnded(endDate);
+			if (endDate != null && endDate.isBefore(contractEndDate)) {
+				employmentHistory.setMonthsWorked((int) ChronoUnit.MONTHS.between(startDate, endDate));
+			} else {
+				employmentHistory.setMonthsWorked(null);
+			}
+			employmentHistory.setFacility(facility);
+		
+		}
+	
+		return employmentHistory;
+	
+	}
 }

@@ -1,15 +1,16 @@
 package org.utj.hrh.controllers;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.utj.hrh.model.FinancialYear;
+import org.utj.hrh.model.LeavePolicy;
 import org.utj.hrh.services.FinancialYearService;
 
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/system/financial-year")
@@ -41,5 +42,20 @@ public class FinancialYearController {
         }
         return "redirect:/system/financial/list"; // Redirect back to the same page
     }
-
+    
+    @GetMapping("/get_year_details/{year_id}")
+    @ResponseBody
+    public ResponseEntity<?> getFinancialYearDetails(@PathVariable("year_id") Integer year_id) {
+        Optional<FinancialYear> financialYear = financialYearService.getYear(year_id);
+        
+        if (!financialYear.isPresent()) {
+            // Return a 404 Not Found response when no data is found
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+      
+        // Return the data as JSON in the response body
+        return new ResponseEntity<>(financialYear, HttpStatus.OK);
+    }
+    
+    
 }

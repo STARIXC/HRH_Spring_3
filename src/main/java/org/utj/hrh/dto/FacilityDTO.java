@@ -1,17 +1,13 @@
 package org.utj.hrh.dto;
 
+import lombok.Data;
 
-import org.utj.hrh.model.County;
-import org.utj.hrh.model.SubCounty;
-
-public record FacilityDTO(
-		Integer subPartnerId,
-		 String subPartnerName,
-		SubCounty subCounty,
-		Integer centreSanteId
-		) {
-
-	
-	
-
+@Data
+public class FacilityDTO {
+	private Integer subPartnerId;
+	private String subPartnerName;
+	private Integer districtId;
+	private String districtName;
+	private Integer countyId;
+	private String countyName;
 }

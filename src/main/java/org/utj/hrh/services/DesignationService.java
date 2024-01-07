@@ -3,6 +3,7 @@ package org.utj.hrh.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.utj.hrh.model.Designation;
+import org.utj.hrh.model.Employee;
 import org.utj.hrh.repository.DesignationRepository;
 
 import java.util.*;
@@ -43,5 +44,15 @@ public class DesignationService {
 
     public List<Designation> getByStandardCarder(Integer standardized_cadre_id) {
         return designationRepository.findPositionsByStandardized_cadre_id(standardized_cadre_id);
+    }
+    
+    public Designation findActiveDesignationForEmployee(Integer position_id)  {
+        return designationRepository.findById(position_id)
+                .orElse(null);
+               
+    }
+    
+    public Designation findById(Integer designationId) {
+        return designationRepository.findById(designationId).get();
     }
 }
